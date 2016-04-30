@@ -62,7 +62,7 @@ module.exports.fileIcons =
 	
 	Ada:
 		icon: "ada"
-		match: /^\.(ada|adb|ads)$/
+		match: /\.(ada|adb|ads)$/i
 		colour: "medium-blue"
 	
 	"Adobe Illustrator":
@@ -2206,7 +2206,8 @@ module.exports.fileIcons =
 	
 	Travis:
 		icon: "travis"
-		match: ".travis"
+		priority: 2
+		match: /^\.travis/i
 		colour: "medium-red"
 	
 	Turing:
