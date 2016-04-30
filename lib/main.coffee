@@ -1,4 +1,5 @@
 {basename} = require "path"
+IconService = require "./icon-service.coffee"
 
 module.exports =
   config:
@@ -47,6 +48,9 @@ module.exports =
     @tabPaneIcon false
     @observe false
 
+
+  displayIcons: ->
+    @iconService = new IconService
 
   observe: (enabled) ->
     
