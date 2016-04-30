@@ -13,7 +13,9 @@ class IconService
 		filename = basename path
 		
 		for rule in @fileIcons
-			break if ruleMatch = rule.matches path
+			ruleMatch = rule.matches path
+			if ruleMatch then break
+			else ruleMatch = null
 		
 		if ruleMatch?
 			classes = ["#{rule.icon}-icon"]
