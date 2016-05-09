@@ -725,6 +725,7 @@ module.exports.fileIcons =
 	
 	ESLint:
 		icon: "eslint"
+		priority: 2
 		match: [
 			[".eslintignore", "medium-purple"]
 			[/\.eslintrc(?:\.(?:js|json|ya?ml))?$/i, "light-purple"]
