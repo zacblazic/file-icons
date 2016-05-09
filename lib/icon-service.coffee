@@ -4,9 +4,13 @@
 
 
 class IconService
+	useColour: true
+	changedOnly: false
+	
 	constructor: ->
 		@directoryIcons = @compile directoryIcons
 		@fileIcons = @compile fileIcons
+		global.iconService = this
 		
 	
 	iconClassForPath: (path) ->
@@ -19,7 +23,7 @@ class IconService
 		
 		if ruleMatch?
 			classes = ["#{rule.icon}-icon"]
-			if colour = ruleMatch[1]
+			if @useColour && colour = ruleMatch[1]
 				classes.push(colour)
 		classes
 	
@@ -33,7 +37,23 @@ class IconService
 			new IconRule name, attr
 		
 		results.sort IconRule.sort
-			
+	
+	
+	# Force a complete refresh of the icon display.
+	# Intended to be called when a package setting's been modified.
+	refresh: () ->
+		workspace = atom.views.getView(atom.workspace)
+		files = workspace.querySelectorAll ".file > .name.icon[data-path]"
+		
+		for file in files
+			file.className = ""
+			file.classList.add "name", "icon"
+			iconClass = @iconClassForPath(file.dataset.path)
+			if iconClass
+				unless Array.isArray iconClass
+					iconClass = iconClass.toString().split(/\s+/g)
+				file.classList.add iconClass...
+		
 		
 
 module.exports = IconService

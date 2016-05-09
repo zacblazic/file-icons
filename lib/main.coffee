@@ -27,10 +27,16 @@ module.exports =
 
 	displayIcons: ->
 		@iconService = new IconService
-
+		@iconService.useColour   = atom.config.get "file-icons.coloured"
+		@iconService.changedOnly = atom.config.get "file-icons.onChanges"
+		@iconService
+	
 	colour: (enable) ->
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-colourless", !enable
+		if @iconService
+			@iconService.useColour = enable
+			@iconService.refresh()
 
 	onChanges: (enable) ->
 		body = document.querySelector "body"
