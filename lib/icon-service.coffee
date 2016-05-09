@@ -1,6 +1,6 @@
 {basename} = require "path"
 {IconRule} = require "./icon-rule"
-{directoryIcons, fileIcons} = require "./icon-config"
+{directoryIcons, fileIcons} = require "./config"
 
 
 class IconService
