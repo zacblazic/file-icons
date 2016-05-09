@@ -10,7 +10,6 @@ class IconService
 	constructor: ->
 		@directoryIcons = @compile directoryIcons
 		@fileIcons = @compile fileIcons
-		global.iconService = this
 		
 	
 	iconClassForPath: (path) ->
@@ -42,17 +41,22 @@ class IconService
 	# Force a complete refresh of the icon display.
 	# Intended to be called when a package setting's been modified.
 	refresh: () ->
-		workspace = atom.views.getView(atom.workspace)
-		files = workspace.querySelectorAll ".file > .name.icon[data-path]"
 		
-		for file in files
-			file.className = ""
-			file.classList.add "name", "icon"
+		# Update the icon classes of a specific file-entry
+		updateIcon = (file, baseClass) =>
+			file.className = baseClass
 			iconClass = @iconClassForPath(file.dataset.path)
 			if iconClass
 				unless Array.isArray iconClass
 					iconClass = iconClass.toString().split(/\s+/g)
 				file.classList.add iconClass...
+		
+		ws = atom.views.getView(atom.workspace)
+		for file in ws.querySelectorAll ".file > .name.icon[data-path]"
+			updateIcon file, "name icon"
+		
+		for tab in ws.querySelectorAll ".tab > .title.icon[data-path]"
+			updateIcon tab, "title icon"
 		
 		
 
