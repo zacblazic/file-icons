@@ -14,7 +14,7 @@ you can add it to the package's custom icon set with [IcoMoon.io](https://icomoo
 
 5. Export and extract the contents of the downloaded zip file:
 
-	a. Copy `file-icons.woff2` to your fork's `resources/fonts` directory.
+	a. Copy `file-icons.woff2` to your fork's `fonts` directory, giving it the appropriate version number.
 	
 	b. Copy `selection.json` to your fork's base directory.
 
