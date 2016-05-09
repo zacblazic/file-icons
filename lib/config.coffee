@@ -1652,7 +1652,7 @@ module.exports.fileIcons =
 	
 	Nimrod:
 		icon: "nimrod"
-		match: /^\.nim(?:rod)?$/i
+		match: /\.nim(?:rod)?$/i
 		colour: "medium-green"
 	
 	Nit:
@@ -2355,6 +2355,12 @@ module.exports.fileIcons =
 			[".vh", "auto-cyan"]
 		]
 	
+	"Table of Contents":
+		icon: "toc"
+		priority: 2
+		match: ".toc"
+		colour: "auto-cyan"
+	
 	Tagfile: # CTags
 		icon: "tag"
 		match: /^\.?tags$/i
@@ -2399,7 +2405,6 @@ module.exports.fileIcons =
 			[".mkiv", "auto-orange"]
 			[".mkvi", "auto-orange"]
 			[".mkii", "auto-orange"]
-			[".toc", "auto-cyan"]
 			[".texi", "auto-red"]
 		]
 	
@@ -2662,3 +2667,7 @@ module.exports.fileIcons =
 		icon: "zimpl"
 		match: /\.(zimpl|zmpl|zpl)$/i
 		colour: "medium-orange"
+
+	"Zip Folders":
+		icon: "zip"
+		match: ".gem"
