@@ -17,7 +17,7 @@ class IconService
 		filename = basename path
 		
 		for rule in @fileIcons
-			ruleMatch = rule.matches path
+			ruleMatch = rule.matches filename
 			if ruleMatch then break
 			else ruleMatch = null
 		
