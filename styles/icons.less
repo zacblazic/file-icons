@@ -17,6 +17,17 @@
 	text-shadow: 0 0 0;
 }
 
+// Outlines for debugging/adjustments
+.file-icon-debug-outlines{
+	.icon{
+		outline: 1px solid blue;
+		
+		&:before{
+			outline: 1px solid red;
+		}
+	}
+}
+
 
 /*============================================================================*
   Octicons
@@ -27,7 +38,7 @@
 .binary-icon:before       { .octicons; content: "\f094"; }
 .book-icon:before         { .octicons; content: "\f007"; }
 .brew-icon:before         { .octicons; content: "\f069"; font-size: 15px; left: 1px; }
-.checklist-icon:before    { .octicons; content: "\f076"; }
+.checklist-icon:before    { .octicons; content: "\f076"; font-size: 17px; left: 1px; top: 1px; }
 .code-icon:before         { .octicons; content: "\f05f"; }
 .comment-icon:before      { .octicons; content: "\f02b"; }
 .config-icon:before       { .octicons; content: "\f07c"; }
@@ -59,20 +70,20 @@
 /*============================================================================*/
 .fa { font-family: "FontAwesome"; font-size: 13px; }
 
-.android-icon:before      { .fa; content: "\f17b"; font-size: 16px; }
+.android-icon:before      { .fa; content: "\f17b"; font-size: 16px; top: 1px; }
 .audio-icon:before        { .fa; content: "\f028"; font-size: 15px; }
-.bullhorn-icon:before     { .fa; content: "\f0a1"; font-size: 16px; }
+.bullhorn-icon:before     { .fa; content: "\f0a1"; font-size: 16px; top: 2px; }
 .coffee-icon:before       { .fa; content: "\f0f4"; font-size: 14px; }
 .css3-icon:before         { .fa; content: "\f13c"; }
-.circle-icon:before       { .fa; content: "\f111"; font-size: 16px; }
+.circle-icon:before       { .fa; content: "\f111"; font-size: 16px; top: 1px; }
 .earth-icon:before        { .fa; content: "\f0ac"; font-size: 15px; }
 .gears-icon:before        { .fa; content: "\f085"; font-size: 15px; }
-.html5-icon:before        { .fa; content: "\f13b"; font-size: 15px; }
+.html5-icon:before        { .fa; content: "\f13b"; font-size: 15px; top: 1px; }
 .mobile-icon:before       { .fa; content: "\f10b"; font-size: 20px; top: 2px; }
 .moon-icon:before         { .fa; content: "\f186"; font-size: 16px; top: 1px; }
 .music-icon:before        { .fa; content: "\f001"; font-size: 15px; left: -1px; }
 .recycle-icon:before      { .fa; content: "\f1b8"; font-size: 15px; top: 3px; }
-.rss-icon:before          { .fa; content: "\f143"; font-size: 16px; }
+.rss-icon:before          { .fa; content: "\f143"; font-size: 16px; top: 2px; }
 .smarty-icon:before       { .fa; content: "\f0eb"; font-size: 15px; }
 .sun-icon:before          { .fa; content: "\f185"; font-size: 14px; .thicken; }
 .toc-icon:before          { .fa; content: "\f03a"; font-size: 15px; top: 2px; }
@@ -86,22 +97,22 @@
 /*============================================================================*/
 .mf { font-family: "FontMfizz"; font-size: 14px; }
 
-.apache-icon:before       { .mf; content: "\f102"; top: 3px; left: 0; }
+.apache-icon:before       { .mf; content: "\f102"; top: 1px; }
 .c-icon:before            { .mf; content: "\f106"; font-size: 13px; }
 .cpp-icon:before          { .mf; content: "\f10b"; }
 .csharp-icon:before       { .mf; content: "\f10c"; }
-.debian-icon:before       { .mf; content: "\f111"; }
-.elixir-icon:before       { .mf; content: "\f113"; }
-.gnome-icon:before        { .mf; content: "\f119"; }
+.debian-icon:before       { .mf; content: "\f111"; top: 1px; }
+.elixir-icon:before       { .mf; content: "\f113"; top: 1px; }
+.gnome-icon:before        { .mf; content: "\f119"; top: 1px; }
 .h-icon:before            { .mf; content: "\f010"; }
-.haskell-icon:before      { .mf; content: "\f121"; }
-.java-icon:before         { .mf; content: "\f126"; font-size: 16px; left: -1px; }
-.js-icon:before           { .mf; content: "\f128"; font-size: 14px; }
-.objc-icon:before         { .mf; content: "\f13e"; font-size: 16px; }
+.haskell-icon:before      { .mf; content: "\f121"; top: 1px; }
+.java-icon:before         { .mf; content: "\f126"; font-size: 16px; top: 2px; left: -1px; }
+.js-icon:before           { .mf; content: "\f128"; font-size: 14px; top: 1px; }
+.objc-icon:before         { .mf; content: "\f13e"; font-size: 16px; top: 2px; }
 .osx-icon:before          { .mf; content: "\f141"; }
-.perl-icon:before         { .mf; content: "\f142"; }
-.python-icon:before       { .mf; content: "\f14c"; }
-.red-hat-icon:before      { .mf; content: "\f14e"; }
+.perl-icon:before         { .mf; content: "\f142"; top: 1px; }
+.python-icon:before       { .mf; content: "\f14c"; top: 1px; }
+.red-hat-icon:before      { .mf; content: "\f14e"; top: 2px; }
 .scala-icon:before        { .mf; content: "\f154"; }
 .sql-icon:before          { .mf; content: "\f10e"; }
 .svg-icon:before          { .mf; content: "\f15c"; }
@@ -122,8 +133,8 @@
 .dlang-icon:before        { .devicons; content: "\e6af"; }
 .eclipse-icon:before      { .devicons; content: "\e69e"; }
 .erlang-icon:before       { .devicons; content: "\e6b1"; }
-.fsharp-icon:before       { .devicons; content: "\e6a7"; left: 1px; }
-.git-icon:before          { .devicons; content: "\e602"; font-size: 15px; top: 4px; }
+.fsharp-icon:before       { .devicons; content: "\e6a7"; left: 1px; top: 2px; }
+.git-icon:before          { .devicons; content: "\e602"; font-size: 15px; top: 2px; }
 .heroku-icon:before       { .devicons; content: "\e67b"; }
 .laravel-icon:before      { .devicons; content: "\e63f"; .thicken; }
 .node-icon:before         { .devicons; content: "\e618"; left: -1px; }
@@ -133,9 +144,9 @@
 .rust-icon:before         { .devicons; content: "\e6a8"; }
 .sass-icon:before         { .devicons; content: "\e64b"; }
 .swift-icon:before        { .devicons; content: "\e655"; left: -1px; }
-.travis-icon:before       { .devicons; content: "\e67e"; font-size: 15px; }
+.travis-icon:before       { .devicons; content: "\e67e"; font-size: 15px; top: 2px; }
 .unity3d-icon:before      { .devicons; content: "\e621"; }
-.vim-icon:before          { .devicons; content: "\e6c5"; }
+.vim-icon:before          { .devicons; content: "\e6c5"; top: 1px; }
 .vs-icon:before           { .devicons; content: "\e60c"; }
 .windows-icon:before      { .devicons; content: "\e60f"; }
 
@@ -148,263 +159,263 @@
 /*============================================================================*/
 .file-icons                { font-family: "file-icons"; font-size: 15px; }
 
-.abap-icon:before          { .file-icons; content: "\e92b"; }
-.ada-icon:before           { .file-icons; content: "\e90b"; font-size: 17px; }
-.ahk-icon:before           { .file-icons; content: "\e932"; }
-.ai-icon:before            { .file-icons; content: "\e6b4"; }
-.alloy-icon:before         { .file-icons; content: "\e935"; }
+.abap-icon:before          { .file-icons; content: "\e92b"; top: 2px; }
+.ada-icon:before           { .file-icons; content: "\e90b"; font-size: 17px; top: 3px; }
+.ahk-icon:before           { .file-icons; content: "\e932"; top: 2px; }
+.ai-icon:before            { .file-icons; content: "\e6b4"; top: 2px; }
+.alloy-icon:before         { .file-icons; content: "\e935"; top: 2px; }
 .ampl-icon:before          { .file-icons; content: "\e94e"; font-size: 16px; top: 3px; left: 1px; }
 .amx-icon:before           { .file-icons; content: "\e99b"; font-size: 16px; top: 3px; }
 .ant-icon:before           { .file-icons; content: "\e93e"; font-size: 18px; top: 4px; transform: scale(1.1); }
 .antlr-icon:before         { .file-icons; content: "\e92c"; top: 3px; }
-.api-icon:before           { .file-icons; content: "\e92d"; }
+.api-icon:before           { .file-icons; content: "\e92d"; top: 2px; }
 .apl-icon:before           { .file-icons; content: "\e909"; }
-.apple-icon:before         { .file-icons; content: "\e925"; }
-.appveyor-icon:before      { .file-icons; content: "\e923"; }
-.arc-icon:before           { .file-icons; content: "\e92f"; }
+.apple-icon:before         { .file-icons; content: "\e925"; top: 1px; }
+.appveyor-icon:before      { .file-icons; content: "\e923"; top: 2px; }
+.arc-icon:before           { .file-icons; content: "\e92f"; top: 2px; }
 .arduino-icon:before       { .file-icons; content: "\e930"; font-size: 16px; top: 3px; }
-.as-icon:before            { .file-icons; content: "\e92e"; font-size: 14px; }
-.asciidoc-icon:before      { .file-icons; content: "\e918"; font-size: 14px; }
-.ats-icon:before           { .file-icons; content: "\e934"; }
-.augeas-icon:before        { .file-icons; content: "\e931"; }
-.autoit-icon:before        { .file-icons; content: "\e933"; font-size: 16px; }
-.babel-icon:before         { .file-icons; content: "\e91f"; top: 3px; left: 1px; }
-.bibtex-icon:before        { .file-icons; content: "\e601"; font-size: 16px; .thicken; }
-.bluespec-icon:before      { .file-icons; content: "\e93c"; font-size: 12px; top: 1px; left: 1px; }
-.boo-icon:before           { .file-icons; content: "\e939"; }
-.boot-icon:before          { .file-icons; content: "\f103"; font-size: 16px; }
-.brain-icon:before         { .file-icons; content: "\e93a"; }
-.brakeman-icon:before      { .file-icons; content: "\e9d6"; }
+.as-icon:before            { .file-icons; content: "\e92e"; font-size: 14px; top: 1px; }
+.asciidoc-icon:before      { .file-icons; content: "\e918"; font-size: 14px; top: 1px; }
+.ats-icon:before           { .file-icons; content: "\e934"; top: 2px; }
+.augeas-icon:before        { .file-icons; content: "\e931"; top: 2px; }
+.autoit-icon:before        { .file-icons; content: "\e933"; top: 2px; font-size: 16px; }
+.babel-icon:before         { .file-icons; content: "\e91f"; top: 2px; left: 1px; }
+.bibtex-icon:before        { .file-icons; content: "\e601"; font-size: 16px; top: 2px; .thicken; }
+.bluespec-icon:before      { .file-icons; content: "\e93c"; font-size: 13px; top: 1px; left: 1px; }
+.boo-icon:before           { .file-icons; content: "\e939"; top: 2px; }
+.boot-icon:before          { .file-icons; content: "\f103"; font-size: 16px; top: 2px; }
+.brain-icon:before         { .file-icons; content: "\e93a"; top: 2px; }
+.brakeman-icon:before      { .file-icons; content: "\e9d6"; top: 2px; }
 .bro-icon:before           { .file-icons; content: "\e93b"; font-size: 16px; top: 3px; }
-.broccoli-icon:before      { .file-icons; content: "\e922"; font-size: 14px; }
-.byond-icon:before         { .file-icons; content: "\e962"; }
-.cabal-icon:before         { .file-icons; content: "\e9c2"; }
-.cake-icon:before          { .file-icons; content: "\e924"; }
-.cakephp-icon:before       { .file-icons; content: "\e9d3"; font-size: 14px; }
-.cc-icon:before            { .file-icons; content: "\e9d5"; font-size: 16px; }
-.ceylon-icon:before        { .file-icons; content: "\e94f"; }
-.cf-icon:before            { .file-icons; content: "\e929"; }
-.chapel-icon:before        { .file-icons; content: "\e950"; }
-.chuck-icon:before         { .file-icons; content: "\e943"; }
-.cirru-icon:before         { .file-icons; content: "\e951"; .sharpen; }
+.broccoli-icon:before      { .file-icons; content: "\e922"; font-size: 14px; top: 1px; }
+.byond-icon:before         { .file-icons; content: "\e962"; top: 2px; }
+.cabal-icon:before         { .file-icons; content: "\e9c2"; top: 2px; }
+.cake-icon:before          { .file-icons; content: "\e924"; top: 2px; }
+.cakephp-icon:before       { .file-icons; content: "\e9d3"; font-size: 14px; top: 1px; }
+.cc-icon:before            { .file-icons; content: "\e9d5"; font-size: 16px; top: 2px; }
+.ceylon-icon:before        { .file-icons; content: "\e94f"; top: 2px; }
+.cf-icon:before            { .file-icons; content: "\e929"; top: 2px; }
+.chapel-icon:before        { .file-icons; content: "\e950"; top: 2px; }
+.chuck-icon:before         { .file-icons; content: "\e943"; top: 2px; }
+.cirru-icon:before         { .file-icons; content: "\e951"; top: 2px; .sharpen; }
 .cl-icon:before            { .file-icons; content: "\e972"; .sharpen; }
 .clarion-icon:before       { .file-icons; content: "\e952"; font-size: 14px; top: 1px; left: 1px; }
-.clean-icon:before         { .file-icons; content: "\e95b"; font-size: 16px; }
-.click-icon:before         { .file-icons; content: "\e95c"; }
-.clips-icon:before         { .file-icons; content: "\e940"; font-size: 18px; left: 2px; }
+.clean-icon:before         { .file-icons; content: "\e95b"; font-size: 16px; top: 2px; }
+.click-icon:before         { .file-icons; content: "\e95c"; top: 2px; }
+.clips-icon:before         { .file-icons; content: "\e940"; font-size: 18px; top: 3px; }
 .cljs-icon:before          { .file-icons; content: "\f104"; }
 .cmake-icon:before         { .file-icons; content: "\e93f"; font-size: 14px; top: 1px; }
 .composer-icon:before      { .file-icons; content: "\e683"; font-size: 17px; }
-.coq-icon:before           { .file-icons; content: "\e95f"; font-size: 16px; left: 1px; }
+.coq-icon:before           { .file-icons; content: "\e95f"; font-size: 16px; top: 2px; left: 1px; }
 .cp-icon:before            { .file-icons; content: "\e942"; font-size: 17px; top: 3px; }
-.creole-icon:before        { .file-icons; content: "\e95e"; }
-.crystal-icon:before       { .file-icons; content: "\e902"; left: 1px; }
+.creole-icon:before        { .file-icons; content: "\e95e"; top: 2px; }
+.crystal-icon:before       { .file-icons; content: "\e902"; top: 2px; left: 1px; }
 .cython-icon:before        { .file-icons; content: "\e963"; }
 .darcs-icon:before         { .file-icons; content: "\e964"; }
-.diff-icon:before          { .file-icons; content: "\e960"; }
+.diff-icon:before          { .file-icons; content: "\e960"; top: 2px; }
 .docker-icon:before        { .file-icons; content: "\f106"; font-size: 18px; }
 .doxygen-icon:before       { .file-icons; content: "\e928"; font-size: 13px; top: 1px;  }
 .doge-icon:before          { .file-icons; content: "\e946"; }
-.dyalog-icon:before        { .file-icons; content: "\e90c"; font-size: 14px; left: 1px; }
-.e-icon:before             { .file-icons; content: "E";     font-size: 14px; }
-.eagle-icon:before         { .file-icons; content: "\e965"; }
-.ec-icon:before            { .file-icons; content: "\e9c9"; }
+.dyalog-icon:before        { .file-icons; content: "\e90c"; font-size: 14px; top: 1px; left: 1px; }
+.e-icon:before             { .file-icons; content: "E";     font-size: 14px; top: 1px; }
+.eagle-icon:before         { .file-icons; content: "\e965"; top: 2px; }
+.ec-icon:before            { .file-icons; content: "\e9c9"; top: 2px; }
 .ecere-icon:before         { .file-icons; content: "\e966"; font-size: 16px; top: 3px; }
-.eiffel-icon:before        { .file-icons; content: "\e967"; font-size: 16px; }
-.elm-icon:before           { .file-icons; content: "\f102"; }
+.eiffel-icon:before        { .file-icons; content: "\e967"; font-size: 16px; top: 2px; }
+.elm-icon:before           { .file-icons; content: "\f102"; top: 2px; }
 .em-icon:before            { .file-icons; content: "\e968"; font-size: 16px; top: 3px; }
-.emacs-icon:before         { .file-icons; content: "\e926"; }
-.eslint-icon:before        { .file-icons; content: "\e90e"; font-size: 14px; left: 1px; }
-.fabfile-icon:before       { .file-icons; content: "\e94b"; font-size: 16px; }
+.emacs-icon:before         { .file-icons; content: "\e926"; top: 2px; }
+.eslint-icon:before        { .file-icons; content: "\e90e"; font-size: 14px; top: 2px; left: 1px; }
+.fabfile-icon:before       { .file-icons; content: "\e94b"; font-size: 16px; top: 2px; }
 .factor-icon:before        { .file-icons; content: "\e96a"; font-size: 18px; left: -2px; top: 3px; transform: scale(1.2); }
-.fancy-icon:before         { .file-icons; content: "\e96b"; font-size: 16px; }
-.fantom-icon:before        { .file-icons; content: "\e96f"; left: 1px; }
+.fancy-icon:before         { .file-icons; content: "\e96b"; font-size: 16px; top: 2px; }
+.fantom-icon:before        { .file-icons; content: "\e96f"; left: 1px; top: 2px; }
 .flow-icon:before          { .file-icons; content: "\e921"; left: 2px; top: 1px; }
-.flux-icon:before          { .file-icons; content: "\e969"; }
-.font-icon:before          { .file-icons; content: "\e90f"; font-size: 14px; left: 1px; top: -1px; }
+.flux-icon:before          { .file-icons; content: "\e969"; top: 2px; }
+.font-icon:before          { .file-icons; content: "\e90f"; font-size: 14px; left: 1px; top: 1px; }
 .fortran-icon:before       { .file-icons; content: "\e90a"; font-size: 14px; left: 1px; top: 1px; }
-.freemarker-icon:before    { .file-icons; content: "\e970"; font-size: 16px; left: 1px; }
-.frege-icon:before         { .file-icons; content: "\e96e"; font-size: 16px; left: 1px; }
-.gams-icon:before          { .file-icons; content: "\e973"; left: 1px; top: 3px; }
+.freemarker-icon:before    { .file-icons; content: "\e970"; font-size: 16px; left: 1px; top: 2px; }
+.frege-icon:before         { .file-icons; content: "\e96e"; font-size: 16px; left: 1px; top: 2px; }
+.gams-icon:before          { .file-icons; content: "\e973"; left: 1px; top: 2px; }
 .gap-icon:before           { .file-icons; content: "\e971"; font-size: 16px; left: 1px; top: 3px; }
-.godot-icon:before         { .file-icons; content: "\e974"; }
 .genshi-icon:before        { .file-icons; content: "\e976"; top: 3px; }
-.gentoo-icon:before        { .file-icons; content: "\e96d"; font-size: 14px; left: 1px; }
-.gf-icon:before            { .file-icons; content: "\e978"; }
-.glade-icon:before         { .file-icons; content: "\e938"; }
+.gentoo-icon:before        { .file-icons; content: "\e96d"; font-size: 14px; left: 1px; top: 1px; }
+.gf-icon:before            { .file-icons; content: "\e978"; top: 2px; }
+.glade-icon:before         { .file-icons; content: "\e938"; top: 2px; }
 .gml-icon:before           { .file-icons; content: "\e975"; font-size: 16px; top: 3px; }
-.gnu-icon:before           { .file-icons; content: "\e679"; font-size: 16px; .sharpen; }
+.gnu-icon:before           { .file-icons; content: "\e679"; font-size: 16px; top: 2px; .sharpen; }
 .go-icon:before            { .file-icons; content: "\e624"; top: 3px; }
-.golo-icon:before          { .file-icons; content: "\e979"; }
-.gosu-icon:before          { .file-icons; content: "\e97a"; top: 3px; }
+.godot-icon:before         { .file-icons; content: "\e974"; top: 2px; }
+.golo-icon:before          { .file-icons; content: "\e979"; top: 2px; }
+.gosu-icon:before          { .file-icons; content: "\e97a"; top: 2px; }
 .gradle-icon:before        { .file-icons; content: "\e903"; font-size: 14px; top: 1px; }
-.graphql-icon:before       { .file-icons; content: "\e97c"; }
+.graphql-icon:before       { .file-icons; content: "\e97c"; top: 2px; }
 .graphviz-icon:before      { .file-icons; content: "\e97d"; font-size: 17px; left: 1px; top: 4px; }
-.groovy-icon:before        { .file-icons; content: "\e904"; font-size: 14px; left: -1px; }
-.grunt-icon:before         { .file-icons; content: "\e611"; font-size: 14px; }
-.gulp-icon:before          { .file-icons; content: "\e610"; font-size: 16px; }
-.hack-icon:before          { .file-icons; content: "\e9ce"; }
-.haml-icon:before          { .file-icons; content: "\f15b"; left: 1px; }
-.harbour-icon:before       { .file-icons; content: "\e97b"; font-size: 16px; .sharpen; }
+.groovy-icon:before        { .file-icons; content: "\e904"; font-size: 14px; left: -1px; top: 1px; }
+.grunt-icon:before         { .file-icons; content: "\e611"; font-size: 14px; top: 1px; }
+.gulp-icon:before          { .file-icons; content: "\e610"; font-size: 16px; top: 2px; }
+.hack-icon:before          { .file-icons; content: "\e9ce"; top: 2px; }
+.haml-icon:before          { .file-icons; content: "\f15b"; top: 2px; }
+.harbour-icon:before       { .file-icons; content: "\e97b"; top: 2px; font-size: 16px; .sharpen; }
 .hashicorp-icon:before     { .file-icons; content: "\e97e"; }
-.haxe-icon:before          { .file-icons; content: "\e907"; top: 1px; left: 1px; }
-.hy-icon:before            { .file-icons; content: "\e97f"; }
+.haxe-icon:before          { .file-icons; content: "\e907"; top: 2px; }
+.hy-icon:before            { .file-icons; content: "\e97f"; top: 2px; }
 .idl-icon:before           { .file-icons; content: "\e947"; font-size: 18px; top: 3px; }
-.idris-icon:before         { .file-icons; content: "\e983"; font-size: 16px; .thicken; }
-.igorpro-icon:before       { .file-icons; content: "\e980"; font-size: 16px; .thicken; }
-.inform7-icon:before       { .file-icons; content: "\e984"; font-size: 16px; .sharpen; }
-.inno-icon:before          { .file-icons; content: "\e985"; }
+.idris-icon:before         { .file-icons; content: "\e983"; font-size: 16px; top: 2px; .thicken; }
+.igorpro-icon:before       { .file-icons; content: "\e980"; font-size: 16px; top: 2px; .thicken; }
+.inform7-icon:before       { .file-icons; content: "\e984"; font-size: 16px; top: 2px; .sharpen; }
+.inno-icon:before          { .file-icons; content: "\e985"; top: 2px; }
 .io-icon:before            { .file-icons; content: "\e981"; font-size: 13px; .thicken; top: 1px; }
-.ioke-icon:before          { .file-icons; content: "\e982"; }
+.ioke-icon:before          { .file-icons; content: "\e982"; top: 2px; }
 .ionic-icon:before         { .file-icons; content: "\f14b"; }
-.isabelle-icon:before      { .file-icons; content: "\e945"; font-size: 16px; }
+.isabelle-icon:before      { .file-icons; content: "\e945"; font-size: 16px; top: 2px; }
 .j-icon:before             { .file-icons; content: "\e937"; font-size: 13px; }
-.jade-icon:before          { .file-icons; content: "\e90d"; font-size: 12px; top: 1px; }
-.jake-icon:before          { .file-icons; content: "\e948"; font-size: 16px; }
+.jade-icon:before          { .file-icons; content: "\e90d"; font-size: 14px; top: 1px; }
+.jake-icon:before          { .file-icons; content: "\e948"; font-size: 16px; top: 3px; }
 .jenkins-icon:before       { .file-icons; content: "\e667"; font-size: 18px; top: 3px; .sharpen; }
 .jinja-icon:before         { .file-icons; content: "\e944"; }
 .jsonld-icon:before        { .file-icons; content: "\e958"; font-size: 17px; top: 3px; }
 .jsx-icon:before           { .file-icons; content: "\f101"; font-size: 14px; }
 .jupyter-icon:before       { .file-icons; content: "\e987"; font-size: 16px; top: 3px; }
-.karma-icon:before         { .file-icons; content: "\e9cd"; }
-.kivy-icon:before          { .file-icons; content: "\e901"; }
-.kotlin-icon:before        { .file-icons; content: "\e989"; font-size: 14px; }
-.krl-icon:before           { .file-icons; content: "\e988"; font-size: 14px; }
-.labview-icon:before       { .file-icons; content: "\e98a"; font-size: 16px; }
+.karma-icon:before         { .file-icons; content: "\e9cd"; top: 2px; }
+.kivy-icon:before          { .file-icons; content: "\e901"; top: 2px; }
+.kotlin-icon:before        { .file-icons; content: "\e989"; font-size: 14px; top: 1px; }
+.krl-icon:before           { .file-icons; content: "\e988"; font-size: 14px; top: 1px; }
+.labview-icon:before       { .file-icons; content: "\e98a"; font-size: 16px; top: 2px; }
 .lasso-icon:before         { .file-icons; content: "\e98c"; left: 1px; top: 1px; }
 .lean-icon:before          { .file-icons; content: "L";     font-size: 14px; left: 1px; top: 1px; }
 .lein-icon:before          { .file-icons; content: "\f105"; font-size: 16px; }
-.lfe-icon:before           { .file-icons; content: "\e94c"; }
-.lisp-icon:before          { .file-icons; content: "\e908"; font-size: 12px; top: 1px; }
-.llvm-icon:before          { .file-icons; content: "\e91d"; font-size: 17px; }
+.lfe-icon:before           { .file-icons; content: "\e94c"; font-size: 16px; top: 2px; }
+.lisp-icon:before          { .file-icons; content: "\e908"; font-size: 12px; }
+.llvm-icon:before          { .file-icons; content: "\e91d"; font-size: 17px; top: 2px; }
 .logtalk-icon:before       { .file-icons; content: "\e98d"; .sharpen; }
-.lookml-icon:before        { .file-icons; content: "\e98e"; font-size: 16px; .sharpen; }
+.lookml-icon:before        { .file-icons; content: "\e98e"; font-size: 16px; top: 2px; .sharpen; }
 .ls-icon:before            { .file-icons; content: "\e914"; font-size: 14px; }
 .lsl-icon:before           { .file-icons; content: "\e98b"; top: 1px; }
 .lua-icon:before           { .file-icons; content: "\e91b"; font-size: 14px; }
 .mako-icon:before          { .file-icons; content: "\e98f"; font-size: 16px; top: 4px; }
 .mapbox-icon:before        { .file-icons; content: "\e941"; font-size: 13px; }
 .marko-icon:before         { .file-icons; content: "\e920"; font-size: 18px; top: 4px; left: -1px; transform: scale(1.05); }
-.mathematica-icon:before   { .file-icons; content: "\e990"; font-size: 16px; }
-.matlab-icon:before        { .file-icons; content: "\e991"; }
-.max-icon:before           { .file-icons; content: "\e993"; }
-.maxscript-icon:before     { .file-icons; content: "\e900"; }
+.mathematica-icon:before   { .file-icons; content: "\e990"; font-size: 16px; top: 2px; }
+.matlab-icon:before        { .file-icons; content: "\e991"; top: 2px; }
+.max-icon:before           { .file-icons; content: "\e993"; top: 2px; }
+.maxscript-icon:before     { .file-icons; content: "\e900"; top: 2px; }
 .manpage-icon:before       { .file-icons; content: "\e936"; top: 3px; }
-.mediawiki-icon:before     { .file-icons; content: "\e954"; font-size: 16px; }
+.mediawiki-icon:before     { .file-icons; content: "\e954"; font-size: 16px; top: 2px; }
 .mercury-icon:before       { .file-icons; content: "\e994"; font-size: 16px; transform: scale(1.2); }
 .metal-icon:before         { .file-icons; content: "M";     left: 1px; }
 .meteor-icon:before        { .file-icons; content: "\e6a5"; left: 1px; top: 1px; }
-.minecraft-icon:before     { .file-icons; content: "\e9dc"; }
-.mirah-icon:before         { .file-icons; content: "\e995"; }
-.modula2-icon:before       { .file-icons; content: "\e996"; }
-.monkey-icon:before        { .file-icons; content: "\e997"; font-size: 18px; top: 4px; left: -1px; }
+.minecraft-icon:before     { .file-icons; content: "\e9dc"; top: 2px; }
+.mirah-icon:before         { .file-icons; content: "\e995"; top: 2px; }
+.modula2-icon:before       { .file-icons; content: "\e996"; top: 2px; }
+.monkey-icon:before        { .file-icons; content: "\e997"; font-size: 18px; top: 3px; left: -1px; }
 .mupad-icon:before         { .file-icons; content: "\e9ca"; font-size: 16px; top: 3px; }
-.mustache-icon:before      { .file-icons; content: "\e60f"; font-size: 16px; }
+.mustache-icon:before      { .file-icons; content: "\e60f"; font-size: 16px; top: 2px; }
 .netlogo-icon:before       { .file-icons; content: "\e99c"; top: 3px; left: 1px; }
 .newrelic-icon:before      { .file-icons; content: "\e9d7"; top: 3px; }
 .nginx-icon:before         { .file-icons; content:"\f146b"; }
-.nimrod-icon:before        { .file-icons; content: "\e998"; }
-.nit-icon:before           { .file-icons; content: "\e999"; }
+.nimrod-icon:before        { .file-icons; content: "\e998"; top: 2px; }
+.nit-icon:before           { .file-icons; content: "\e999"; top: 2px; }
 .nix-icon:before           { .file-icons; content: "\e99a"; font-size: 16px; top: 3px; }
 .nmap-icon:before          { .file-icons; content: "\e94d"; font-size: 16px; top: 3px; transform: scale(1.1); }
 .npm-icon:before           { .file-icons; content: "\e91c"; font-size: 17px; top: 3px; }
 .numpy-icon:before         { .file-icons; content: "\e99d"; font-size: 14px; }
-.nuget-icon:before         { .file-icons; content: "\e9d9"; }
-.nunjucks-icon:before      { .file-icons; content: "\e953"; font-size: 16px; }
+.nuget-icon:before         { .file-icons; content: "\e9d9"; top: 2px; }
+.nunjucks-icon:before      { .file-icons; content: "\e953"; top: 2px; font-size: 16px; }
 .nsis-icon:before          { .file-icons; content: "\e992"; font-size: 16px; top: 3px; }
 .nvidia-icon:before        { .file-icons; content: "\e95d"; }
-.objj-icon:before          { .file-icons; content: "\e99e"; }
+.objj-icon:before          { .file-icons; content: "\e99e"; top: 2px; }
 .ocaml-icon:before         { .file-icons; content: "\e91a"; font-size: 14px; }
-.ooc-icon:before           { .file-icons; content: "\e9cb"; }
-.opa-icon:before           { .file-icons; content: "\2601"; }
-.opencl-icon:before        { .file-icons; content: "\e99f"; font-size: 16px; }
-.org-icon:before           { .file-icons; content: "\e917"; font-size: 14px; left: 1px; }
-.owl-icon:before           { .file-icons; content: "\e957"; }
+.ooc-icon:before           { .file-icons; content: "\e9cb"; top: 2px; }
+.opa-icon:before           { .file-icons; content: "\2601"; top: 2px; }
+.opencl-icon:before        { .file-icons; content: "\e99f"; font-size: 16px; top: 2px; }
+.org-icon:before           { .file-icons; content: "\e917"; font-size: 14px; top: 1px; left: 1px; }
+.owl-icon:before           { .file-icons; content: "\e957"; top: 2px; }
 .ox-icon:before            { .file-icons; content: "\e9a1"; font-size: 16px; top: 3px; .sharpen; }
-.oxygene-icon:before       { .file-icons; content: "\e9bf"; }
-.oz-icon:before            { .file-icons; content: "\e9be"; }
-.pan-icon:before           { .file-icons; content: "\e9bd"; }
+.oxygene-icon:before       { .file-icons; content: "\e9bf"; top: 2px; }
+.oz-icon:before            { .file-icons; content: "\e9be"; top: 2px; }
+.pan-icon:before           { .file-icons; content: "\e9bd"; top: 2px; }
 .papyrus-icon:before       { .file-icons; content: "\e9bc"; top: 3px; }
 .parrot-icon:before        { .file-icons; content: "\e9bb"; font-size: 16px; top: 3px; }
 .pascal-icon:before        { .file-icons; content: "\e92a"; }
-.patch-icon:before         { .file-icons; content: "\e961"; }
+.patch-icon:before         { .file-icons; content: "\e961"; top: 2px; }
 .pawn-icon:before          { .file-icons; content: "\265f"; font-size: 14px; }
-.perl6-icon:before         { .file-icons; content: "\e96c"; }
-.phalcon-icon:before       { .file-icons; content: "\e94a"; }
-.php-icon:before           { .file-icons; content: "\f147"; font-size: 14px; left: 1px; }
-.pickle-icon:before        { .file-icons; content: "\e9c4"; }
+.perl6-icon:before         { .file-icons; content: "\e96c"; top: 2px; }
+.phalcon-icon:before       { .file-icons; content: "\e94a"; top: 2px; }
+.php-icon:before           { .file-icons; content: "\f147"; font-size: 14px; top: 1px; left: 1px; }
+.pickle-icon:before        { .file-icons; content: "\e9c4"; top: 2px; }
 .pike-icon:before          { .file-icons; content: "\e9b9"; font-size: 16px; top: 4px; .thicken; transform: scale(1.15); }
 .pogo-icon:before          { .file-icons; content: "\e9b8"; font-size: 14px; top: 3px; .thicken; }
 .pony-icon:before          { .file-icons; content: "\e9b7"; font-size: 16px; top: 3px; }
-.pointwise-icon:before     { .file-icons; content: "\e977"; }
-.postcss-icon:before       { .file-icons; content: "\e910"; font-size: 14px; }
+.pointwise-icon:before     { .file-icons; content: "\e977"; top: 2px; }
+.postcss-icon:before       { .file-icons; content: "\e910"; font-size: 14px; top: 2px; }
 .postscript-icon:before    { .file-icons; content: "\e955"; left: 1px; }
-.povray-icon:before        { .file-icons; content: "P";     left: 1px; }
-.powershell-icon:before    { .file-icons; content: "\e9da"; font-size: 16px; }
-.processing-icon:before    { .file-icons; content: "\e9a0"; }
-.progress-icon:before      { .file-icons; content: "\e9c0"; font-size: 16px; transform: scale(1.2); }
-.propeller-icon:before     { .file-icons; content: "\e9b5"; font-size: 16px; }
-.psd-icon:before           { .file-icons; content: "\e6b8"; }
+.povray-icon:before        { .file-icons; content: "P";     left: 1px; top: 2px; }
+.powershell-icon:before    { .file-icons; content: "\e9da"; font-size: 16px; top: 2px; }
+.processing-icon:before    { .file-icons; content: "\e9a0"; top: 2px; }
+.progress-icon:before      { .file-icons; content: "\e9c0"; font-size: 16px; top: 2px; transform: scale(1.2); }
+.propeller-icon:before     { .file-icons; content: "\e9b5"; font-size: 16px; top: 2px; }
+.psd-icon:before           { .file-icons; content: "\e6b8"; top: 2px; }
 .pug-icon:before           { .file-icons; content: "\e9d0"; font-size: 16px; top: 3px; }
-.puppet-icon:before        { .file-icons; content: "\f0c3"; left: 1px; }
-.purebasic-icon:before     { .file-icons; content: "\01b5"; top: 3px; }
-.purescript-icon:before    { .file-icons; content: "\e9b2"; top: 3px; }
+.puppet-icon:before        { .file-icons; content: "\f0c3"; left: 1px; top: 2px; }
+.purebasic-icon:before     { .file-icons; content: "\01b5"; top: 2px; }
+.purescript-icon:before    { .file-icons; content: "\e9b2"; top: 2px; }
 .r-icon:before             { .file-icons; content: "\e905"; font-size: 13px; left: 0; top: 1px; }
-.racket-icon:before        { .file-icons; content: "\e9b1"; left: 1px; }
+.racket-icon:before        { .file-icons; content: "\e9b1"; left: 1px; top: 2px; }
 .raml-icon:before          { .file-icons; content: "\e913"; font-size: 14px; }
 .rdoc-icon:before          { .file-icons; content: "\e9b0"; }
 .react-icon:before         { .file-icons; content: "\f100"; top: 3px; }
 .rebol-icon:before         { .file-icons; content: "\e9ae"; font-size: 13px; top: 1px; }
 .red-icon:before           { .file-icons; content: "\e9ad"; font-size: 16px; top: 3px; }
 .riot-icon:before          { .file-icons; content: "\e919"; font-size: 18px; left: 0; top: 4px; }
-.robot-icon:before         { .file-icons; content: "\e9ac"; font-size: 14px; }
+.robot-icon:before         { .file-icons; content: "\e9ac"; font-size: 14px; top: 2px; }
 .rst-icon:before           { .file-icons; content: "\e9cc"; font-size: 16px; top: 3px; }
 .sage-icon:before          { .file-icons; content: "\e9ab"; font-size: 16px; top: 3px; .thicken; }
-.saltstack-icon:before     { .file-icons; content: "\e915"; font-size: 14px; }
-.sas-icon:before           { .file-icons; content: "\e95a"; }
+.saltstack-icon:before     { .file-icons; content: "\e915"; font-size: 14px; top: 2px; }
+.sas-icon:before           { .file-icons; content: "\e95a"; top: 2px; }
 .sbt-icon:before           { .file-icons; content: "\e9d2"; font-size: 14px; }
-.scd-icon:before           { .file-icons; content: "\e9a2"; }
-.scad-icon:before          { .file-icons; content: "\e911"; font-size: 14px; }
-.scheme-icon:before        { .file-icons; content: "\03bb"; }
+.scd-icon:before           { .file-icons; content: "\e9a2"; top: 2px; }
+.scad-icon:before          { .file-icons; content: "\e911"; top: 2px; font-size: 14px; }
+.scheme-icon:before        { .file-icons; content: "\03bb"; top: 2px; }
 .scilab-icon:before        { .file-icons; content: "\e9a9"; font-size: 18px; left: -1px; top: 3px; .thicken; }
 .scrutinizer-icon:before   { .file-icons; content: "\e9d4"; font-size: 14px; }
 .self-icon:before          { .file-icons; content: "\e9a8"; font-size: 16px; }
-.sf-icon:before            { .file-icons; content: "\e9db"; }
+.sf-icon:before            { .file-icons; content: "\e9db"; top: 2px; }
 .shen-icon:before          { .file-icons; content: "\e9a7"; font-size: 16px; }
-.shopify-icon:before       { .file-icons; content: "\e9cf"; }
-.sketch-icon:before        { .file-icons; content: "\e927"; }
-.slash-icon:before         { .file-icons; content: "\e9a6"; }
+.shopify-icon:before       { .file-icons; content: "\e9cf"; top: 2px; }
+.sketch-icon:before        { .file-icons; content: "\e927"; top: 2px; }
+.slash-icon:before         { .file-icons; content: "\e9a6"; top: 2px; }
 .sparql-icon:before        { .file-icons; content: "\e959"; }
-.sqf-icon:before           { .file-icons; content: "\e9a5"; .sharpen; }
-.stan-icon:before          { .file-icons; content: "\e9a4"; }
-.stata-icon:before         { .file-icons; content: "\e9a3"; }
-.stylelint-icon:before     { .file-icons; content: "\e93d"; }
-.sublime-icon:before       { .file-icons; content: "\e986"; }
-.sysverilog-icon:before    { .file-icons; content: "\e9c3"; }
+.sqf-icon:before           { .file-icons; content: "\e9a5"; top: 1px; .sharpen; }
+.stan-icon:before          { .file-icons; content: "\e9a4"; top: 2px; }
+.stata-icon:before         { .file-icons; content: "\e9a3"; top: 2px; }
+.stylelint-icon:before     { .file-icons; content: "\e93d"; top: 2px; }
+.sublime-icon:before       { .file-icons; content: "\e986"; top: 2px; }
+.sysverilog-icon:before    { .file-icons; content: "\e9c3"; top: 2px; }
 .tcl-icon:before           { .file-icons; content: "\e956"; font-size: 16px; top: 3px; left: 1px; }
 .terraform-icon:before     { .file-icons; content: "\e916"; font-size: 14px; }
 .tex-icon:before           { .file-icons; content: "\e600"; font-size: 16px; top: 4px; .thicken; }
-.textile-icon:before       { .file-icons; content: "t";     }
-.textmate-icon:before      { .file-icons; content: "\2122"; font-size: 16px; }
-.thor-icon:before          { .file-icons; content: "\e9d8"; }
-.ts-icon:before            { .file-icons; content: "\e912"; font-size: 14px; left: -1px; }
-.tsx-icon:before           { .file-icons; content: "\e9d1"; font-size: 14px; }
-.turing-icon:before        { .file-icons; content: "\e9b6"; }
-.txl-icon:before           { .file-icons; content: "\e9c1"; }
-.uno-icon:before           { .file-icons; content: "\e9b3"; }
-.unreal-icon:before        { .file-icons; content: "u";     }
+.textile-icon:before       { .file-icons; content: "t";     top: 2px; }
+.textmate-icon:before      { .file-icons; content: "\2122"; font-size: 16px; top: 2px; }
+.thor-icon:before          { .file-icons; content: "\e9d8"; top: 2px; }
+.ts-icon:before            { .file-icons; content: "\e912"; font-size: 14px; top: 1px; }
+.tsx-icon:before           { .file-icons; content: "\e9d1"; font-size: 14px; top: 1px; }
+.turing-icon:before        { .file-icons; content: "\e9b6"; top: 2px; }
+.txl-icon:before           { .file-icons; content: "\e9c1"; top: 2px; }
+.uno-icon:before           { .file-icons; content: "\e9b3"; top: 2px; }
+.unreal-icon:before        { .file-icons; content: "u";     top: 2px; }
 .urweb-icon:before         { .file-icons; content: "\e9ba"; font-size: 18px; top: 4px; left: -1px; .sharpen; }
 .webpack-icon:before       { .file-icons; content: "\e91e"; top: 3px; }
-.vagrant-icon:before       { .file-icons; content: "V";     font-size: 14px; }
-.varnish-icon:before       { .file-icons; content: "\e9b4"; font-size: 14px; }
-.verilog-icon:before       { .file-icons; content: "\e949"; top: 3px; }
-.vhdl-icon:before          { .file-icons; content: "\e9aa"; }
-.vue-icon:before           { .file-icons; content: "\e906"; font-size: 14px; top: 3px; }
-.x10-icon:before           { .file-icons; content: "\2169"; }
-.xmos-icon:before          { .file-icons; content: "X";     font-size: 14px; top: 3px; }
-.xojo-icon:before          { .file-icons; content: "\e9af"; }
-.xpages-icon:before        { .file-icons; content: "\e9c5"; top: 3px; }
-.xtend-icon:before         { .file-icons; content: "\e9c6"; }
-.yang-icon:before          { .file-icons; content: "\262f"; }
-.zephir-icon:before        { .file-icons; content: "\e9c7"; .thicken; }
-.zimpl-icon:before         { .file-icons; content: "\e9c8"; font-size: 16px; left: 1px; }
+.vagrant-icon:before       { .file-icons; content: "V";     font-size: 14px; top: 2px; }
+.varnish-icon:before       { .file-icons; content: "\e9b4"; font-size: 14px; top: 1px; }
+.verilog-icon:before       { .file-icons; content: "\e949"; top: 2px; }
+.vhdl-icon:before          { .file-icons; content: "\e9aa"; top: 2px; }
+.vue-icon:before           { .file-icons; content: "\e906"; font-size: 14px; top: 1px; }
+.x10-icon:before           { .file-icons; content: "\2169"; top: 2px; }
+.xmos-icon:before          { .file-icons; content: "X";     font-size: 14px; top: 1px; }
+.xojo-icon:before          { .file-icons; content: "\e9af"; top: 2px; }
+.xpages-icon:before        { .file-icons; content: "\e9c5"; top: 2px; }
+.xtend-icon:before         { .file-icons; content: "\e9c6"; top: 2px; }
+.yang-icon:before          { .file-icons; content: "\262f"; top: 2px; }
+.zephir-icon:before        { .file-icons; content: "\e9c7"; top: 2px; .thicken; }
+.zimpl-icon:before         { .file-icons; content: "\e9c8"; top: 2px; font-size: 16px; left: 1px; }
