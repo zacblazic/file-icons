@@ -21,7 +21,8 @@ class IconService
 			else ruleMatch = null
 		
 		if ruleMatch?
-			classes = if file?.symlink then ["icon-file-symlink-file"] else ["#{rule.icon}-icon"]
+			suffix = if rule.noSuffix then "" else "-icon"
+			classes = if file?.symlink then ["icon-file-symlink-file"] else ["#{rule.icon}#{suffix}"]
 			if @useColour && colour = ruleMatch[1]
 				classes.push(colour)
 		classes || "icon-file-text"

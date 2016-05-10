@@ -23,6 +23,9 @@ match:     Pattern(s) to match against the filename. This may be a string, an ar
 priority:  More than one pattern may match a filename. To ensure more specific patterns aren't overridden
            by more general patterns, set the priority index to a value greater than 1. This property is
            optional and defaults to 1 if omitted.
+
+noSuffix:  By default, icon names are suffixed with "-icon". Set noSuffix to true if you need to specify an
+           icon class in its entirety (such as a default Atom icon). This should otherwise rarely be used.
 ###
 
 
@@ -1900,6 +1903,12 @@ module.exports.fileIcons =
 		icon: "pawn"
 		match: ".pwn"
 		colour: "medium-orange"
+	
+	PDF:
+		icon: "icon-file-pdf"
+		noSuffix: true
+		match: ".pdf"
+		colour: "medium-red"
 	
 	Pickle:
 		icon: "pickle"
