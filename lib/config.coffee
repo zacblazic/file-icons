@@ -931,7 +931,7 @@ module.exports.fileIcons =
 			[".mask", "medium-red"]
 			[".mdpolicy", "dark-blue"]
 			[".menu", "medium-blue"]
-			[".ML", "medium-red"]
+			[/\.ML$/, "medium-red"]
 			[".mtml", "dark-blue"]
 			[".muf", "medium-orange"]
 			[".mumps", "medium-red"]
@@ -1397,6 +1397,7 @@ module.exports.fileIcons =
 	
 	Leiningen:
 		icon: "lein"
+		priority: 2
 		match: "project.clj"
 	
 	LilyPond:
@@ -1645,6 +1646,7 @@ module.exports.fileIcons =
 	
 	NGINX:
 		icon: "nginx"
+		priority: 2
 		match: [
 			[/^nginx\.conf$/i, "dark-green"]
 			[".nginxconf", "medium-green"]
@@ -2025,6 +2027,7 @@ module.exports.fileIcons =
 	
 	React:
 		icon: "react"
+		priority: 2
 		match: ".react.js"
 		colour: "auto-blue"
 	
