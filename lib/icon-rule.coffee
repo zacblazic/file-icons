@@ -6,8 +6,8 @@ class IconRule
 	
 	constructor: (name, args) ->
 		@name = name
-		{@match, @icon, @colour, @noSuffix} = args
-		@priority = args.priority || 1
+		{@match, @icon, @colour, @priority, @noSuffix} = args
+		@priority ?= 1
 		
 		# Store the name in lowercase for quicker sorting
 		@nameLowercased = name.toLowerCase()
