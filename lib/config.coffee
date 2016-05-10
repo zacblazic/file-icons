@@ -1513,6 +1513,7 @@ module.exports.fileIcons =
 	
 	Marko:
 		icon: "marko"
+		priority: 2
 		match: [
 			[".marko", "medium-blue"]
 			[".marko.js", "medium-maroon"]
@@ -2592,6 +2593,7 @@ module.exports.fileIcons =
 	
 	Webpack:
 		icon: "webpack"
+		priority: 2
 		match: /webpack\.config\./i
 		colour: "medium-blue"
 	
