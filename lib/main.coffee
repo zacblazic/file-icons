@@ -19,6 +19,11 @@ module.exports =
 		@tabPaneIcon atom.config.get "file-icons.tabPaneIcon"
 		
 		atom.themes.onDidChangeActiveThemes () => @patchRuleset()
+		
+		# Register command to toggle outlines for debugging/development
+		atom.commands.add "body", "file-icons:debug-outlines", (event) ->
+			body = document.querySelector "body"
+			body.classList.toggle "file-icons-debug-outlines"
 
 
 	deactivate: ->
