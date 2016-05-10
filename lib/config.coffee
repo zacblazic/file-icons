@@ -1028,8 +1028,10 @@ module.exports.fileIcons =
 	
 	Git:
 		icon: "git"
-		match: /^\.git|\.mailmap$/i
-		colour: "medium-red"
+		match: [
+			[/^\.git|\.mailmap$/i, "medium-red"]
+			[/^\.keep$/i]
+		]
 	
 	Glade:
 		icon: "glade"
