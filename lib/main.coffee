@@ -17,12 +17,15 @@ module.exports =
 		atom.config.onDidChange "file-icons.tabPaneIcon", ({newValue, oldValue}) =>
 			@tabPaneIcon newValue
 		@tabPaneIcon atom.config.get "file-icons.tabPaneIcon"
+		
+		atom.themes.onDidChangeActiveThemes () => @patchRuleset()
 
 
 	deactivate: ->
 		@onChanges false
 		@colour true
 		@tabPaneIcon false
+		@restoreRuleset()
 
 
 	displayIcons: ->
@@ -45,3 +48,22 @@ module.exports =
 	tabPaneIcon: (enable) ->
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-tab-pane-icon", enable
+
+
+	# Atom's default styling applies an offset to file-icons with higher specificity than the package's styling.
+	# Instead of elevate the selector or resort to "!important;", we'll use a sneaky but less disruptive method:
+	# remove the offending property at runtime.
+	patchRuleset: () ->
+		sheet = document.styleSheets[1]
+		
+		for index, rule of sheet.cssRules
+			if rule.selectorText is ".list-group .icon::before, .list-tree .icon::before"
+				offset = rule.style.top
+				if atom.devMode then console.log "Resetting icon offset: #{offset}"
+				@patchedRuleset = {rule, offset}
+				rule.style.top = ""
+				break
+	
+	# Restore the previously-removed CSS property
+	restoreRuleset: () ->
+		@patchedRuleset?.rule.style.top = @patchedRuleset?.offset
