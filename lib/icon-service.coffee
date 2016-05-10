@@ -24,7 +24,7 @@ class IconService
 			classes = ["#{rule.icon}-icon"]
 			if @useColour && colour = ruleMatch[1]
 				classes.push(colour)
-		classes
+		classes || "icon-file-text"
 	
 	
 	onWillDeactivate: ->
