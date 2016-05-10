@@ -1,58 +1,79 @@
 IconService = require "./icon-service.coffee"
+{CompositeDisposable} = require "./utils"
 
 module.exports =
+	
+	# Called on startup
 	activate: (state) ->
-		colouredIcons = "file-icons.coloured"
-		atom.config.onDidChange colouredIcons, ({newValue, oldValue}) =>
-			@colour newValue
-		@colour atom.config.get colouredIcons
+		@disposables = new CompositeDisposable
+		@disposables.add atom.themes.onDidChangeActiveThemes () => @patchRuleset()
 		
-		atom.commands.add "body", "file-icons:toggle-colours", (event) ->
-			atom.config.set colouredIcons, !(atom.config.get colouredIcons)
+		@initSetting "coloured"
+		@initSetting "onChanges"
+		@initSetting "tabPaneIcon"
+		
+		@addCommand "toggle-colours", (event) =>
+			name = "file-icons.coloured"
+			atom.config.set name, !(atom.config.get name)
 
-		atom.config.onDidChange "file-icons.onChanges", ({newValue, oldValue}) =>
-			@onChanges newValue
-		@onChanges atom.config.get "file-icons.onChanges"
-
-		atom.config.onDidChange "file-icons.tabPaneIcon", ({newValue, oldValue}) =>
-			@tabPaneIcon newValue
-		@tabPaneIcon atom.config.get "file-icons.tabPaneIcon"
-		
-		atom.themes.onDidChangeActiveThemes () => @patchRuleset()
-		
-		# Register command to toggle outlines for debugging/development
-		atom.commands.add "body", "file-icons:debug-outlines", (event) ->
-			body = document.querySelector "body"
+		# Toggle outlines around icons and their adjoining filenames
+		@addCommand "debug-outlines", (event) =>
+			body = document.querySelector("body")
 			body.classList.toggle "file-icons-debug-outlines"
 
 
+	# Called when deactivating or uninstalling package
 	deactivate: ->
-		@onChanges false
-		@colour true
-		@tabPaneIcon false
 		@restoreRuleset()
+		@disposables.dispose()
+		@setOnChanges false
+		@setColoured true
+		@setTabPaneIcon false
 
 
+	# Hook into Atom's file-icon service
 	displayIcons: ->
 		@iconService = new IconService
 		@iconService.useColour   = atom.config.get "file-icons.coloured"
 		@iconService.changedOnly = atom.config.get "file-icons.onChanges"
 		@iconService
-	
-	colour: (enable) ->
+
+
+	# Called when "Coloured" setting's been modified
+	setColoured: (enable) ->
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-colourless", !enable
 		if @iconService
 			@iconService.useColour = enable
 			@iconService.refresh()
-
-	onChanges: (enable) ->
+	
+	# Triggered when the "Colour only on changes" setting's been changed
+	setOnChanges: (enable) ->
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-on-changes", enable
 
-	tabPaneIcon: (enable) ->
+
+	# Called when user changes the setting of the "Tab Pane Icon" option
+	setTabPaneIcon: (enable) ->
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-tab-pane-icon", enable
+
+
+	# Configure listener to respond to changes in package settings
+	initSetting: (name) ->
+		setter = "set" + name.replace /\b(\w)(.*$)/g, (match, firstLetter, remainder) ->
+			firstLetter.toUpperCase() + remainder
+		@disposables.add atom.config.onDidChange "file-icons.#{name}", ({newValue}) =>
+			@[setter] newValue
+		@[setter] atom.config.get(name)
+	
+
+	# Register a command with Atom's command registry
+	addCommand: (name, callback) ->
+		name = "file-icons:#{name}"
+		return if atom.commands.registeredCommands[name]
+		@disposables.add atom.commands.add "body", name, callback
+
 
 
 	# Atom's default styling applies an offset to file-icons with higher specificity than the package's styling.
@@ -64,7 +85,6 @@ module.exports =
 		for index, rule of sheet.cssRules
 			if rule.selectorText is ".list-group .icon::before, .list-tree .icon::before"
 				offset = rule.style.top
-				if atom.devMode then console.log "Resetting icon offset: #{offset}"
 				@patchedRuleset = {rule, offset}
 				rule.style.top = ""
 				break
