@@ -1699,8 +1699,10 @@ module.exports.fileIcons =
 	
 	NodeJS:
 		icon: "node"
-		match: ".njs"
-		colour: "medium-green"
+		match: [
+			[".njs", "medium-green"]
+			[".node-version", "dark-green"]
+		]
 	
 	Nodemon:
 		icon: "gear"
@@ -1709,7 +1711,7 @@ module.exports.fileIcons =
 	
 	NPM:
 		icon: "npm"
-		match: /^(?:package\.json|\.npmignore|\.npmrc|npm-debug\.log)$/
+		match: /^(?:package\.json|\.npmignore|\.?npmrc|npm-debug\.log)$/
 		colour: "medium-red"
 	
 	NSIS:
@@ -2021,6 +2023,7 @@ module.exports.fileIcons =
 			[".wsgi", "dark-red"]
 			[".xpy", "auto-yellow"]
 			[".rpy", "medium-pink"]
+			[/\.?(?:pypirc|pythonrc|python-venv)$/i, "dark-blue"]
 			[/^(?:BUCK|BUILD|SConstruct|SConscript)$/, "dark-green"]
 			[/^Snakefile$/, "medium-green"]
 			[/^wscript$/, "dark-maroon"]
@@ -2133,7 +2136,7 @@ module.exports.fileIcons =
 		icon: "ruby"
 		match: [
 			[/\.(?:rb|ru|ruby|erb|gemspec|god|irbrc|mspec|pluginspec|podspec|rabl|rake|opal)$/i, "medium-red"]
-			[/^\.(?:gemrc|pryrc|rspec|ruby-(?:gemset|version))$/i, "medium-red"]
+			[/^\.?(?:gemrc|pryrc|rspec|ruby-(?:gemset|version))$/i, "medium-red"]
 			[/^(?:Appraisals|(?:Rake|Gem|[bB]uild|Berks|Cap|Deliver|Fast|Guard|Jar|Maven|Pod|Puppet|Snap)file(?:\.lock)?)$/, "medium-red"]
 			[/\.(jbuilder|rbuild|rb[wx]|builder)$/i, "dark-red"]
 			["_spec.rb", "light-green"]
@@ -2229,7 +2232,7 @@ module.exports.fileIcons =
 			[/^(?:\.?bash(?:rc|_(?:profile|login|logout|history))|_osc|install-sh|PKGBUILD)$/i, "medium-purple"]
 			[".ksh", "dark-yellow"]
 			[".sh-session", "auto-yellow"]
-			[/\.zsh$|^\.(?:zlogin|zlogout|zprofile|zshenv|zshrc)$/i, "medium-blue"]
+			[/\.zsh(?:-theme)?$|^\.?(?:zlogin|zlogout|zprofile|zshenv|zshrc)$/i, "medium-blue"]
 			[/\.fish$|^\.fishrc$/i, "medium-green"]
 			[".sh.in", "dark-red"]
 			[".tmux", "medium-blue"]
