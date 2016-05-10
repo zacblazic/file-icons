@@ -12,7 +12,7 @@ class IconService
 		@fileIcons = @compile fileIcons
 		
 	
-	iconClassForPath: (path) ->
+	iconClassForPath: (path, file) ->
 		filename = basename path
 		
 		for rule in @fileIcons
@@ -21,7 +21,7 @@ class IconService
 			else ruleMatch = null
 		
 		if ruleMatch?
-			classes = ["#{rule.icon}-icon"]
+			classes = if file?.symlink then ["icon-file-symlink-file"] else ["#{rule.icon}-icon"]
 			if @useColour && colour = ruleMatch[1]
 				classes.push(colour)
 		classes || "icon-file-text"
@@ -43,13 +43,13 @@ class IconService
 	refresh: () ->
 		
 		# Update the icon classes of a specific file-entry
-		updateIcon = (file, baseClass) =>
-			file.className = baseClass
-			iconClass = @iconClassForPath(file.dataset.path)
+		updateIcon = (label, baseClass) =>
+			label.className = baseClass
+			iconClass = @iconClassForPath(label.dataset.path, label.parentElement.file)
 			if iconClass
 				unless Array.isArray iconClass
 					iconClass = iconClass.toString().split(/\s+/g)
-				file.classList.add iconClass...
+				label.classList.add iconClass...
 		
 		ws = atom.views.getView(atom.workspace)
 		for file in ws.querySelectorAll ".file > .name.icon[data-path]"
