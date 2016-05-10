@@ -919,7 +919,6 @@ module.exports.fileIcons =
 			[".ivy", "dark-green"]
 			[".jelly", "medium-yellow"]
 			[".jflex", "medium-red"]
-			[".jl", "medium-purple"]
 			[".jsproj", "dark-yellow"]
 			[".lagda", "medium-cyan"]
 			[".launch", "medium-blue"]
@@ -1329,6 +1328,11 @@ module.exports.fileIcons =
 		icon: "jsx"
 		match: ".jsx"
 		colour: "auto-blue"
+	
+	Julia:
+		icon: "julia"
+		match: ".jl"
+		colour: "medium-purple"
 	
 	"Jupyter Notebook":
 		icon: "jupyter"
@@ -2314,7 +2318,7 @@ module.exports.fileIcons =
 		match: /\.(?:sql|ddl|udf|viw|db2|prc)$/i
 	
 	SQLite:
-		icon: "sql"
+		icon: "sqlite"
 		match: [
 			[".sqlite", "medium-blue"]
 			[".sqlite3", "dark-blue"]
