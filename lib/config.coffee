@@ -625,6 +625,11 @@ module.exports.fileIcons =
 		match: ".djs"
 		colour: "medium-yellow"
 	
+	Dotfile: # Last-resort for unmatched dotfiles
+		icon: "gear"
+		priority: 0
+		match: /^\./
+	
 	Doxyfile:
 		icon: "doxygen"
 		match: /^Doxyfile$/
@@ -864,14 +869,12 @@ module.exports.fileIcons =
 	Gear:
 		icon: "gear"
 		match: [
-			[".hgignore"]
 			[".editorconfig", "medium-orange"]
 			[/^\.lesshintrc$/, "dark-yellow"]
 			[/^\.csscomb\.json$/, "medium-yellow"]
 			[".csslintrc", "medium-yellow"]
 			[".jsbeautifyrc", "medium-yellow"]
 			[".jshintrc", "medium-yellow"]
-			[".jshintignore"]
 			[".coffeelintignore", "medium-maroon"]
 			[".jscsrc", "medium-yellow"]
 			[".module", "medium-blue"]
