@@ -173,15 +173,17 @@ module.exports.fileIcons =
 		match: /^appveyor\.yml$/i
 		colour: "medium-blue"
 	
-	Assembly:
+	Assembly: # Or binary
 		icon: "binary"
 		match: [
-			[/\.(o|out|s|a51|nasm|asm)$/i, "medium-red"]
+			[".DS_Store"]
+			[/\.(a|s?o|out|s|a51|nasm|asm)$/i, "medium-red"]
 			[".ko", "dark-green"]
 			[/\.((c([+px]{2}?)?-?)?objdump)$/i, "dark-orange"]
 			[".d-objdump", "dark-blue"]
 			[/\.gcode|\.gco/i, "medium-orange"]
 			[/\.rpy[bc]$/i, "medium-red"]
+			[/\.py[co]$/i, "dark-purple"]
 		]
 	
 	ATS:
@@ -475,6 +477,24 @@ module.exports.fileIcons =
 			[/^composer\.phar$/i, "dark-blue"]
 		]
 	
+	Compressed:
+		icon: "zip"
+		match: [
+			[/\.(?:zip|z|xz)$/i]
+			[".rar", "medium-blue"]
+			[/\.t?gz$/i, "dark-blue"]
+			[/\.lz(o|ma)?/i, "medium-maroon"]
+			[".tar", "dark-blue"]
+			[".bz2", "dark-cyan"]
+			[".xpi", "medium-orange"]
+			[".gem", "medium-red"]
+			[".whl", "dark-blue"]
+			[".epub", "medium-green"]
+			[".jar", "dark-pink"]
+			[".war", "medium-purple"]
+			[".egg", "light-orange"]
+		]
+	
 	Config:
 		icon: "config"
 		match: [
@@ -485,7 +505,7 @@ module.exports.fileIcons =
 			[".lds", "medium-red"]
 			[/^ld\.script$/i, "medium-orange"]
 			[".reek", "medium-red"]
-			[".apl.ascii", "medium-red"]
+			["apl.ascii", "medium-red"]
 		]
 	
 	Coq:
@@ -2283,6 +2303,7 @@ module.exports.fileIcons =
 			[".der", "medium-purple"]
 			[".key", "medium-blue"]
 			[".crt", "medium-blue"]
+			[/\.glyphs\d*License$/i, "medium-green"]
 		]
 	
 	Stan:
@@ -2676,7 +2697,3 @@ module.exports.fileIcons =
 		icon: "zimpl"
 		match: /\.(zimpl|zmpl|zpl)$/i
 		colour: "medium-orange"
-
-	"Zip Folders":
-		icon: "zip"
-		match: ".gem"
