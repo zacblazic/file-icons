@@ -6,18 +6,15 @@ module.exports =
 	
 	# Called on startup
 	activate: (state) ->
-		@scanner = new Scanner
-		@scanner.onOpenFolder = (dir, el) =>
-		@scanner.onAddFolder = (dir, el) =>
-			return unless @iconService?
-			className = @iconService.iconClassForDirectory(dir)
-			if className
-				if Array.isArray(className) then className = className.join(" ")
-				el.directoryName.className = "name icon " + className
-		
 		@disposables = new CompositeDisposable
 		@disposables.add atom.themes.onDidChangeActiveThemes () => @patchRuleset()
 		
+		# Initialise icon-service
+		@iconService = new IconService
+		@iconService.useColour   = atom.config.get "file-icons.coloured"
+		@iconService.changedOnly = atom.config.get "file-icons.onChanges"
+		
+		# Configure package settings
 		@initSetting "coloured"
 		@initSetting "onChanges"
 		@initSetting "tabPaneIcon"
@@ -31,6 +28,11 @@ module.exports =
 			body = document.querySelector("body")
 			body.classList.toggle "file-icons-debug-outlines"
 
+		# Initialise directory scanner
+		@scanner = new Scanner
+		@scanner.onOpenFolder = (dir) =>
+		@scanner.onAddFolder = (dir, el) => @iconService.setDirectoryIcon(dir, el)
+
 
 	# Called when deactivating or uninstalling package
 	deactivate: ->
@@ -42,20 +44,15 @@ module.exports =
 
 
 	# Hook into Atom's file-icon service
-	displayIcons: ->
-		@iconService = new IconService
-		@iconService.useColour   = atom.config.get "file-icons.coloured"
-		@iconService.changedOnly = atom.config.get "file-icons.onChanges"
-		@iconService
+	displayIcons: -> @iconService
 
 
 	# Called when "Coloured" setting's been modified
 	setColoured: (enable) ->
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-colourless", !enable
-		if @iconService
-			@iconService.useColour = enable
-			@iconService.refresh()
+		@iconService.useColour = enable
+		@iconService.refresh()
 	
 	# Triggered when the "Colour only on changes" setting's been changed
 	setOnChanges: (enable) ->

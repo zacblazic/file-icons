@@ -10,7 +10,10 @@ class IconService
 	constructor: ->
 		@directoryIcons = @compile directoryIcons
 		@fileIcons = @compile fileIcons
-	
+		
+		# Perform an early update of every directory icon to stop a FOUC
+		setTimeout (=> @updateDirectoryIcons()), 10
+
 	
 	onWillDeactivate: ->
 	
@@ -56,6 +59,20 @@ class IconService
 		classes
 	
 	
+	# Update the icons of ALL currently-visible directories in the tree-view
+	updateDirectoryIcons: ->
+		for i in document.querySelectorAll(".tree-view .directory.entry")
+			@setDirectoryIcon(i.directory, i)
+	
+	
+	# Set the icon of a single directory
+	setDirectoryIcon: (dir, el) ->
+		className = @iconClassForDirectory(dir)
+		if className
+			if Array.isArray(className) then className = className.join(" ")
+			el.directoryName.className = "name icon " + className
+	
+	
 	# Parse a dictionary of file-matching patterns loaded from icon-config
 	compile: (rules) ->
 		results = for name, attr of rules
@@ -84,6 +101,7 @@ class IconService
 		for tab in ws.querySelectorAll ".tab > .title.icon[data-path]"
 			updateIcon tab, "title icon"
 		
+		@updateDirectoryIcons()
 		
 
 module.exports = IconService
