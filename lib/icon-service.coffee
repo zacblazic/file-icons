@@ -5,6 +5,7 @@
 
 class IconService
 	useColour: true
+	showInTabs: true
 	changedOnly: false
 	
 	constructor: ->
@@ -20,9 +21,14 @@ class IconService
 	
 	# Return the CSS classes for a file's icon. Consumed by atom.file-icons service.
 	# - path: Fully-qualified path of the file
-	# - file: Reference to the File instance the path belongs to, if available
-	iconClassForPath: (path, file) ->
+	# - node: DOM element receiving the icon-class
+	iconClassForPath: (path, node) ->
 		filename = basename path
+		
+		# Don't show tab-icons unless the "Tab Pane Icon" setting is enabled
+		nodeClass = node?.classList
+		isTab = nodeClass?.contains("tab") and nodeClass?.contains("texteditor")
+		return if !@showInTabs and isTab
 		
 		for rule in @fileIcons
 			ruleMatch = rule.matches filename
@@ -31,7 +37,7 @@ class IconService
 		
 		if ruleMatch?
 			suffix = if rule.noSuffix then "" else "-icon"
-			classes = if file?.symlink then ["icon-file-symlink-file"] else ["#{rule.icon}#{suffix}"]
+			classes = if node?.file?.symlink then ["icon-file-symlink-file"] else ["#{rule.icon}#{suffix}"]
 			if @useColour && colour = ruleMatch[1]
 				classes.push(colour)
 		classes || "icon-file-text"
@@ -88,17 +94,17 @@ class IconService
 		# Update the icon classes of a specific file-entry
 		updateIcon = (label, baseClass) =>
 			label.className = baseClass
-			iconClass = @iconClassForPath(label.dataset.path, label.parentElement.file)
+			iconClass = @iconClassForPath(label.dataset.path, label.parentElement)
 			if iconClass
 				unless Array.isArray iconClass
 					iconClass = iconClass.toString().split(/\s+/g)
 				label.classList.add iconClass...
 		
 		ws = atom.views.getView(atom.workspace)
-		for file in ws.querySelectorAll ".file > .name.icon[data-path]"
+		for file in ws.querySelectorAll ".file > .name[data-path]"
 			updateIcon file, "name icon"
 		
-		for tab in ws.querySelectorAll ".tab > .title.icon[data-path]"
+		for tab in ws.querySelectorAll ".tab > .title[data-path]"
 			updateIcon tab, "title icon"
 		
 		@updateDirectoryIcons()

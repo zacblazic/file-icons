@@ -13,6 +13,7 @@ module.exports =
 		@iconService = new IconService
 		@iconService.useColour   = atom.config.get "file-icons.coloured"
 		@iconService.changedOnly = atom.config.get "file-icons.onChanges"
+		@iconService.showInTabs  = atom.config.get "file-icons.tabPaneIcon"
 		
 		# Configure package settings
 		@initSetting "coloured"
@@ -59,11 +60,12 @@ module.exports =
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-on-changes", enable
 
-
 	# Called when user changes the setting of the "Tab Pane Icon" option
 	setTabPaneIcon: (enable) ->
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-tab-pane-icon", enable
+		@iconService.showInTabs = enable
+		@iconService.refresh()
 
 
 	# Configure listener to respond to changes in package settings
