@@ -1,10 +1,20 @@
 IconService = require "./icon-service.coffee"
 {CompositeDisposable} = require "./utils"
+{Scanner} = require "./scanner"
 
 module.exports =
 	
 	# Called on startup
 	activate: (state) ->
+		@scanner = new Scanner
+		@scanner.onOpenFolder = (dir, el) =>
+		@scanner.onAddFolder = (dir, el) =>
+			return unless @iconService?
+			className = @iconService.iconClassForDirectory(dir)
+			if className
+				if Array.isArray(className) then className = className.join(" ")
+				el.directoryName.className = "name icon " + className
+		
 		@disposables = new CompositeDisposable
 		@disposables.add atom.themes.onDidChangeActiveThemes () => @patchRuleset()
 		

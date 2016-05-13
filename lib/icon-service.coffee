@@ -10,8 +10,14 @@ class IconService
 	constructor: ->
 		@directoryIcons = @compile directoryIcons
 		@fileIcons = @compile fileIcons
-		
 	
+	
+	onWillDeactivate: ->
+	
+	
+	# Return the CSS classes for a file's icon. Consumed by atom.file-icons service.
+	# - path: Fully-qualified path of the file
+	# - file: Reference to the File instance the path belongs to, if available
 	iconClassForPath: (path, file) ->
 		filename = basename path
 		
@@ -28,7 +34,26 @@ class IconService
 		classes || "icon-file-text"
 	
 	
-	onWillDeactivate: ->
+	# Return the CSS classes for a directory's icon.
+	#
+	# Because Atom's file-icons service is limited to files only, we have to "synthesise"
+	# our own icon-handling for directories. This method attempts to be analogous to the
+	# one consumed by the icon service.
+	iconClassForDirectory: (dir) ->
+		return if dir.isRoot or dir.submodule or dir.symlink
+		dirname = basename dir.path
+		
+		for rule in @directoryIcons
+			ruleMatch = rule.matches dirname
+			if ruleMatch then break
+			else ruleMatch = null
+		
+		if ruleMatch?
+			suffix = if rule.noSuffix then "" else "-icon"
+			classes = ["#{rule.icon}#{suffix}"]
+			if @useColour && colour = ruleMatch[1]
+				classes.push(colour)
+		classes
 	
 	
 	# Parse a dictionary of file-matching patterns loaded from icon-config
