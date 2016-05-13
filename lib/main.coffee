@@ -72,7 +72,7 @@ module.exports =
 			firstLetter.toUpperCase() + remainder
 		@disposables.add atom.config.onDidChange "file-icons.#{name}", ({newValue}) =>
 			@[setter] newValue
-		@[setter] atom.config.get(name)
+		@[setter] atom.config.get("file-icons."+name)
 	
 
 	# Register a command with Atom's command registry
