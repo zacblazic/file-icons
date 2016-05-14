@@ -131,29 +131,6 @@
 .dark-pink:before     { .brighten-if-needed(@dark-pink, 5%); }
 
 
-// Pick a dark or medium shade depending on the theme's brightness
-.auto(red)     when (lightness(@theme-colour) >= 50%) {      .dark-red; }
-.auto(red)     when (lightness(@theme-colour) <  50%) {    .medium-red; }
-.auto(green)   when (lightness(@theme-colour) >= 50%) {    .dark-green; }
-.auto(green)   when (lightness(@theme-colour) <  50%) {  .medium-green; }
-.auto(yellow)  when (lightness(@theme-colour) >= 50%) {   .dark-yellow; }
-.auto(yellow)  when (lightness(@theme-colour) <  50%) { .medium-yellow; }
-.auto(blue)    when (lightness(@theme-colour) >= 50%) {     .dark-blue; }
-.auto(blue)    when (lightness(@theme-colour) <  50%) {   .medium-blue; }
-.auto(maroon)  when (lightness(@theme-colour) >= 50%) {   .dark-maroon; }
-.auto(maroon)  when (lightness(@theme-colour) <  50%) { .medium-maroon; }
-.auto(purple)  when (lightness(@theme-colour) >= 50%) {   .dark-purple; }
-.auto(purple)  when (lightness(@theme-colour) <  50%) { .medium-purple; }
-.auto(orange)  when (lightness(@theme-colour) >= 50%) {   .dark-orange; }
-.auto(orange)  when (lightness(@theme-colour) <  50%) { .medium-orange; }
-.auto(cyan)    when (lightness(@theme-colour) >= 50%) {     .dark-cyan; }
-.auto(cyan)    when (lightness(@theme-colour) <  50%) {   .medium-cyan; }
-.auto(pink)    when (lightness(@theme-colour) >= 50%) {     .dark-pink; }
-.auto(pink)    when (lightness(@theme-colour) <  50%) {   .medium-pink; }
-.auto(bower)   when (lightness(@theme-colour) >= 50%) { .medium-orange; }
-.auto(bower)   when (lightness(@theme-colour) <  50%) { .medium-yellow; }
-
-
 // Utility class to provide JavaScript with a reliable brightness indicator
 .theme-colour-check{
 	background: @theme-colour;
