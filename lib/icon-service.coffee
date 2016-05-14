@@ -7,6 +7,7 @@ class IconService
 	useColour: true
 	showInTabs: true
 	changedOnly: false
+	lightTheme: false
 	
 	constructor: ->
 		@directoryIcons = @compile directoryIcons
@@ -39,11 +40,21 @@ class IconService
 			file    = node?.file
 			suffix  = if rule.noSuffix then "" else "-icon"
 			classes = if file?.symlink then ["icon-file-symlink-file"] else ["#{rule.icon}#{suffix}"]
+			colour  = ruleMatch[1]
+			auto    = ruleMatch[2]
 			
 			# Determine if colour should be used
-			if @useColour && (!@changedOnly || file?.status) && colour = ruleMatch[1]
+			if colour && @useColour && (!@changedOnly || file?.status)
+				
+				# Bower needs special treatment to be visible
+				if auto is "bower" then colour = (if @lightTheme then "medium-orange" else "medium-yellow")
+				
+				# This match is flagged as motif-sensitive: select colour based on theme brightness
+				else if auto then colour = (if @lightTheme then "dark-" else "medium-") + colour
+				
 				classes.push(colour)
 		
+		# Return the array of classes
 		classes || "icon-file-text"
 	
 	

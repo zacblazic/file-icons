@@ -16,13 +16,26 @@ class IconRule
 		unless Array.isArray @match
 			@match = [[@match, @colour]]
 		
-		# Convert any string-based patterns into actual regex
+		# Refine each match definition
 		match = for i, value of @match
-			pattern = value[0]
+			[pattern, colour] = value
+			
+			# Convert string-based patterns into actual regex
 			unless isRegExp pattern
 				source = escapeRegExp(pattern)+"$"
 				value[0] = new RegExp source, "i"
+			
+			# Flag that bloody Bower-bird which needs special treatment
+			if /^bower$/i.test colour
+				value[2] = "bower"
+			
+			# Flag colours which need adjustment depending on theme's brightness
+			else if auto = colour?.match /^auto-(.+)$/i
+				value[1] = auto[1]
+				value[2] = true
+			
 			value
+			
 		
 	
 	matches: (path) ->
