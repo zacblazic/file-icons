@@ -13,7 +13,7 @@ class IconService
 		@fileIcons = @compile fileIcons
 		
 		# Perform an early update of every directory icon to stop a FOUC
-		setTimeout (=> @updateDirectoryIcons()), 10
+		@delayedRefresh(10)
 
 	
 	onWillDeactivate: ->
