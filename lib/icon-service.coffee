@@ -4,14 +4,14 @@
 
 
 class IconService
-	useColour: true
-	showInTabs: true
+	useColour:   true
+	showInTabs:  true
 	changedOnly: false
-	lightTheme: false
+	lightTheme:  false
 	
 	constructor: ->
+		@fileIcons      = @compile fileIcons
 		@directoryIcons = @compile directoryIcons
-		@fileIcons = @compile fileIcons
 		
 		# Perform an early update of every directory icon to stop a FOUC
 		@delayedRefresh(10)
@@ -24,11 +24,12 @@ class IconService
 	# - path: Fully-qualified path of the file
 	# - node: DOM element receiving the icon-class
 	iconClassForPath: (path, node) ->
-		filename = basename path
+		filename  = basename path
+		
+		nodeClass = node?.classList
+		isTab     = nodeClass?.contains("tab") and nodeClass?.contains("texteditor")
 		
 		# Don't show tab-icons unless the "Tab Pane Icon" setting is enabled
-		nodeClass = node?.classList
-		isTab = nodeClass?.contains("tab") and nodeClass?.contains("texteditor")
 		return if !@showInTabs and isTab
 		
 		for rule in @fileIcons
@@ -58,6 +59,7 @@ class IconService
 		classes || "icon-file-text"
 	
 	
+	
 	# Return the CSS classes for a directory's icon.
 	#
 	# Because Atom's file-icons service is limited to files only, we have to "synthesise"
@@ -78,6 +80,7 @@ class IconService
 			if @useColour && colour = ruleMatch[1]
 				classes.push(colour)
 		classes
+	
 	
 	
 	# Update the icons of ALL currently-visible directories in the tree-view
