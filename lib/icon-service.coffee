@@ -10,6 +10,7 @@ class IconService
 	lightTheme:  false
 	
 	constructor: ->
+		@fileCache      = {}
 		@fileIcons      = @compile fileIcons
 		@directoryIcons = @compile directoryIcons
 		
@@ -32,10 +33,18 @@ class IconService
 		# Don't show tab-icons unless the "Tab Pane Icon" setting is enabled
 		return if !@showInTabs and isTab
 		
-		for rule in @fileIcons
+		# Use cached matches for quicker lookup
+		if cached = @fileCache[path]
+			rule = @fileIcons[cached]
+			ruleMatch = rule.matches path
+		
+		else for rule, index in @fileIcons
 			ruleMatch = rule.matches filename
-			if ruleMatch then break
+			if ruleMatch
+				@fileCache[path] = index
+				break
 			else ruleMatch = null
+		
 		
 		if ruleMatch?
 			file    = node?.file
