@@ -1,4 +1,5 @@
 IconService = require "./icon-service.coffee"
+RepoWatcher = require "./repo-watcher.coffee"
 {CompositeDisposable} = require "./utils"
 {Scanner} = require "./scanner"
 
@@ -8,6 +9,10 @@ module.exports =
 	activate: (state) ->
 		@disposables = new CompositeDisposable
 		@disposables.add atom.themes.onDidChangeActiveThemes () => @patchRuleset()
+		
+		# Ready a watcher in case it's needed
+		@repoWatcher = new RepoWatcher
+		@repoWatcher.onStatusChange = => @iconService.delayedRefresh(10)
 		
 		# Initialise icon-service
 		@iconService = new IconService
@@ -33,6 +38,10 @@ module.exports =
 		@scanner = new Scanner
 		@scanner.onOpenFolder = (dir) =>
 		@scanner.onAddFolder = (dir, el) => @iconService.setDirectoryIcon(dir, el)
+		
+		# Give the green light to update the tree-view's icons
+		@initialised = true
+		@iconService.delayedRefresh(10)
 
 
 	# Called when deactivating or uninstalling package
@@ -53,19 +62,23 @@ module.exports =
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-colourless", !enable
 		@iconService.useColour = enable
-		@iconService.refresh()
+		@iconService.refresh() if @initialised
 	
-	# Triggered when the "Colour only on changes" setting's been changed
+	
+	# Triggered when the "Colour only on changes" setting's been modified
 	setOnChanges: (enable) ->
-		body = document.querySelector "body"
-		body.classList.toggle "file-icons-on-changes", enable
+		@onChanges = enable
+		@repoWatcher.setWatching(enable)
+		@iconService.changedOnly = enable
+		@iconService.refresh() if @initialised
+
 
 	# Called when user changes the setting of the "Tab Pane Icon" option
 	setTabPaneIcon: (enable) ->
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-tab-pane-icon", enable
 		@iconService.showInTabs = enable
-		@iconService.refresh()
+		@iconService.refresh() if @initialised
 
 
 	# Configure listener to respond to changes in package settings

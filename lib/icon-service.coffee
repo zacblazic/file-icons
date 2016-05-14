@@ -36,10 +36,14 @@ class IconService
 			else ruleMatch = null
 		
 		if ruleMatch?
-			suffix = if rule.noSuffix then "" else "-icon"
-			classes = if node?.file?.symlink then ["icon-file-symlink-file"] else ["#{rule.icon}#{suffix}"]
-			if @useColour && colour = ruleMatch[1]
+			file    = node?.file
+			suffix  = if rule.noSuffix then "" else "-icon"
+			classes = if file?.symlink then ["icon-file-symlink-file"] else ["#{rule.icon}#{suffix}"]
+			
+			# Determine if colour should be used
+			if @useColour && (!@changedOnly || file?.status) && colour = ruleMatch[1]
 				classes.push(colour)
+		
 		classes || "icon-file-text"
 	
 	
@@ -108,6 +112,14 @@ class IconService
 			updateIcon tab, "title icon"
 		
 		@updateDirectoryIcons()
+	
+	
+	# Queue a delayed refresh. Repeated calls to this method do nothing:
+	# only one refresh will be fired after a specified delay has elapsed.
+	# - delay: Amount of time to wait, expressed in milliseconds
+	delayedRefresh: (delay) ->
+		clearTimeout @timeoutID
+		@timeoutID = setTimeout (=> @refresh()), delay
 		
 
 module.exports = IconService
