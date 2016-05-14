@@ -1993,6 +1993,12 @@ module.exports.fileIcons =
 		match: ".pov"
 		colour: "dark-blue"
 	
+	Protractor:
+		icon: "protractor"
+		priority: 2
+		match: /^protractor\.conf\./i
+		colour: "medium-red"
+	
 	Pug: # previously "Jade"
 		icon: "pug"
 		match: ".pug"
@@ -2514,6 +2520,12 @@ module.exports.fileIcons =
 		icon: "ts"
 		match: ".ts"
 		colour: "medium-blue"
+	
+	Typings:
+		icon: "typings"
+		priority: 2
+		match: /^typings\.json$/i
+		colour: "medium-maroon"
 	
 	Unity3D:
 		icon: "unity3d"
