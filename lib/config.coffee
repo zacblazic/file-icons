@@ -339,18 +339,26 @@ module.exports.fileIcons =
 	
 	"C#":
 		icon: "csharp"
-		match: [
-			[".cs", "auto-blue"]
-			[".csx", "auto-red"]
-		]
+		match: ".cs"
+		colour: "auto-blue"
+	
+	"C#-Script":
+		icon: "csscript"
+		match: ".csx"
+		colour: "dark-green"
 	
 	Cabal:
 		icon: "cabal"
 		match: ".cabal"
 		colour: "medium-cyan"
 	
-	Cakefile:
+	Cake:
 		icon: "cake"
+		match: ".cake"
+		colour: "medium-yellow"
+	
+	Cakefile:
+		icon: "cakefile"
 		match: /^Cakefile$/
 		colour: "medium-red"
 
@@ -1654,6 +1662,11 @@ module.exports.fileIcons =
 		match: /\.(?:hbs|handlebars|mustache)$/i
 		colour: "medium-orange"
 	
+	NAnt:
+		icon: "nant"
+		match: ".build"
+		colour: "medium-orange"
+	
 	"NCAR Command Language (NCL)":
 		icon: "earth"
 		match: ".ncl"
@@ -2370,6 +2383,11 @@ module.exports.fileIcons =
 			[".db", "medium-purple"]
 			[".db3", "dark-purple"]
 		]
+	
+	Strings:
+		icon: "strings"
+		match: ".strings"
+		colour: "medium-red"
 	
 	"Sublime Text":
 		icon: "sublime"
