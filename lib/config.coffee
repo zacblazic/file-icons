@@ -18,11 +18,18 @@ match:     Pattern(s) to match against the filename. This may be a string, an ar
            Array:
                If passed an array, it's used to provide multiple colour variants for different
                filenames/extensions. Each value should be an array containing two values - the
-               path-matching pattern, and an optional colour name.
+               path-matching pattern, and an optional colour name. A third value may be passed
+			   to designate a TextMate scope for a particular icon/colour combination: see the
+			   "scope" property described below.
 
 priority:  More than one pattern may match a filename. To ensure more specific patterns aren't overridden
            by more general patterns, set the priority index to a value greater than 1. This property is
            optional and defaults to 1 if omitted.
+
+scope:     Name of any TextMate grammars which trigger the icon when overriding a file's grammar. This may be
+           a string or regex; if provided the former, it's used to construct a case-insensitive pattern that's
+           checked against the end of the string (e.g., "js" will be treated as if /\.js$/i were written). Not
+           every grammar will/should change an icon, especially for very generic formats like JSON or YAML.
 
 noSuffix:  By default, icon names are suffixed with "-icon". Set noSuffix to true if you need to specify an
            icon class in its entirety (such as a default Atom icon). This should otherwise rarely be used.
@@ -53,19 +60,21 @@ module.exports.fileIcons =
 	
 	ABAP:
 		icon: "abap"
+		scope: "abp"
 		match: ".abap"
 		colour: "medium-orange"
 	
 	ActionScript:
 		icon: "as"
 		match: [
-			[".as", "medium-red"]
+			[".as", "medium-red", /\.(?:flex-config|actionscript(?:\.\d+)?)$/i]
 			[".jsfl", "auto-yellow"]
 			[".swf", "medium-blue"]
 		]
 	
 	Ada:
 		icon: "ada"
+		scope: "ada"
 		match: /\.(ada|adb|ads)$/i
 		colour: "medium-blue"
 	
@@ -85,11 +94,13 @@ module.exports.fileIcons =
 	
 	Alloy:
 		icon: "alloy"
+		scope: "alloy"
 		match: ".als"
 		colour: "medium-red"
 	
 	AMPL:
 		icon: "ampl"
+		scope: "ampl"
 		match: ".ampl"
 		colour: "dark-maroon"
 	
@@ -101,24 +112,26 @@ module.exports.fileIcons =
 	ANTLR:
 		icon: "antlr"
 		match: [
-			[".g", "medium-red"]
+			[".g", "medium-red", "antlr"]
 			[".g4", "medium-orange"]
 		]
 	
 	"API Blueprint":
 		icon: "api"
+		scope: "apib"
 		match: ".apib"
 		colour: "medium-blue"
 	
 	APL:
 		icon: "apl"
 		match: [
-			[".apl", "dark-red"]
+			[".apl", "dark-red", "apl"]
 			[".apl.history", "medium-maroon"]
 		]
 	
 	AppleScript:
 		icon: "apple"
+		scope: "applescript"
 		match: /\.(applescript|scpt)$/i
 		colour: "medium-purple"
 	
@@ -129,18 +142,20 @@ module.exports.fileIcons =
 	
 	Arduino:
 		icon: "arduino"
+		scope: "arduino"
 		match: ".ino"
 		colour: "dark-cyan"
 	
 	AsciiDoc:
 		icon: "asciidoc"
+		scope: "asciidoc"
 		match: /\.(ad|adoc|asc|asciidoc)$/i
 		colour: "medium-blue"
 	
 	"ASP.net":
 		icon: "asp"
 		match: [
-			[".asp", "dark-blue"]
+			[".asp", "dark-blue", "asp"]
 			[".asax", "medium-maroon"]
 			[".ascx", "dark-green"]
 			[".ashx", "medium-green"]
@@ -165,7 +180,7 @@ module.exports.fileIcons =
 		priority: 2
 		match: [
 			[/^(apache2?|httpd).conf$/i, "medium-red"]
-			[".apacheconf", "dark-red"]
+			[".apacheconf", "dark-red", "apache-config"]
 			[".vhost", "dark-green"]
 			[".thrift", "medium-green"]
 		]
@@ -180,8 +195,9 @@ module.exports.fileIcons =
 		icon: "binary"
 		match: [
 			[".DS_Store"]
-			[/\.(a|s?o|out|s|a51|nasm|asm)$/i, "medium-red"]
+			[/\.(a|s?o|out|s|a51|nasm|asm|z80)$/i, "medium-red", /(?:^|\.)(?:a[rs]m|x86|z80|lc-?3|cpu12|x86asm|m68k|assembly|avr(?:dis)?asm|dasm)(\.|$)/i]
 			[".ko", "dark-green"]
+			[".lst", "medium-blue", "lst-cpu12"]
 			[/\.((c([+px]{2}?)?-?)?objdump)$/i, "dark-orange"]
 			[".d-objdump", "dark-blue"]
 			[/\.gcode|\.gco/i, "medium-orange"]
@@ -192,7 +208,7 @@ module.exports.fileIcons =
 	ATS:
 		icon: "ats"
 		match: [
-			[".dats", "medium-red"]
+			[".dats", "medium-red", "ats"]
 			[".hats", "medium-blue"]
 			[".sats", "dark-yellow"]
 		]
@@ -222,19 +238,20 @@ module.exports.fileIcons =
 	AutoHotkey:
 		icon: "ahk"
 		match: [
-			[".ahk", "dark-blue"]
+			[".ahk", "dark-blue", "ahk"]
 			[".ahkl", "dark-purple"]
 		]
 	
 	AutoIt:
 		icon: "autoit"
+		scope: /(?:^|\.)autoit(?:\.|$)/i
 		match: ".au3"
 		colour: "medium-purple"
 	
 	AWK:
 		icon: "terminal"
 		match: [
-			[".awk", "medium-blue"]
+			[".awk", "medium-blue", "awk"]
 			[".auk", "dark-cyan"]
 			[".gawk", "medium-red"]
 			[".mawk", "medium-maroon"]
@@ -253,21 +270,24 @@ module.exports.fileIcons =
 		match: [
 			[".cbx", "auto-red"]
 			[".bbx", "auto-orange"]
-			[".bib", "auto-yellow"]
+			[".bib", "auto-yellow", "bibtex"]
 		]
 	
 	Bison:
 		icon: "gnu"
+		scope: "bison"
 		match: ".bison"
 		colour: "medium-red"
 	
 	Bluespec:
 		icon: "bluespec"
+		scope: "bsv"
 		match: ".bsv"
 		colour: "dark-blue"
 	
 	Boo:
 		icon: "boo"
+		scope: /\.boo(?:\.unity)?$/i
 		match: ".boo"
 		colour: "medium-green"
 	
@@ -283,6 +303,7 @@ module.exports.fileIcons =
 	
 	Brainfuck:
 		icon: "brain"
+		scope: /\.(?:bf|brainfuck)$/i
 		match: /\.bf?$/i
 		colour: "dark-pink"
 	
@@ -301,6 +322,7 @@ module.exports.fileIcons =
 	
 	Bro:
 		icon: "bro"
+		scope: "bro"
 		match: ".bro"
 		colour: "dark-cyan"
 	
@@ -312,13 +334,14 @@ module.exports.fileIcons =
 	
 	BYOND: # Dream Maker Script
 		icon: "byond"
+		scope: "dm"
 		match: ".dm"
 		colour: "medium-blue"
 	
 	C:
 		icon: "c"
 		match: [
-			[".c", "medium-blue"]
+			[".c", "medium-blue", "c"]
 			[".h", "medium-purple"]
 			[".cats", "medium-purple"]
 			[".idc", "medium-green"]
@@ -331,7 +354,7 @@ module.exports.fileIcons =
 	"C++":
 		icon: "cpp"
 		match: [
-			[/\.c[+px]{2}$|\.cc/i, "auto-blue"]
+			[/\.c[+px]{2}$|\.cc/i, "auto-blue", "cpp"]
 			[/\.h[+px]{2}$/i, "auto-purple"]
 			[/\.[it]pp$/i, "auto-orange"]
 			[/\.(?:tcc|inl)$/i, "auto-red"]
@@ -339,21 +362,25 @@ module.exports.fileIcons =
 	
 	"C#":
 		icon: "csharp"
+		scope: "cs"
 		match: ".cs"
 		colour: "auto-blue"
 	
 	"C#-Script":
 		icon: "csscript"
+		scope: "csx"
 		match: ".csx"
 		colour: "dark-green"
 	
 	Cabal:
 		icon: "cabal"
+		scope: "cabal"
 		match: ".cabal"
 		colour: "medium-cyan"
 	
 	Cake:
 		icon: "cake"
+		scope: "cake"
 		match: ".cake"
 		colour: "medium-yellow"
 	
@@ -382,6 +409,7 @@ module.exports.fileIcons =
 	
 	Chapel:
 		icon: "chapel"
+		scope: "chapel"
 		match: ".chpl"
 		colour: "medium-green"
 	
@@ -392,16 +420,19 @@ module.exports.fileIcons =
 	
 	ChucK:
 		icon: "chuck"
+		scope: "chuck"
 		match: ".ck"
 		colour: "medium-green"
 	
 	Cirru:
 		icon: "cirru"
+		scope: "cirru"
 		match: ".cirru"
 		colour: "auto-pink"
 	
 	Clarion:
 		icon: "clarion"
+		scope: "clarion"
 		match: ".clw"
 		colour: "medium-orange"
 	
@@ -415,18 +446,20 @@ module.exports.fileIcons =
 
 	Click:
 		icon: "click"
+		scope: "click"
 		match: ".click"
 		colour: "medium-yellow"
 	
 	CLIPS:
 		icon: "clips"
+		scope: "clips"
 		match: ".clp"
 		colour: "dark-green"
 	
 	Clojure:
 		icon: "clojure"
 		match: [
-			[".clj", "auto-blue"]
+			[".clj", "auto-blue", "clojure"]
 			[".cl2", "auto-purple"]
 			[".cljc", "auto-green"]
 			[".cljx", "auto-red"]
@@ -441,7 +474,7 @@ module.exports.fileIcons =
 	CMake:
 		icon: "cmake"
 		match: [
-			[".cmake", "medium-green"]
+			[".cmake", "medium-green", "cmake"]
 			[".cmake.in", "medium-blue"]
 			[/^CMakeLists\.txt$/, "medium-red"]
 		]
@@ -455,21 +488,22 @@ module.exports.fileIcons =
 	CoffeeScript:
 		icon: "coffee"
 		match: [
-			[".coffee", "medium-maroon"]
+			[".coffee", "medium-maroon", "coffee"]
 			[".cjsx", "dark-maroon"]
-			[".litcoffee", "light-maroon"]
+			[".litcoffee", "light-maroon", "litcoffee"]
 			[".iced", "medium-blue"]
 		]
 
 	ColdFusion:
 		icon: "cf"
 		match: [
-			[".cfc", "light-cyan"]
-			[/\.cfml?$/i, "medium-cyan"]
+			[".cfc", "light-cyan", "cfscript"]
+			[/\.cfml?$/i, "medium-cyan", /\.cfml?$/i]
 		]
 	
 	"Common Lisp":
 		icon: "cl"
+		scope: "common-lisp"
 		match: ".cl"
 		colour: "medium-orange"
 	
@@ -510,7 +544,7 @@ module.exports.fileIcons =
 		icon: "config"
 		match: [
 			[/\.(ini|desktop(\.in)?|directory|cfg|conf|prefs)$/i, "medium-yellow"]
-			[".properties", "medium-purple"]
+			[".properties", "medium-purple", "java-properties"]
 			[".toml", "medium-green"]
 			[".ld", "dark-red"]
 			[".lds", "medium-red"]
@@ -521,49 +555,54 @@ module.exports.fileIcons =
 	
 	Coq:
 		icon: "coq"
+		scope: "coq"
 		match: ".coq"
 		colour: "medium-maroon"
 	
 	Creole:
 		icon: "creole"
+		scope: "creole"
 		match: ".creole"
 		colour: "medium-blue"
 	
 	Crystal:
 		icon: "crystal"
+		scope: "crystal"
 		match: /\.e?cr$/i
 		colour: "medium-cyan"
 	
 	CSS:
 		icon: "css3"
 		match: [
-			[".less", "dark-blue"]
-			[".css", "medium-blue"]
-			[".styl", "medium-green"]
+			[".less", "dark-blue", "css.less"]
+			[".css", "medium-blue", "css"]
+			[".styl", "medium-green", "stylus"]
 		]
 	
 	Cucumber:
 		icon: "comment"
+		scope: /(?:^|\.)(?:gherkin\.feature|cucumber\.steps)(?:\.|$)/i
 		match: ".feature"
 		colour: "medium-green"
 
 	CUDA:
 		icon: "nvidia"
 		match: [
-			[".cu", "medium-green"]
+			[".cu", "medium-green", /\.cuda(?:-c\+\+)?$/i]
 			[".cuh", "dark-green"]
 		]
 	
 	Cython:
 		icon: "cython"
 		match: [
-			[".pyx", "medium-orange"]
+			[".pyx", "medium-orange", "cython"]
 			[".pxd", "medium-blue"]
 			[".pxi", "dark-blue"]
 		]
 	
 	D:
 		icon: "dlang"
+		scope: "d"
 		match: /\.di?$/i
 		colour: "medium-red"
 	
@@ -574,6 +613,7 @@ module.exports.fileIcons =
 	
 	Dart:
 		icon: "dart"
+		scope: "dart"
 		match: ".dart"
 		colour: "medium-cyan"
 
@@ -588,19 +628,19 @@ module.exports.fileIcons =
 			[/\.(h|geo|topo)?json$/i, "medium-yellow"]
 			[/\.ya?ml$/, "light-red"]
 			[".cson", "medium-maroon"]
-			[".json5", "dark-yellow"]
+			[".json5", "dark-yellow", "json5"]
 			[".http", "medium-red"]
 			[".ndjson", "medium-orange"]
 			[".json.eex", "medium-purple"]
-			[".proto", "dark-cyan"]
-			[".pytb", "medium-orange"]
+			[".proto", "dark-cyan", "protobuf"]
+			[".pytb", "medium-orange", "python.traceback"]
 			[/\.pot?$/, "medium-red"]
 			[".edn", "medium-purple"]
 			[".eam.fs", "dark-purple"]
 			[".qml", "medium-pink"]
 			[".qbs", "dark-pink"]
 			[".ston", "medium-maroon"]
-			[".ttl", "medium-cyan"]
+			[".ttl", "medium-cyan", "turtle"]
 			[".rviz", "dark-blue"]
 			[".syntax", "medium-blue"]
 		]
@@ -612,6 +652,7 @@ module.exports.fileIcons =
 	
 	Diff:
 		icon: "diff"
+		scope: "diff"
 		match: ".diff"
 		colour: "medium-orange"
 	
@@ -625,6 +666,7 @@ module.exports.fileIcons =
 	
 	Dockerfile:
 		icon: "docker"
+		scope: "dockerfile"
 		match: /^Dockerfile|\.dockerignore$/i
 		colour: "dark-blue"
 	
@@ -640,6 +682,7 @@ module.exports.fileIcons =
 	
 	Doxyfile:
 		icon: "doxygen"
+		scope: "doxygen"
 		match: /^Doxyfile$/
 		colour: "medium-blue"
 	
@@ -658,7 +701,7 @@ module.exports.fileIcons =
 	eC:
 		icon: "ec"
 		match: [
-			[".ec", "dark-blue"]
+			[".ec", "dark-blue", "ec"]
 			[".eh", "dark-purple"]
 		]
 	
@@ -669,13 +712,14 @@ module.exports.fileIcons =
 	
 	Eiffel:
 		icon: "eiffel"
+		scope: "eiffel"
 		match: /\.e$/
 		colour: "medium-cyan"
 	
 	Elixir:
 		icon: "elixir"
 		match: [
-			[".ex", "dark-purple"]
+			[".ex", "dark-purple", "elixir"]
 			[/\.(exs|eex)$/i, "medium-purple"]
 			[/mix\.exs?$/i, "light-purple"]
 		]
@@ -712,6 +756,7 @@ module.exports.fileIcons =
 	
 	Elm:
 		icon: "elm"
+		scope: "elm"
 		match: ".elm"
 		colour: "medium-blue"
 	
@@ -722,11 +767,13 @@ module.exports.fileIcons =
 	
 	EmberScript:
 		icon: "em"
+		scope: /\.ember(?:script)?$/i
 		match: ".emberscript"
 		colour: "medium-red"
 	
 	Emblem:
 		icon: "mustache"
+		scope: "emblem"
 		match: /\.em(?:blem)?$/i
 		colour: "medium-blue"
 	
@@ -744,6 +791,7 @@ module.exports.fileIcons =
 	
 	"ERB - HTML":
 		icon: "html5"
+		scope: "html.erb"
 		match: /\.(?:html?\.erb|rhtml)$/i
 		colour: "medium-red"
 		priority: 2
@@ -751,7 +799,7 @@ module.exports.fileIcons =
 	Erlang:
 		icon: "erlang"
 		match: [
-			[".erl", "medium-red"]
+			[".erl", "medium-red", "erlang"]
 			[".beam", "dark-red"]
 			[".hrl", "medium-maroon"]
 			[".xrl", "medium-green"]
@@ -775,6 +823,7 @@ module.exports.fileIcons =
 	
 	Factor:
 		icon: "factor"
+		scope: "factor"
 		match: [
 			[".factor", "medium-orange"]
 			[".factor-rc", "dark-orange"]
@@ -784,13 +833,14 @@ module.exports.fileIcons =
 	Fancy:
 		icon: "fancy"
 		match: [
-			[".fy", "dark-blue"]
+			[".fy", "dark-blue", "fancy"]
 			[".fancypack", "medium-blue"]
 			[/^Fakefile$/, "medium-green"]
 		]
 	
 	Fantom:
 		icon: "fantom"
+		scope: /\.fan(?:tom)?$/i
 		match: ".fan"
 		colour: "medium-blue"
 	
@@ -801,6 +851,7 @@ module.exports.fileIcons =
 	
 	FSharp:
 		icon: "fsharp"
+		scope: "fsharp"
 		match: /\.fs[xi]?$/i
 		colour: "medium-blue"
 	
@@ -836,11 +887,11 @@ module.exports.fileIcons =
 	Fortran:
 		icon: "fortran"
 		match: [
-			[".f", "medium-maroon"]
-			[".f90", "medium-green"]
+			[".f", "medium-maroon", /\.fortran\.?(?:modern|punchcard)?$/i]
+			[".f90", "medium-green", "fortran.free"]
 			[".f03", "medium-red"]
 			[".f08", "medium-blue"]
-			[".f77", "medium-maroon"]
+			[".f77", "medium-maroon", "fortran.fixed"]
 			[".f95", "dark-pink"]
 			[".for", "dark-cyan"]
 			[".fpp", "dark-yellow"]
@@ -848,6 +899,7 @@ module.exports.fileIcons =
 	
 	FreeMarker:
 		icon: "freemarker"
+		scope: "ftl"
 		match: ".ftl"
 		colour: "medium-blue"
 	
@@ -858,19 +910,21 @@ module.exports.fileIcons =
 	
 	GAMS:
 		icon: "gams"
+		scope: /\.gams(?:-lst)?$/i
 		match: ".gms"
 		colour: "dark-red"
 	
 	GAP:
 		icon: "gap"
 		match: [
-			[".gap", "auto-yellow"]
+			[".gap", "auto-yellow", "gap"]
 			[".gi", "dark-blue"]
 			[".tst", "medium-orange"]
 		]
 	
 	GDScript:
 		icon: "godot"
+		scope: "gdscript"
 		match: ".gd"
 		colour: "medium-blue"
 	
@@ -914,7 +968,7 @@ module.exports.fileIcons =
 			[".axml", "dark-blue"]
 			[".befunge", "medium-orange"]
 			[".bmx", "dark-blue"]
-			[".brs", "dark-blue"]
+			[".brs", "dark-blue", "brightscript"]
 			[".capnp", "dark-red"]
 			[".cbl", "medium-maroon"]
 			[".ccp", "dark-maroon"]
@@ -975,7 +1029,7 @@ module.exports.fileIcons =
 			[".omgrofl", "dark-purple"]
 			[".osm", "dark-purple"]
 			[".pig", "medium-pink"]
-			[".plist", "dark-cyan"]
+			[".plist", "dark-cyan", "plist"]
 			[".prg", "medium-red"]
 			[".prw", "dark-red"]
 			[".props", "medium-cyan"]
@@ -1013,10 +1067,10 @@ module.exports.fileIcons =
 			[".xlf", "dark-cyan"]
 			[".xliff", "medium-red"]
 			[".xmi", "medium-green"]
-			[".xml", "medium-blue"]
+			[".xml", "medium-blue", "xml"]
 			[".xproj", "dark-red"]
 			[".xsd", "dark-blue"]
-			[".xsl", "medium-cyan"]
+			[".xsl", "medium-cyan", "xsl"]
 			[".xslt", "dark-cyan"]
 			[".xul", "medium-orange"]
 			[".y", "dark-green"]
@@ -1027,20 +1081,21 @@ module.exports.fileIcons =
 	
 	Genshi:
 		icon: "genshi"
+		scope: "genshi"
 		match: ".kid"
 		colour: "medium-red"
 	
 	Gentoo:
 		icon: "gentoo"
 		match: [
-			[".ebuild", "dark-cyan"]
+			[".ebuild", "dark-cyan", "ebuild"]
 			[".eclass", "medium-blue"]
 		]
 	
 	Git:
 		icon: "git"
 		match: [
-			[/^\.git|\.mailmap$/i, "medium-red"]
+			[/^\.git|\.mailmap$/i, "medium-red", /\.git-(?:commit|config|rebase)$/i]
 			[/^\.keep$/i]
 		]
 	
@@ -1056,6 +1111,7 @@ module.exports.fileIcons =
 	
 	Gnuplot:
 		icon: "graph"
+		scope: "gnuplot"
 		match: /\.gp|plo?t|gnuplot$/i
 		colour: "medium-red"
 	
@@ -1066,18 +1122,20 @@ module.exports.fileIcons =
 	
 	Go:
 		icon: "go"
+		scope: /\.go(?:template)?$/i
 		match: ".go"
 		colour: "medium-blue"
 	
 	Golo:
 		icon: "golo"
+		scope: "golo"
 		match: ".golo"
 		colour: "medium-orange"
 	
 	Gosu:
 		icon: "gosu"
 		match: [
-			[".gs", "medium-blue"]
+			[".gs", "medium-blue", /\.gosu(?:\.\d+)?$/i]
 			[".gst", "medium-green"]
 			[".gsx", "dark-green"]
 			[".vark", "dark-blue"]
@@ -1086,21 +1144,21 @@ module.exports.fileIcons =
 	Gradle:
 		icon: "gradle"
 		match: [
-			[".gradle", "medium-blue"]
+			[".gradle", "medium-blue", "gradle"]
 			["gradlew", "dark-purple"]
 		]
 	
 	GraphQL:
 		icon: "graphql"
 		match: [
-			[".graphql", "medium-pink"]
+			[".graphql", "medium-pink", "graphql"]
 			[".gql", "medium-purple"]
 		]
 
 	Graphviz:
 		icon: "graphviz"
 		match: [
-			[".gv", "medium-blue"]
+			[".gv", "medium-blue", "dot"]
 			[".dot", "dark-cyan"]
 		]
 	
@@ -1111,6 +1169,7 @@ module.exports.fileIcons =
 	
 	Groovy:
 		icon: "groovy"
+		scope: "groovy"
 		match: /\.(?:groovy|grt|gtpl|gsp|gvy)$/i
 		colour: "light-blue"
 	
@@ -1133,37 +1192,41 @@ module.exports.fileIcons =
 	
 	Hack:
 		icon: "hack"
+		scope: "hack"
 		match: ".hh"
 		colour: "medium-orange"
 	
 	Haml:
 		icon: "haml"
 		match: [
-			[".haml", "medium-yellow"]
-			[".hamlc", "medium-maroon"]
+			[".haml", "medium-yellow", "haml"]
+			[".hamlc", "medium-maroon", "hamlc"]
 		]
 	
 	Harbour:
 		icon: "harbour"
+		scope: "harbour"
 		match: ".hb"
 		colour: "dark-blue"
 	
 	"Hashicorp Configuration Language":
 		icon: "hashicorp"
+		scope: /(?:^|\.)(?:hcl|hashicorp)(?:\.|$)/i
 		match: ".hcl"
 		colour: "dark-purple"
 	
 	Haskell:
 		icon: "haskell"
 		match: [
-			[".hs", "medium-purple"]
-			[".hsc", "medium-blue"]
-			[".c2hs", "dark-purple"]
-			[".lhs", "dark-blue"]
+			[".hs", "medium-purple", "source.haskell"]
+			[".hsc", "medium-blue", "hsc2hs"]
+			[".c2hs", "dark-purple", "c2hs"]
+			[".lhs", "dark-blue", "latex.haskell"]
 		]
 	
 	Haxe:
 		icon: "haxe"
+		scope: /(?:^|\.)haxe(?:\.\d+)?$/i
 		match: /\.hx(?:[sm]l|)?$/
 		colour: "medium-orange"
 	
@@ -1177,35 +1240,38 @@ module.exports.fileIcons =
 	
 	HTML:
 		icon: "html5"
+		scope: "html.basic"
 		match: [
 			[/\.html?$/i, "medium-orange"]
 			[".cshtml", "medium-red"]
 			[".ejs", "medium-green"]
-			[".gohtml", "dark-blue"]
+			[".gohtml", "dark-blue", "gohtml"]
 			[".html.eex", "medium-purple"]
-			[".jsp", "medium-purple"]
+			[".jsp", "medium-purple", "jsp"]
 			[".kit", "medium-green"]
-			[".latte", "medium-red"]
+			[".latte", "medium-red", "latte"]
 			[".phtml", "dark-blue"]
-			[".scaml", "dark-red"]
 			[".shtml", "medium-cyan"]
-			[".swig", "medium-green"]
+			[".scaml", "dark-red", "scaml"]
+			[".swig", "medium-green", "swig"]
 		]
 	
 	Hy:
 		icon: "hy"
+		scope: "hy"
 		match: ".hy"
 		colour: "dark-blue"
 	
 	IDL:
 		icon: "idl"
+		scope: "idl"
 		match: ".dlm"
 		colour: "medium-blue"
 	
 	Idris:
 		icon: "idris"
 		match: [
-			[".idr", "dark-red"]
+			[".idr", "dark-red", /\.(?:idris|ipkg)$/i]
 			[".lidr", "medium-maroon"]
 		]
 
@@ -1270,24 +1336,26 @@ module.exports.fileIcons =
 	"Inform 7":
 		icon: "inform7"
 		match: [
-			[".ni", "medium-blue"]
+			[".ni", "medium-blue", /\.inform-?7?$/i]
 			[".i7x", "dark-blue"]
 		]
 	
 	"Inno Setup":
 		icon: "inno"
+		scope: "inno"
 		match: ".iss"
 		colour: "dark-blue"
 	
 	Isabelle:
 		icon: "isabelle"
 		match: [
-			[".thy", "dark-red"]
+			[".thy", "dark-red", "isabelle.theory"]
 			[/^ROOT$/, "dark-blue"]
 		]
 	
 	Io:
 		icon: "io"
+		scope: /^source\.io$/i
 		match: ".io"
 		colour: "dark-purple"
 	
@@ -1303,6 +1371,7 @@ module.exports.fileIcons =
 	
 	J:
 		icon: "j"
+		scope: "j"
 		match: ".ijs"
 		colour: "light-blue"
 	
@@ -1315,18 +1384,20 @@ module.exports.fileIcons =
 	
 	Jade: # Now known as "Pug"
 		icon: "jade"
+		scope: "jade"
 		match: ".jade"
 		colour: "medium-red"
 	
 	Java:
 		icon: "java"
+		scope: "java"
 		match: ".java"
 		colour: "medium-purple"
 	
 	JavaScript:
 		icon: "js"
 		match: [
-			[".js", "auto-yellow"]
+			[".js", "auto-yellow", "js"]
 			["._js", "auto-orange"]
 			[".jsb", "auto-maroon"]
 			[".jsm", "auto-blue"]
@@ -1347,11 +1418,13 @@ module.exports.fileIcons =
 	
 	Jinja:
 		icon: "jinja"
+		scope: "jinja"
 		match: ".jinja"
 		colour: "dark-red"
 
 	JSONiq:
 		icon: "sql"
+		scope: "jq"
 		match: ".jq"
 		colour: "medium-blue"
 	
@@ -1362,11 +1435,13 @@ module.exports.fileIcons =
 	
 	JSX:
 		icon: "jsx"
+		scope: "jsx"
 		match: ".jsx"
 		colour: "auto-blue"
 	
 	Julia:
 		icon: "julia"
+		scope: "julia"
 		match: ".jl"
 		colour: "medium-purple"
 	
@@ -1387,6 +1462,7 @@ module.exports.fileIcons =
 	
 	Kivy:
 		icon: "kivy"
+		scope: "kv"
 		match: ".kv"
 		colour: "dark-maroon"
 	
@@ -1398,13 +1474,14 @@ module.exports.fileIcons =
 	Kotlin:
 		icon: "kotlin"
 		match: [
-			[".kt", "dark-blue"]
+			[".kt", "dark-blue", "kotlin"]
 			[".ktm", "medium-blue"]
 			[".kts", "medium-orange"]
 		]
 	
 	KRL:
 		icon: "krl"
+		scope: "krl"
 		match: ".krl"
 		colour: "medium-blue"
 	
@@ -1415,13 +1492,14 @@ module.exports.fileIcons =
 	
 	Laravel:
 		icon: "laravel"
+		scope: "php.blade"
 		match: ".blade.php"
 		colour: "dark-purple"
 	
 	Lasso:
 		icon: "lasso"
 		match: [
-			[".lasso", "dark-blue"]
+			[".lasso", "dark-blue", "lasso"]
 			[".las", "dark-blue"]
 			[".lasso8", "medium-blue"]
 			[".lasso9", "medium-purple"]
@@ -1431,7 +1509,7 @@ module.exports.fileIcons =
 	Lean:
 		icon: "lean"
 		match: [
-			[".lean", "dark-purple"]
+			[".lean", "dark-purple", "lean"]
 			[".hlean", "dark-red"]
 		]
 	
@@ -1443,15 +1521,15 @@ module.exports.fileIcons =
 	LilyPond:
 		icon: "music"
 		match: [
-			[".ly", "medium-green"]
+			[".ly", "medium-green", /\.(?:At)?lilypond-/i]
 			[".ily", "dark-green"]
 		]
 	
 	LISP:
 		icon: "lisp"
 		match: [
-			[".lsp", "medium-red"]
-			[".lisp", "dark-red"]
+			[".lsp", "medium-red", "newlisp"]
+			[".lisp", "dark-red", "lisp"]
 			[".l", "medium-maroon"]
 			[".nl", "medium-maroon"]
 			[".ny", "medium-blue"]
@@ -1462,7 +1540,7 @@ module.exports.fileIcons =
 	LiveScript:
 		icon: "ls"
 		match: [
-			[".ls", "medium-blue"]
+			[".ls", "medium-blue", "livescript"]
 			["._ls", "dark-blue"]
 			[/^Slakefile$/, "medium-green"]
 		]
@@ -1475,20 +1553,21 @@ module.exports.fileIcons =
 	LLVM:
 		icon: "llvm"
 		match: [
-			[".ll", "dark-green"]
+			[".ll", "dark-green", "llvm"]
 			[".clang-format", "auto-yellow"]
 		]
 	
 	Logos:
 		icon: "mobile"
 		match: [
-			[".xm", "dark-blue"]
+			[".xm", "dark-blue", "logos"]
 			[".x", "dark-green"]
 			[".xi", "dark-red"]
 		]
 	
 	Logtalk:
 		icon: "logtalk"
+		scope: "logtalk"
 		match: /\.(?:logtalk|lgt)$/i
 		colour: "medium-red"
 	
@@ -1500,14 +1579,14 @@ module.exports.fileIcons =
 	LSL:
 		icon: "lsl"
 		match: [
-			[".lsl", "medium-cyan"]
+			[".lsl", "medium-cyan", "lsl"]
 			[".lslp", "dark-cyan"]
 		]
 	
 	Lua:
 		icon: "lua"
 		match: [
-			[".lua", "medium-blue"]
+			[".lua", "medium-blue", "lua"]
 			[".pd_lua", "dark-blue"]
 			[".rbxs", "dark-purple"]
 			[".wlua", "dark-red"]
@@ -1515,6 +1594,7 @@ module.exports.fileIcons =
 	
 	Makefile: # (Or similar build systems)
 		icon: "checklist"
+		scope: "makefile"
 		match: [
 			[/^Makefile/, "medium-yellow"]
 			[/^BSDmakefile$/i, "medium-red"]
@@ -1534,16 +1614,19 @@ module.exports.fileIcons =
 	
 	Mako:
 		icon: "mako"
+		scope: "mako"
 		match: /\.mak?o$/i
 		colour: "dark-blue"
 	
 	Mapbox:
 		icon: "mapbox"
+		scope: "mss"
 		match: ".mss"
 		colour: "medium-cyan"
 	
 	Markdown:
 		icon: "markdown"
+		scope: "gfm"
 		match: /\.(?:md|mdown|markdown|mkd|mkdown|mkdn|rmd|ron)$/i
 		colour: "medium-blue"
 	
@@ -1551,14 +1634,14 @@ module.exports.fileIcons =
 		icon: "marko"
 		priority: 2
 		match: [
-			[".marko", "medium-blue"]
+			[".marko", "medium-blue", "marko"]
 			[".marko.js", "medium-maroon"]
 		]
 	
 	Mathematica:
 		icon: "mathematica"
 		match: [
-			[".mathematica", "dark-red"]
+			[".mathematica", "dark-red", "mathematica"]
 			[".cdf", "medium-red"]
 			[".ma", "medium-orange"]
 			[".mt", "medium-maroon"]
@@ -1568,8 +1651,9 @@ module.exports.fileIcons =
 			[".wlt", "dark-yellow"]
 		]
 	
-	Matlab:
+	MATLAB:
 		icon: "matlab"
+		scope: "matlab"
 		match: ".matlab"
 		colour: "medium-yellow"
 	
@@ -1585,20 +1669,21 @@ module.exports.fileIcons =
 	
 	MAXScript:
 		icon: "maxscript"
+		scope: "maxscript"
 		match: /\.(?:ms|mcr|mce)$/i
 		colour: "dark-blue"
 	
 	"Manual Page":
 		icon: "manpage"
 		match: [
-			[/\.(?:1(?:[bcmsx]|has|in)?|[24568]|3(?:avl|bsm|3c|in|m|qt|x)?|7(?:d|fs|i|ipp|m|p)?|9[efps]?|chem|eqn|groff|man|mandoc|mdoc|me|mom|n|nroff|tmac|tmac-u|tr|troff)$/i, "dark-green"]
-			[/\.(?:rnh|rno|roff|run|runoff)$/i, "dark-maroon"]
+			[/\.(?:1(?:[bcmsx]|has|in)?|[24568]|3(?:avl|bsm|3c|in|m|qt|x)?|7(?:d|fs|i|ipp|m|p)?|9[efps]?|chem|eqn|groff|man|mandoc|mdoc|me|mom|n|nroff|tmac|tmac-u|tr|troff)$/i, "dark-green", /\.[gt]?roff$/i]
+			[/\.(?:rnh|rno|roff|run|runoff)$/i, "dark-maroon", "runoff"]
 		]
 
 	MediaWiki:
 		icon: "mediawiki"
 		match: [
-			[".mediawiki", "medium-yellow"]
+			[".mediawiki", "medium-yellow", "mediawiki"]
 			[".wiki", "medium-orange"]
 		]
 	
@@ -1609,6 +1694,7 @@ module.exports.fileIcons =
 	
 	Mercury:
 		icon: "mercury"
+		scope: "mercury"
 		match: ".moo"
 		colour: "medium-cyan"
 	
@@ -1619,36 +1705,40 @@ module.exports.fileIcons =
 	
 	Minecraft:
 		icon: "minecraft"
+		scope: "forge-config"
 		match: /^mcmod\.info$/i
 		colour: "dark-green"
 	
 	Mirah:
 		icon: "mirah"
 		match: [
-			[/\.dr?uby$/g, "medium-blue"]
+			[/\.dr?uby$/g, "medium-blue", "mirah"]
 			[/\.mir(?:ah)?$/g, "light-blue"]
 		]
 	
 	Modelica:
 		icon: "circle"
+		scope: /\.modelica(?:script)?$/i
 		match: ".mo"
 		colour: "light-red"
 	
 	"Modula-2":
 		icon: "modula2"
 		match: [
-			[".mod", "medium-blue"]
+			[".mod", "medium-blue", /(?:^|\.)modula-?2(?:\.|$)/i]
 			[".def", "medium-green"]
 			[".m2", "medium-red"]
 		]
 	
 	Monkey:
 		icon: "monkey"
+		scope: "monkey"
 		match: ".monkey"
 		colour: "medium-maroon"
 	
 	MoonScript:
 		icon: "moon"
+		scope: "moon"
 		match: ".moon"
 		colour: "medium-yellow"
 	
@@ -1659,16 +1749,19 @@ module.exports.fileIcons =
 	
 	Mustache: # (Or Handlebars)
 		icon: "mustache"
+		scope: "mustache"
 		match: /\.(?:hbs|handlebars|mustache)$/i
 		colour: "medium-orange"
 	
 	NAnt:
 		icon: "nant"
+		scope: "nant-build"
 		match: ".build"
 		colour: "medium-orange"
 	
 	"NCAR Command Language (NCL)":
 		icon: "earth"
+		scope: "ncl"
 		match: ".ncl"
 		colour: "medium-green"
 	
@@ -1695,26 +1788,30 @@ module.exports.fileIcons =
 		priority: 2
 		match: [
 			[/^nginx\.conf$/i, "dark-green"]
-			[".nginxconf", "medium-green"]
+			[".nginxconf", "medium-green", "nginx"]
 		]
 	
 	Nimrod:
 		icon: "nimrod"
+		scope: "nim"
 		match: /\.nim(?:rod)?$/i
 		colour: "medium-green"
 	
 	Nit:
 		icon: "nit"
+		scope: "nit"
 		match: ".nit"
 		colour: "dark-green"
 	
 	Nix:
 		icon: "nix"
+		scope: "nix"
 		match: ".nix"
 		colour: "medium-cyan"
 	
 	Nmap:
 		icon: "nmap"
+		scope: "nmap"
 		match: ".nse"
 		colour: "dark-blue"
 	
@@ -1738,7 +1835,7 @@ module.exports.fileIcons =
 	NSIS:
 		icon: "nsis"
 		match: [
-			[".nsi", "medium-cyan"]
+			[".nsi", "medium-cyan", "nsis"]
 			[".nsh", "dark-cyan"]
 		]
 	
@@ -1771,52 +1868,57 @@ module.exports.fileIcons =
 	
 	"Objective-C":
 		icon: "objc"
+		scope: /\.objc(?:pp)?$/i
 		match: /\.mm?$/i
 		colour: "medium-blue"
 	
 	"Objective-J":
 		icon: "objj"
 		match: [
-			[".j", "dark-orange"]
+			[".j", "dark-orange", "objj"]
 			[".sj", "dark-red"]
 		]
 	
 	OCaml:
 		icon: "ocaml"
 		match: [
-			[".ml", "medium-orange"]
+			[".ml", "medium-orange", "ocaml"]
 			[".mli", "dark-orange"]
 			[".eliom", "medium-red"]
 			[".eliomi", "dark-red"]
 			[".ml4", "medium-green"]
-			[".mll", "dark-green"]
-			[".mly", "dark-yellow"]
+			[".mll", "dark-green", "ocamllex"]
+			[".mly", "dark-yellow", "menhir"]
 		]
 	
 	OOC:
 		icon: "ooc"
+		scope: "ooc"
 		match: ".ooc"
 		colour: "medium-green"
 	
 	Opa:
 		icon: "opa"
+		scope: "opa"
 		match: ".opa"
 		colour: "medium-blue"
 	
 	OpenCL:
 		icon: "opencl"
+		scope: "opencl"
 		match: ".opencl"
 		colour: "medium-red"
 	
 	"OpenEdge ABL":
 		icon: "progress"
+		scope: "abl"
 		match: ".p"
 		colour: "medium-red"
 	
 	OpenSCAD:
 		icon: "scad"
 		match: [
-			[".scad", "medium-orange"]
+			[".scad", "medium-orange", "scad"]
 			[".jscad", "medium-yellow"]
 		]
 	
@@ -1833,18 +1935,20 @@ module.exports.fileIcons =
 	Ox:
 		icon: "ox"
 		match: [
-			[".ox", "auto-cyan"]
+			[".ox", "auto-cyan", "ox"]
 			[".oxh", "auto-green"]
 			[".oxo", "auto-blue"]
 		]
 	
 	Oxygene:
 		icon: "oxygene"
+		scope: "oxygene"
 		match: ".oxygene"
 		colour: "auto-cyan"
 	
 	Oz:
 		icon: "oz"
+		scope: "oz"
 		match: ".oz"
 		colour: "medium-yellow"
 	
@@ -1855,6 +1959,7 @@ module.exports.fileIcons =
 	
 	Papyrus:
 		icon: "papyrus"
+		scope: /(?:^|\.)(?:papyrus\.skyrim|compiled-?papyrus|papyrus-assembly)(?:\.|$)/i
 		match: ".psc"
 		colour: "medium-green"
 	
@@ -1869,7 +1974,7 @@ module.exports.fileIcons =
 	Pascal:
 		icon: "pascal"
 		match: [
-			[".pas", "medium-purple"]
+			[".pas", "medium-purple", "pascal"]
 			[".dfm", "medium-blue"]
 			[".dpr", "dark-blue"]
 			[".lpr", "dark-purple"]
@@ -1878,7 +1983,7 @@ module.exports.fileIcons =
 	Perl:
 		icon: "perl"
 		match: [
-			[/\.p(er)?l$/i, "medium-blue"]
+			[/\.p(er)?l$/i, "medium-blue", "perl"]
 			[".ph", "dark-purple"]
 			[".plx", "medium-purple"]
 			[".pm", ".dark-blue"]
@@ -1889,7 +1994,7 @@ module.exports.fileIcons =
 	Perl6:
 		icon: "perl6"
 		match: [
-			[".pl6", "medium-purple"]
+			[".pl6", "medium-purple", "perl6"]
 			[".6pl", "light-blue"]
 			[".6pm", "dark-cyan"]
 			[".nqp", "dark-purple"]
@@ -1902,13 +2007,14 @@ module.exports.fileIcons =
 	
 	Phalcon:
 		icon: "phalcon"
+		scope: "volt"
 		match: ".volt"
 		colour: "medium-cyan"
 	
 	PHP:
 		icon: "php"
 		match: [
-			[/\.(?:php[st\d]?)$/i, "dark-blue"]
+			[/\.(?:php[st\d]?)$/i, "dark-blue", "php"]
 			[/^Phakefile/, "dark-green"]
 		]
 	
@@ -1919,6 +2025,7 @@ module.exports.fileIcons =
 	
 	PAWN:
 		icon: "pawn"
+		scope: "pwn"
 		match: ".pwn"
 		colour: "medium-orange"
 	
@@ -1942,6 +2049,7 @@ module.exports.fileIcons =
 	
 	PLSQL:
 		icon: "sql"
+		scope: /\.plsql(?:\.oracle)?(?:\.|$)/i
 		match: /\.(?:pls|pck|pks|plb|plsql|pkb)$/i
 		colour: "medium-red"
 	
@@ -1952,18 +2060,20 @@ module.exports.fileIcons =
 	
 	PogoScript:
 		icon: "pogo"
+		scope: "pogoscript"
 		match: ".pogo"
 		colour: "auto-orange"
 	
 	Pony:
 		icon: "pony"
+		scope: "pony"
 		match: ".pony"
 		colour: "light-maroon"
 	
 	PowerShell:
 		icon: "powershell"
 		match: [
-			[".ps1", "medium-blue"]
+			[".ps1", "medium-blue", "powershell"]
 			[".psd1", "dark-blue"]
 			[".psm1", "medium-purple"]
 			[".ps1xml", "dark-purple"]
@@ -1971,6 +2081,7 @@ module.exports.fileIcons =
 	
 	Processing:
 		icon: "processing"
+		scope: "processing"
 		match: ".pde"
 		colour: "dark-blue"
 	
@@ -1978,26 +2089,27 @@ module.exports.fileIcons =
 		icon: "prolog"
 		match: [
 			[".prolog", "medium-cyan"]
-			[".pro", "medium-blue"]
+			[".pro", "medium-blue", "prolog"]
 			[".yap", "medium-purple"]
 		]
 	
 	"Propeller Spin":
 		icon: "propeller"
+		scope: "spin"
 		match: ".spin"
 		colour: "medium-orange"
 	
 	PostCSS:
 		icon: "postcss"
 		match: [
-			[/\.p(?:ost)?css$/i, "dark-red"]
-			[/\.sss$/i, "dark-pink"]
+			[/\.p(?:ost)?css$/i, "dark-red", "postcss"]
+			[/\.sss$/i, "dark-pink", "sugarss"]
 		]
 	
 	PostScript:
 		icon: "postscript"
 		match: [
-			[".ps", "medium-red"]
+			[".ps", "medium-red", "postscript"]
 			[".eps", "medium-orange"]
 		]
 	
@@ -2014,20 +2126,21 @@ module.exports.fileIcons =
 	
 	Pug: # previously "Jade"
 		icon: "pug"
+		scope: "pug"
 		match: ".pug"
 		colour: "medium-red"
 	
 	Puppet:
 		icon: "puppet"
 		match: [
-			[".pp", "medium-purple"]
+			[".pp", "medium-purple", "puppet"]
 			["Modulefile", "dark-blue"]
 		]
 	
 	PureBasic:
 		icon: "purebasic"
 		match: [
-			[".pb", "medium-red"]
+			[".pb", "medium-red", "purebasic"]
 			[".pbi", "dark-orange"]
 		]
 	
@@ -2038,13 +2151,14 @@ module.exports.fileIcons =
 	
 	PureScript:
 		icon: "purescript"
+		scope: "purescript"
 		match: ".purs"
 		colour: "dark-purple"
 	
 	Python:
 		icon: "python"
 		match: [
-			[".py", "dark-blue"]
+			[".py", "dark-blue", "python"]
 			[".bzl", "dark-blue"]
 			[".ipy", "medium-blue"]
 			[".gyp", "medium-green"]
@@ -2064,25 +2178,28 @@ module.exports.fileIcons =
 	
 	R:
 		icon: "r"
+		scope: "r"
 		match: /\.(?:r|Rprofile|rsx|rd)$/i
 		colour: "medium-blue"
 	
 	Racket:
 		icon: "racket"
 		match: [
-			[".rkt", "medium-red"]
+			[".rkt", "medium-red", "racket"]
 			[".rktd", "medium-blue"]
 			[".rktl", "light-red"]
-			[".scrbl", "dark-blue"]
+			[".scrbl", "dark-blue", "scribble"]
 		]
 	
 	RAML:
 		icon: "raml"
+		scope: "raml"
 		match: ".raml"
 		colour: "medium-cyan"
 	
 	RDoc:
 		icon: "rdoc"
+		scope: "rdoc"
 		match: ".rdoc"
 		colour: "medium-red"
 	
@@ -2112,7 +2229,7 @@ module.exports.fileIcons =
 	Rebol:
 		icon: "rebol"
 		match: [
-			[/\.reb(ol)?$/i, "dark-green"]
+			[/\.reb(ol)?$/i, "dark-green", "rebol"]
 			[".r2", "dark-red"]
 			[".r3", "dark-blue"]
 		]
@@ -2120,7 +2237,7 @@ module.exports.fileIcons =
 	Red:
 		icon: "red"
 		match: [
-			[".red", "medium-red"]
+			[".red", "medium-red", "red"]
 			[".reds", "light-red"]
 		]
 	
@@ -2136,6 +2253,7 @@ module.exports.fileIcons =
 	
 	reStructuredText:
 		icon: "rst"
+		scope: "restructuredtext"
 		match: /\.re?st(\.txt)?$/i
 		colour: "dark-blue"
 	
@@ -2147,6 +2265,7 @@ module.exports.fileIcons =
 	
 	RiotJS:
 		icon: "riot"
+		scope: "riot"
 		match: ".tag"
 		colour: "medium-red"
 	
@@ -2168,7 +2287,7 @@ module.exports.fileIcons =
 	Ruby:
 		icon: "ruby"
 		match: [
-			[/\.(?:rb|ru|ruby|erb|gemspec|god|irbrc|mspec|pluginspec|podspec|rabl|rake|opal)$/i, "medium-red"]
+			[/\.(?:rb|ru|ruby|erb|gemspec|god|irbrc|mspec|pluginspec|podspec|rabl|rake|opal)$/i, "medium-red", "ruby"]
 			[/^\.?(?:gemrc|pryrc|rspec|ruby-(?:gemset|version))$/i, "medium-red"]
 			[/^(?:Appraisals|(?:Rake|Gem|[bB]uild|Berks|Cap|Deliver|Fast|Guard|Jar|Maven|Pod|Puppet|Snap)file(?:\.lock)?)$/, "medium-red"]
 			[/\.(jbuilder|rbuild|rb[wx]|builder)$/i, "dark-red"]
@@ -2180,7 +2299,7 @@ module.exports.fileIcons =
 	Rust:
 		icon: "rust"
 		match: [
-			[".rs", "medium-maroon"]
+			[".rs", "medium-maroon", "rust"]
 			[".rlib", "light-maroon"]
 			[".rs.in", "dark-maroon"]
 		]
@@ -2188,20 +2307,21 @@ module.exports.fileIcons =
 	Sage:
 		icon: "sage"
 		match: [
-			[".sage", "medium-blue"]
+			[".sage", "medium-blue", "sage"]
 			[".sagews", "dark-blue"]
 		]
 	
 	SaltStack:
 		icon: "saltstack"
+		scope: "salt"
 		match: ".sls"
 		colour: "auto-blue"
 	
 	Sass:
 		icon: "sass"
 		match: [
-			[".sass", "dark-pink"]
-			[".scss", "light-pink"]
+			[".sass", "dark-pink", "sass"]
+			[".scss", "light-pink", "scss"]
 		]
 	
 	SBT:
@@ -2211,13 +2331,14 @@ module.exports.fileIcons =
 	
 	Scala:
 		icon: "scala"
+		scope: "scala"
 		match: /\.(?:sc|scala)$/i
 		colour: "medium-red"
 	
 	Scheme:
 		icon: "scheme"
 		match: [
-			[".scm", "medium-red"]
+			[".scm", "medium-red", "scheme"]
 			[".sld", "medium-blue"]
 			[".sps", "medium-purple"]
 			[".ss", "medium-pink"]
@@ -2226,7 +2347,7 @@ module.exports.fileIcons =
 	Scilab:
 		icon: "scilab"
 		match: [
-			[".sci", "dark-purple"]
+			[".sci", "dark-purple", "scilab"]
 			[".sce", "dark-blue"]
 			[".tst", "dark-cyan"]
 		]
@@ -2243,13 +2364,14 @@ module.exports.fileIcons =
 	
 	Self:
 		icon: "self"
+		scope: "self"
 		match: ".self"
 		colour: "dark-blue"
 	
 	"Seperated-value files":
 		icon: "graph"
 		match: [
-			[".csv", "light-red"]
+			[".csv", "light-red", /(?:^|\.)csv(?:\.semicolon)?(?:\.|$)/i]
 			[/\.(?:tab|tsv)$/i, "light-green"]
 		]
 
@@ -2260,13 +2382,14 @@ module.exports.fileIcons =
 
 	Shell:
 		icon: "terminal"
+		scope: "shell"
 		match: [
 			[/\.(?:sh|bats|bash|tool|install|command)$/i, "medium-purple"]
 			[/^(?:\.?bash(?:rc|_(?:profile|login|logout|history))|_osc|install-sh|PKGBUILD)$/i, "medium-purple"]
 			[".ksh", "dark-yellow"]
-			[".sh-session", "auto-yellow"]
+			[".sh-session", "auto-yellow", "shell-session"]
 			[/\.zsh(?:-theme)?$|^\.?(?:zlogin|zlogout|zprofile|zshenv|zshrc)$/i, "medium-blue"]
-			[/\.fish$|^\.fishrc$/i, "medium-green"]
+			[/\.fish$|^\.fishrc$/i, "medium-green", "fish"]
 			[".sh.in", "dark-red"]
 			[".tmux", "medium-blue"]
 			[/^(?:configure|config\.(?:guess|rpath|status|sub)|depcomp|libtool|compile)$/, "medium-red"]
@@ -2291,42 +2414,46 @@ module.exports.fileIcons =
 	
 	Slash:
 		icon: "slash"
+		scope: "slash"
 		match: ".sl"
 		colour: "dark-blue"
 	
 	Smarty:
 		icon: "smarty"
+		scope: "smarty"
 		match: ".tpl"
 		colour: "auto-yellow"
 	
 	Smali:
 		icon: "android"
+		scope: "smali"
 		match: ".smali"
 		colour: "medium-green"
 	
 	SourcePawn:
 		icon: "clojure"
 		match: [
-			[/\.(?:sma|sp)$/i, "auto-yellow"]
+			[/\.(?:sma|sp)$/i, "auto-yellow", "sp"]
 			[".inc", "medium-green"]
 		]
 	
 	SPARQL:
 		icon: "sparql"
 		match: [
-			[".sparql", "medium-blue"]
+			[".sparql", "medium-blue", "rq"]
 			[".rq", "dark-blue"]
 		]
 	
 	SQF:
 		icon: "sqf"
 		match: [
-			[".sqf", "dark-maroon"]
+			[".sqf", "dark-maroon", "sqf"]
 			[".hqf", "dark-red"]
 		]
 	
 	Squirrel:
 		icon: "squirrel"
+		scope: "nut"
 		match: ".nut"
 		colour: "medium-maroon"
 	
@@ -2344,17 +2471,18 @@ module.exports.fileIcons =
 	
 	Stan:
 		icon: "stan"
+		scope: "stan"
 		match: ".stan"
 		colour: "medium-red"
 	
 	Stata:
 		icon: "stata"
 		match: [
-			[".do", "medium-blue"]
+			[".do", "medium-blue", "stata"]
 			[".ado", "dark-blue"]
 			[".doh", "light-blue"]
 			[".ihlp", "medium-cyan"]
-			[".mata", "dark-cyan"]
+			[".mata", "dark-cyan", "mata"]
 			[".matah", "light-cyan"]
 			[".sthlp", "medium-purple"]
 		]
@@ -2368,11 +2496,13 @@ module.exports.fileIcons =
 	
 	SAS:
 		icon: "sas"
+		scope: "sas"
 		match: ".sas"
 		colour: "medium-blue"
 	
 	SQL:
 		icon: "sql"
+		scope: "sql"
 		match: /\.(?:sql|ddl|udf|viw|db2|prc)$/i
 	
 	SQLite:
@@ -2386,6 +2516,7 @@ module.exports.fileIcons =
 	
 	Strings:
 		icon: "strings"
+		scope: "strings"
 		match: ".strings"
 		colour: "medium-red"
 	
@@ -2398,11 +2529,13 @@ module.exports.fileIcons =
 	
 	SuperCollider:
 		icon: "scd"
+		scope: "supercollider"
 		match: ".scd"
 		colour: "medium-red"
 	
 	SVG:
 		icon: "svg"
+		scope: "svg"
 		match: ".svg"
 		colour: "dark-yellow"
 	
@@ -2414,6 +2547,7 @@ module.exports.fileIcons =
 	
 	Swift:
 		icon: "swift"
+		scope: "swift"
 		match: ".swift"
 		colour: "medium-green"
 	
@@ -2427,6 +2561,7 @@ module.exports.fileIcons =
 	
 	"Table of Contents":
 		icon: "toc"
+		scope: "toc"
 		priority: 2
 		match: ".toc"
 		colour: "auto-cyan"
@@ -2439,13 +2574,14 @@ module.exports.fileIcons =
 	Tcl:
 		icon: "tcl"
 		match: [
-			[".tcl", "dark-orange"]
+			[".tcl", "dark-orange", "tcl"]
 			[".adp", "medium-orange"]
 			[".tm", "medium-red"]
 		]
 	
 	Tea:
 		icon: "coffee"
+		scope: "tea"
 		match: ".tea"
 		colour: "medium-orange"
 	
@@ -2458,16 +2594,17 @@ module.exports.fileIcons =
 	
 	Terraform:
 		icon: "terraform"
+		scope: /\.terra(?:form)?$/i
 		match: ".tf"
 		colour: "dark-purple"
 	
 	TeX:
 		icon: "tex"
 		match: [
-			[".tex", "auto-blue"]
+			[".tex", "auto-blue", /(?:^|\.)latex(?:\.|$)/i]
 			[".ltx", "auto-blue"]
 			[".aux", "auto-green"]
-			[".sty", "auto-red"]
+			[".sty", "auto-red", /(?:^|\.)tex(?:\.|$)/i]
 			[".dtx", "auto-maroon"]
 			[".cls", "auto-orange"]
 			[".ins", "auto-green"]
@@ -2480,6 +2617,7 @@ module.exports.fileIcons =
 	
 	Textile:
 		icon: "textile"
+		scope: "textile"
 		match: ".textile"
 		colour: "medium-orange"
 	
@@ -2516,6 +2654,7 @@ module.exports.fileIcons =
 	
 	TSX: # React/Typescript
 		icon: "tsx"
+		scope: "tsx"
 		match: ".tsx"
 		colour: "light-blue"
 	
@@ -2526,16 +2665,19 @@ module.exports.fileIcons =
 	
 	Twig:
 		icon: "twig"
+		scope: "twig"
 		match: ".twig"
 		colour: "medium-green"
 	
 	TXL:
 		icon: "txl"
+		scope: "txl"
 		match: ".txl"
 		colour: "medium-orange"
 	
 	TypeScript:
 		icon: "ts"
+		scope: "ts"
 		match: ".ts"
 		colour: "medium-blue"
 	
@@ -2548,7 +2690,7 @@ module.exports.fileIcons =
 	Unity3D:
 		icon: "unity3d"
 		match: [
-			[".anim", "dark-blue"]
+			[".anim", "dark-blue", "shaderlab"]
 			[".asset", "dark-green"]
 			[".mat", "medium-red"]
 			[".meta", "dark-red"]
@@ -2563,12 +2705,13 @@ module.exports.fileIcons =
 	
 	UnrealScript:
 		icon: "unreal"
+		scope: "uc"
 		match: ".uc"
 	
 	UrWeb:
 		icon: "urweb"
 		match: [
-			[".ur", "medium-maroon"]
+			[".ur", "medium-maroon", "ur"]
 			[".urs", "dark-blue"]
 		]
 	
@@ -2580,26 +2723,27 @@ module.exports.fileIcons =
 	Vala:
 		icon: "gnome"
 		match: [
-			[".vala", "medium-purple"]
+			[".vala", "medium-purple", "vala"]
 			[".vapi", "dark-purple"]
 		]
 	
 	VCL: # (Varnish Configuration Language)
 		icon: "varnish"
+		scope: /(?:^|\.)(?:varnish|vcl)(?:\.|$)/i
 		match: ".vcl"
 		colour: "dark-blue"
 	
 	Verilog:
 		icon: "verilog"
 		match: [
-			[".v", "dark-green"]
+			[".v", "dark-green", "verilog"]
 			[".veo", "medium-red"]
 		]
 	
 	VHDL:
 		icon: "vhdl"
 		match: [
-			[".vhdl", "dark-green"]
+			[".vhdl", "dark-green", "vhdl"]
 			[".vhd", "medium-green"]
 			[".vhf", "dark-blue"]
 			[".vhi", "medium-blue"]
@@ -2632,14 +2776,14 @@ module.exports.fileIcons =
 	Vim:
 		icon: "vim"
 		match: [
-			[/\.(?:vim|n?vimrc)$/i, "medium-green"]
+			[/\.(?:vim|n?vimrc)$/i, "medium-green", "viml"]
 			[/^[gn_]?vimrc$/i, "medium-green"]
 		]
 	
 	"Visual Studio":
 		icon: "vs"
 		match: [
-			[/\.(?:vba?|fr[mx]|bas)$/i, "medium-blue"]
+			[/\.(?:vba?|fr[mx]|bas)$/i, "medium-blue", "vbnet"]
 			[".vbhtml", "medium-red"]
 			[".vbs", "medium-green"]
 			[".csproj", "dark-blue"]
@@ -2651,6 +2795,7 @@ module.exports.fileIcons =
 	
 	Vue:
 		icon: "vue"
+		scope: "vue"
 		match: ".vue"
 		colour: "light-green"
 	
@@ -2668,7 +2813,7 @@ module.exports.fileIcons =
 	Windows:
 		icon: "windows"
 		match: [
-			[".bat", "medium-purple"]
+			[".bat", "medium-purple", /(?:^|\.)(?:bat|dosbatch)(?:\.|$)/i]
 			[".cmd", "medium-purple"]
 			[/\.(?:exe|com|msi)$/i]
 			[".reg", "medium-blue"]
@@ -2687,11 +2832,13 @@ module.exports.fileIcons =
 
 	XQuery:
 		icon: "sql"
+		scope: "xq"
 		match: /\.(xquery|xq|xql|xqm|xqy)$/i
 		colour: "dark-red"
 
 	X10:
 		icon: "x10"
+		scope: "x10"
 		match: ".x10"
 		colour: "light-maroon"
 
@@ -2716,6 +2863,7 @@ module.exports.fileIcons =
 	
 	Xtend:
 		icon: "xtend"
+		scope: "xtend"
 		match: ".xtend"
 		colour: "dark-purple"
 	
@@ -2732,6 +2880,7 @@ module.exports.fileIcons =
 	
 	YANG:
 		icon: "yang"
+		scope: "yang"
 		match: ".yang"
 		colour: "medium-yellow"
 
