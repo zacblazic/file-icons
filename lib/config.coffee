@@ -19,8 +19,8 @@ match:     Pattern(s) to match against the filename. This may be a string, an ar
                If passed an array, it's used to provide multiple colour variants for different
                filenames/extensions. Each value should be an array containing two values - the
                path-matching pattern, and an optional colour name. A third value may be passed
-			   to designate a TextMate scope for a particular icon/colour combination: see the
-			   "scope" property described below.
+               to designate a TextMate scope for a particular icon/colour combination: see the
+               "scope" property described below.
 
 priority:  More than one pattern may match a filename. To ensure more specific patterns aren't overridden
            by more general patterns, set the priority index to a value greater than 1. This property is
