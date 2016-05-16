@@ -1,6 +1,7 @@
 {basename} = require "path"
 {IconRule} = require "./icon-rule"
 {directoryIcons, fileIcons} = require "./config"
+{CompositeDisposable} = require "./utils"
 
 
 class IconService
@@ -13,6 +14,16 @@ class IconService
 		@fileCache      = {}
 		@fileIcons      = @compile fileIcons
 		@directoryIcons = @compile directoryIcons
+		
+		# Build scope-map with what grammars have already loaded
+		@scopeMap = {}
+		for name of atom.grammars.grammarsByScopeName
+			@registerScope(name)
+		
+		# Monitor the global registry to add new grammars as they're loaded
+		@disposables = new CompositeDisposable
+		@disposables.add atom.grammars.onDidAddGrammar (grammar) =>
+			@registerScope grammar.scopeName
 		
 		# Perform an early update of every directory icon to stop a FOUC
 		@delayedRefresh(10)
@@ -112,6 +123,14 @@ class IconService
 			new IconRule name, attr
 		
 		results.sort IconRule.sort
+	
+	
+	# Locate an IconRule that matches a TextMate scope, storing a connection if found
+	registerScope: (name) ->
+		for rule in @fileIcons when rule.scopes?
+			for index, pattern of rule.scopes when pattern.test(name)
+				return @scopeMap[name] = {rule, matchIndex: index}
+	
 	
 	
 	# Force a complete refresh of the icon display.

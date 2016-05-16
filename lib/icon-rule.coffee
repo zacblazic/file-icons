@@ -25,6 +25,14 @@ class IconRule
 				source = escapeRegExp(pattern)+"$"
 				value[0] = new RegExp source, "i"
 			
+			# A TextMate grammar's been associated with this match
+			if scope
+				@scopes ?= {}
+				unless isRegExp scope
+					source = "\\." + escapeRegExp(scope) + "$"
+					scope = new RegExp source, "i"
+				@scopes[i] = scope
+			
 			# Flag that bloody Bower-bird which needs special treatment
 			if /^bower$/i.test colour
 				value[3] = "bower"
