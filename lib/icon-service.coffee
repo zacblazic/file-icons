@@ -51,7 +51,7 @@ class IconService
 			suffix  = if rule.noSuffix then "" else "-icon"
 			classes = if file?.symlink then ["icon-file-symlink-file"] else ["#{rule.icon}#{suffix}"]
 			colour  = ruleMatch[1]
-			auto    = ruleMatch[2]
+			auto    = ruleMatch[3]
 			
 			# Determine if colour should be used
 			if colour && @useColour && (!@changedOnly || file?.status)

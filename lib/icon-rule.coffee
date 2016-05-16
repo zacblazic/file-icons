@@ -6,19 +6,19 @@ class IconRule
 	
 	constructor: (name, args) ->
 		@name = name
-		{@match, @icon, @colour, @priority, @noSuffix} = args
+		{@icon, @priority, @noSuffix, match, colour, scope} = args
 		@priority ?= 1
 		
 		# Store the name in lowercase for quicker sorting
 		@nameLowercased = name.toLowerCase()
 		
 		# Make sure we're always dealing with an array
-		unless Array.isArray @match
-			@match = [[@match, @colour]]
+		unless Array.isArray match
+			match = [[match, colour, scope]]
 		
 		# Refine each match definition
-		match = for i, value of @match
-			[pattern, colour] = value
+		@match = for i, value of match
+			[pattern, colour, scope] = value
 			
 			# Convert string-based patterns into actual regex
 			unless isRegExp pattern
@@ -27,12 +27,12 @@ class IconRule
 			
 			# Flag that bloody Bower-bird which needs special treatment
 			if /^bower$/i.test colour
-				value[2] = "bower"
+				value[3] = "bower"
 			
 			# Flag colours which need adjustment depending on theme's brightness
 			else if auto = colour?.match /^auto-(.+)$/i
 				value[1] = auto[1]
-				value[2] = true
+				value[3] = true
 			
 			value
 			
