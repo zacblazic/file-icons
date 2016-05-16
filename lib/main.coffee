@@ -8,7 +8,7 @@ module.exports =
 	# Called on startup
 	activate: (state) ->
 		@disposables = new CompositeDisposable
-		@disposables.add atom.themes.onDidChangeActiveThemes () => @onChangeThemes()
+		@disposables.add atom.themes.onDidChangeActiveThemes => @onChangeThemes()
 		
 		# Ready a watcher in case it's needed
 		@repoWatcher = new RepoWatcher
@@ -20,6 +20,10 @@ module.exports =
 		@iconService.changedOnly = atom.config.get "file-icons.onChanges"
 		@iconService.showInTabs  = atom.config.get "file-icons.tabPaneIcon"
 		@checkThemeColour()
+		
+		# Register new grammars with the icon-service as they're loaded
+		@disposables.add atom.grammars.onDidAddGrammar (grammar) => @iconService.addScope grammar.scopeName
+		@disposables.add atom.packages.onDidDeactivatePackage => @iconService.remapScopes()
 		
 		# Configure package settings
 		@initSetting "coloured"
