@@ -1,4 +1,4 @@
-{isRegExp, escapeRegExp} = require "./utils"
+{isRegExp, escapeRegExp} = require "../utils"
 
 
 # Represents a named icon-matching rule defined by icon-config

@@ -1,6 +1,7 @@
-{basename} = require "path"
-{IconRule} = require "./icon-rule"
-{directoryIcons, fileIcons} = require "./config"
+{basename}     = require "path"
+{IconRule}     = require "./icon-rule"
+{ScopeMatcher} = require "./scope-matcher"
+{directoryIcons, fileIcons} = require "../config"
 
 
 class IconService
@@ -13,13 +14,43 @@ class IconService
 		@fileCache      = {}
 		@fileIcons      = @compile fileIcons
 		@directoryIcons = @compile directoryIcons
-		@remapScopes()
+		@scopeMatcher   = new ScopeMatcher(this)
 		
 		# Perform an early update of every directory icon to stop a FOUC
 		@delayedRefresh(10)
 
 	
 	onWillDeactivate: ->
+		# Currently a no-op
+	
+	
+	# Force a complete refresh of the icon display.
+	# Intended to be called when a package setting's been modified.
+	refresh: () ->
+		
+		# Update the icon classes of a specific file-entry
+		updateIcon = (label, baseClass) =>
+			label.className = baseClass
+			iconClass = @iconClassForPath(label.dataset.path, label.parentElement)
+			if iconClass
+				unless Array.isArray iconClass
+					iconClass = iconClass.toString().split(/\s+/g)
+				label.classList.add iconClass...
+		
+		ws = atom.views.getView(atom.workspace)
+		updateIcon(file, "name icon") for file in ws.querySelectorAll ".file > .name[data-path]"
+		updateIcon(tab, "title icon") for tab  in ws.querySelectorAll ".tab > .title[data-path]"
+		@updateDirectoryIcons()
+	
+	
+	
+	# Queue a delayed refresh. Repeated calls to this method do nothing:
+	# only one refresh will be fired after a specified delay has elapsed.
+	# - delay: Amount of time to wait, expressed in milliseconds
+	delayedRefresh: (delay) ->
+		clearTimeout @timeoutID
+		@timeoutID = setTimeout (=> @refresh()), delay
+	
 	
 	
 	# Return the CSS classes for a file's icon. Consumed by atom.file-icons service.
@@ -35,7 +66,7 @@ class IconService
 		return if !@showInTabs and isTab
 		
 		# Use cached matches for quicker lookup
-		if cached = @fileCache[path]
+		if (cached = @fileCache[path])?
 			rule = @fileIcons[cached]
 			ruleMatch = rule.matches path
 		
@@ -115,52 +146,13 @@ class IconService
 		results.sort IconRule.sort
 	
 	
-	# Reindex scopeMap with every currently-available grammar
-	remapScopes: ->
-		@scopeMap = {}
-		names = atom.grammars.grammarsByScopeName
-		@addScope(i) for i of names
-	
-	
-	# Locate an IconRule that matches a TextMate scope, storing a connection if found
-	addScope: (name) ->
-		for rule in @fileIcons when rule.scopes?
-			for index, pattern of rule.scopes when pattern.test(name)
-				return @scopeMap[name] = {rule, matchIndex: index}
-	
+	# Handle the assignment of user-specified grammars
 	handleOverride: (editor, grammar) ->
-		console.log arguments
+		path  = editor.getPath()
+		scope = grammar.scopeName
+		@scopeMatcher.override path, scope
+		@delayedRefresh 10
 	
 	
-	# Force a complete refresh of the icon display.
-	# Intended to be called when a package setting's been modified.
-	refresh: () ->
-		
-		# Update the icon classes of a specific file-entry
-		updateIcon = (label, baseClass) =>
-			label.className = baseClass
-			iconClass = @iconClassForPath(label.dataset.path, label.parentElement)
-			if iconClass
-				unless Array.isArray iconClass
-					iconClass = iconClass.toString().split(/\s+/g)
-				label.classList.add iconClass...
-		
-		ws = atom.views.getView(atom.workspace)
-		for file in ws.querySelectorAll ".file > .name[data-path]"
-			updateIcon file, "name icon"
-		
-		for tab in ws.querySelectorAll ".tab > .title[data-path]"
-			updateIcon tab, "title icon"
-		
-		@updateDirectoryIcons()
-	
-	
-	# Queue a delayed refresh. Repeated calls to this method do nothing:
-	# only one refresh will be fired after a specified delay has elapsed.
-	# - delay: Amount of time to wait, expressed in milliseconds
-	delayedRefresh: (delay) ->
-		clearTimeout @timeoutID
-		@timeoutID = setTimeout (=> @refresh()), delay
-		
 
 module.exports = IconService

@@ -1,6 +1,6 @@
 {CompositeDisposable} = require "./utils"
 
-IconService = require "./icon-service"
+IconService = require "./service/icon-service"
 Watcher     = require "./watcher"
 Scanner     = require "./scanner"
 
@@ -22,10 +22,6 @@ module.exports =
 		@iconService.changedOnly = atom.config.get "file-icons.onChanges"
 		@iconService.showInTabs  = atom.config.get "file-icons.tabPaneIcon"
 		@checkThemeColour()
-		
-		# Register new grammars with the icon-service as they're loaded
-		@disposables.add atom.grammars.onDidAddGrammar (grammar) => @iconService.addScope grammar.scopeName
-		@disposables.add atom.packages.onDidDeactivatePackage => @iconService.remapScopes()
 		
 		# Configure package settings
 		@initSetting "coloured"

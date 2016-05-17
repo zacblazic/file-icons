@@ -68,7 +68,7 @@ class Watcher
 		unless @editors.has editor
 			console.trace "Watching editor: #{editor.getFileName()}"
 			@editors.add editor
-			onChange = editor.onDidChangeGrammar (to) => @onGrammarChange?(to)
+			onChange = editor.onDidChangeGrammar (to) => @onGrammarChange?(editor, to)
 			onDestroy = editor.onDidDestroy =>
 				@editors.delete editor
 				@editorDisposables.remove(i) for i in [onChange, onDestroy]
