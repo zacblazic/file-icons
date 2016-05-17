@@ -1,8 +1,7 @@
 {CompositeDisposable} = require "./utils"
 
-# Controller to manage event subscription to repositories within the project
-class RepoWatcher
-	watching: false
+# Controller to manage auxiliary event subscriptions
+class Watcher
 	
 	constructor: ->
 		@repos = new Set
@@ -10,16 +9,14 @@ class RepoWatcher
 	
 	
 	# Set whether the project's VCS repositories are being monitored for changes
-	setWatching: (enabled) ->
+	watchRepos: (enabled) ->
 		if enabled
 			repos = atom.project.getRepositories()
 			@addRepo(i) for i in repos when i
-			@watching = true
 		else
 			@repos.clear()
 			@disposables.dispose()
 			@disposables = new CompositeDisposable
-			@watching = false
 	
 	
 	# Register a repository with the watcher, if it hasn't been already
@@ -27,8 +24,8 @@ class RepoWatcher
 		unless @repos.has repo
 			@repos.add repo
 			
-			@disposables.add repo.onDidChangeStatus (event) => @onStatusChange?(event)
-			@disposables.add repo.onDidChangeStatuses       => @onStatusChange?()
+			@disposables.add repo.onDidChangeStatus (event) => @onRepoUpdate?(event)
+			@disposables.add repo.onDidChangeStatuses       => @onRepoUpdate?()
 			
 			# When repository's removed from memory
 			@disposables.add repo.onDidDestroy =>
@@ -39,4 +36,4 @@ class RepoWatcher
 			
 		
 		
-module.exports = RepoWatcher
+module.exports = Watcher

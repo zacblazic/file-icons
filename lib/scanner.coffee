@@ -50,4 +50,4 @@ class Scanner
 			@directories.delete(i)
 		
 
-module.exports = {Scanner}
+module.exports = Scanner

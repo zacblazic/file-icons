@@ -1,7 +1,8 @@
-IconService = require "./icon-service.coffee"
-RepoWatcher = require "./repo-watcher.coffee"
 {CompositeDisposable} = require "./utils"
-{Scanner} = require "./scanner"
+
+IconService = require "./icon-service"
+Watcher     = require "./watcher"
+Scanner     = require "./scanner"
 
 module.exports =
 	
@@ -10,9 +11,9 @@ module.exports =
 		@disposables = new CompositeDisposable
 		@disposables.add atom.themes.onDidChangeActiveThemes => @onChangeThemes()
 		
-		# Ready a watcher in case it's needed
-		@repoWatcher = new RepoWatcher
-		@repoWatcher.onStatusChange = => @iconService.delayedRefresh(10)
+		# Ready a watcher to respond to project/editor changes
+		@watcher = new Watcher
+		@watcher.onRepoUpdate = => @iconService.delayedRefresh(10)
 		
 		# Initialise icon-service
 		@iconService = new IconService
@@ -62,38 +63,39 @@ module.exports =
 	displayIcons: -> @iconService
 
 
-	# Called when "Coloured" setting's been modified
-	setColoured: (enable) ->
-		body = document.querySelector "body"
-		body.classList.toggle "file-icons-colourless", !enable
-		@iconService.useColour = enable
-		@iconService.refresh() if @initialised
-	
-	
-	# Triggered when the "Colour only on changes" setting's been modified
-	setOnChanges: (enable) ->
-		@onChanges = enable
-		@repoWatcher.setWatching(enable)
-		@iconService.changedOnly = enable
-		@iconService.refresh() if @initialised
-
-
-	# Called when user changes the setting of the "Tab Pane Icon" option
-	setTabPaneIcon: (enable) ->
-		body = document.querySelector "body"
-		body.classList.toggle "file-icons-tab-pane-icon", enable
-		@iconService.showInTabs = enable
-		@iconService.refresh() if @initialised
-
-
-	# Configure listener to respond to changes in package settings
+	# Register a listener to handle changes of package settings
 	initSetting: (name) ->
 		setter = "set" + name.replace /\b(\w)(.*$)/g, (match, firstLetter, remainder) ->
 			firstLetter.toUpperCase() + remainder
 		@disposables.add atom.config.onDidChange "file-icons.#{name}", ({newValue}) =>
 			@[setter] newValue
 		@[setter] atom.config.get("file-icons."+name)
+
+
+	# Called when "Coloured" setting's been modified
+	setColoured: (enabled) ->
+		body = document.querySelector "body"
+		body.classList.toggle "file-icons-colourless", !enabled
+		@iconService.useColour = enabled
+		@iconService.refresh() if @initialised
 	
+	
+	# Triggered when the "Colour only on changes" setting's been modified
+	setOnChanges: (enabled) ->
+		@onChanges = enabled
+		@watcher.watchRepos(enabled)
+		@iconService.changedOnly = enabled
+		@iconService.refresh() if @initialised
+
+
+	# Called when user changes the setting of the "Tab Pane Icon" option
+	setTabPaneIcon: (enabled) ->
+		body = document.querySelector "body"
+		body.classList.toggle "file-icons-tab-pane-icon", enabled
+		@iconService.showInTabs = enabled
+		@iconService.refresh() if @initialised
+
+
 
 	# Register a command with Atom's command registry
 	addCommand: (name, callback) ->
