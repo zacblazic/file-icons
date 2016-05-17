@@ -22,7 +22,7 @@ class CompositeDisposable
 	dispose: ->
 		unless @disposed
 			@disposed = true
-			@disposables.forEach (i) -> i.dispose
+			@disposables.forEach (i) -> i.dispose()
 			@disposables = null
 		return
 

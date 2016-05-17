@@ -128,6 +128,8 @@ class IconService
 			for index, pattern of rule.scopes when pattern.test(name)
 				return @scopeMap[name] = {rule, matchIndex: index}
 	
+	handleOverride: (editor, grammar) ->
+		console.log arguments
 	
 	
 	# Force a complete refresh of the icon display.

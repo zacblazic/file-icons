@@ -13,7 +13,8 @@ module.exports =
 		
 		# Ready a watcher to respond to project/editor changes
 		@watcher = new Watcher
-		@watcher.onRepoUpdate = => @iconService.delayedRefresh(10)
+		@watcher.onRepoUpdate    = => @iconService.delayedRefresh(10)
+		@watcher.onGrammarChange = => @iconService.handleOverride(arguments...)
 		
 		# Initialise icon-service
 		@iconService = new IconService
@@ -30,6 +31,7 @@ module.exports =
 		@initSetting "coloured"
 		@initSetting "onChanges"
 		@initSetting "tabPaneIcon"
+		@initSetting "iconMatching.changeOnOverride"
 		
 		@addCommand "toggle-colours", (event) =>
 			name = "file-icons.coloured"
@@ -64,12 +66,13 @@ module.exports =
 
 
 	# Register a listener to handle changes of package settings
-	initSetting: (name) ->
+	initSetting: (path) ->
+		[name] = path.match /\w+$/
 		setter = "set" + name.replace /\b(\w)(.*$)/g, (match, firstLetter, remainder) ->
 			firstLetter.toUpperCase() + remainder
-		@disposables.add atom.config.onDidChange "file-icons.#{name}", ({newValue}) =>
+		@disposables.add atom.config.onDidChange "file-icons.#{path}", ({newValue}) =>
 			@[setter] newValue
-		@[setter] atom.config.get("file-icons."+name)
+		@[setter] atom.config.get("file-icons."+path)
 
 
 	# Called when "Coloured" setting's been modified
@@ -82,8 +85,7 @@ module.exports =
 	
 	# Triggered when the "Colour only on changes" setting's been modified
 	setOnChanges: (enabled) ->
-		@onChanges = enabled
-		@watcher.watchRepos(enabled)
+		@watcher.watchingRepos(enabled)
 		@iconService.changedOnly = enabled
 		@iconService.refresh() if @initialised
 
@@ -94,6 +96,12 @@ module.exports =
 		body.classList.toggle "file-icons-tab-pane-icon", enabled
 		@iconService.showInTabs = enabled
 		@iconService.refresh() if @initialised
+	
+	
+	setChangeOnOverride: (enabled) ->
+		console.log "setChangeOnOverride: #{enabled}"
+		@watcher.watchingEditors(enabled)
+		@iconService.allowGrammarOverrides = enabled
 
 
 
