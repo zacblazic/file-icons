@@ -31,9 +31,9 @@ class ScopeMatcher
 		console.log "Overriding"
 		delete @service.fileCache[path]
 		if i = @icons[scope]
-			{rule} = i
+			{rule, matchIndex} = i
 			index  = @service.fileIcons.indexOf rule
-			@service.fileCache[path] = index
+			@service.fileCache[path] = [index, matchIndex]
 	
 	
 	# Return the icon-class associated with a scope, if any

@@ -67,15 +67,17 @@ class IconService
 		
 		# Use cached matches for quicker lookup
 		if (cached = @fileCache[path])?
-			rule      = @fileIcons[cached]
-			ruleMatch = rule.matches filename
+			[ruleIndex, matchIndex] = cached
+			rule      = @fileIcons[ruleIndex]
+			ruleMatch = rule.match[matchIndex]
 		
 		else for rule, index in @fileIcons
-			ruleMatch = rule.matches filename
-			if ruleMatch
-				@fileCache[path] = index
+			matchIndex = rule.matches filename
+			if matchIndex? and matchIndex isnt false
+				@fileCache[path] = [index, matchIndex]
+				ruleMatch = rule.match[matchIndex]
 				break
-			else ruleMatch = null
+			else matchIndex = null
 		
 		
 		if ruleMatch?

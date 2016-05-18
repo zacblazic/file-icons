@@ -47,8 +47,8 @@ class IconRule
 		
 	
 	matches: (path) ->
-		for i in @match
-			if i[0].test path then return i
+		for value, index in @match
+			if value[0].test path then return index
 		false
 	
 	
