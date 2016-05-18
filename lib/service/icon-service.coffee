@@ -77,7 +77,6 @@ class IconService
 				@fileCache[path] = [index, matchIndex]
 				ruleMatch = rule.match[matchIndex]
 				break
-			else matchIndex = null
 		
 		
 		if ruleMatch?
@@ -113,9 +112,10 @@ class IconService
 		dirname = basename dir.path
 		
 		for rule in @directoryIcons
-			ruleMatch = rule.matches dirname
-			if ruleMatch then break
-			else ruleMatch = null
+			matchIndex = rule.matches dirname
+			if matchIndex? and matchIndex isnt false
+				ruleMatch = rule.match[matchIndex]
+				break
 		
 		if ruleMatch?
 			suffix = if rule.noSuffix then "" else "-icon"
