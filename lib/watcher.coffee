@@ -53,7 +53,6 @@ class Watcher
 			@editorDisposables.add atom.workspace.observeTextEditors (editor) =>
 				return if @editors.has(editor)
 				once = editor.onDidStopChanging =>
-					console.log "onDidStopChanging: #{editor.getFileName()}"
 					@watchEditor(editor)
 					once.dispose()
 
@@ -66,7 +65,6 @@ class Watcher
 	# Attach listeners to a TextEditor, unless it was already done
 	watchEditor: (editor) ->
 		unless @editors.has editor
-			console.trace "Watching editor: #{editor.getFileName()}"
 			@editors.add editor
 			onChange = editor.onDidChangeGrammar (to) => @onGrammarChange?(editor, to)
 			onDestroy = editor.onDidDestroy =>
