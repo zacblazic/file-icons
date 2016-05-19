@@ -1366,6 +1366,7 @@ module.exports.fileIcons =
 
 	Ionic:
 		icon: "ionic"
+		priority: 2
 		match: /^ionic\.project$/
 		colour: "medium-blue"
 	
