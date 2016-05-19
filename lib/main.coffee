@@ -95,8 +95,8 @@ module.exports =
 	
 	
 	setChangeOnOverride: (enabled) ->
-		@watcher.watchingEditors(enabled)
-		@iconService.allowGrammarOverrides = enabled
+		@watcher.watchingEditors enabled
+		@iconService.scopeMatcher.enableOverrides enabled
 
 
 

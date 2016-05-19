@@ -17,15 +17,23 @@ class ScopeMatcher
 		# Register currently-loaded grammars
 		@refresh()
 		
-		# Stop a FOUC for overridden files visible on startup
-		@setInitialOverrides()
-		
 
 
 	# Index every currently-loaded grammar
 	refresh: ->
 		@icons = {}
 		@registerScope(i) for i of atom.grammars.grammarsByScopeName
+	
+	
+	
+	# Set whether overriding a file's grammar can affect the icon it displays
+	enableOverrides: (enabled) ->
+		for path of atom.grammars.grammarOverridesByPath
+			delete @service.fileCache[path]
+		
+		if enabled then @showOverrides @overrideEnabled?
+		@service.delayedRefresh 10
+		
 	
 	
 	# Mark a file's path as overridden by a grammar
@@ -68,22 +76,13 @@ class ScopeMatcher
 
 
 
-	# This method exists to suppress a disconcerting FOUC for overridden files that're
-	# visible on startup. This happens because we don't change the icons of overridden
-	# files unless the language's package is activated (if users override the grammars
-	# of certain files and deactivate the package later, the icons should logically be
-	# reverted).
-	#
-	# However, not every package will have had a chance to be activated at startup, as
-	# the File-Icons package will probably be initialised before others. So we'll just
-	# play it safe by assuming every overridden file's grammar will be activated.
-	#
-	# All this, just to stop the wrong icon from appearing for a split second for some
-	# certain files at startup. Told you this file was a quarantine.
-	setInitialOverrides: () ->
+	# Display scope-related icons for files with overridden grammars
+	# - ignoreDisabled: If truthy, the scopes of disabled packages are ignored
+	showOverrides: (ignoreDisabled) ->
 		icons = {}
 		
 		for path, scope of atom.grammars.grammarOverridesByPath
+			continue if ignoreDisabled and !atom.grammars.grammarsByScopeName[scope]
 			unless icons[scope]?
 				icons[scope] = @registerScope scope
 			{ruleIndex, matchIndex}  = icons[scope]
