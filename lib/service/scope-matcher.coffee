@@ -98,7 +98,7 @@ class ScopeMatcher
 		
 		for scope, extList of types || atom.config.get("core.customFileTypes")
 			patterns = extList.map (e) ->
-				new RegExp (escapeRegExp "." + e) + "$", "i"
+				new RegExp "(?:^|\\.)" + (escapeRegExp e) + "$", "i"
 			@customTypes[scope] = patterns
 			@customTypesEnabled = true
 				
