@@ -239,23 +239,23 @@ class IconService
 		
 		# Default to whatever the current Atom config is if no value was passed
 		types = types || atom.config.get("core.customFileTypes") || {}
-		
-		# Roast any "orphaned" icons if the config was being updated live
-		if previousValue?
-			removed = Object.keys(previousValue).filter (i) -> !types[i]?
-			added   = Object.keys(types).filter (i) -> !previousValue[i]?
-			cachebust @customTypes[scope] for scope in removed
-		else added  = Object.keys(types)
+
+		# Compile a list of every scope that's affected by these changes
+		scopes = new Set
+		if @customTypes
+			for scope in [types, previousValue]
+				(scopes.add(v) for v in list) for k, list of scope
 		
 		# Rebuild the type-hash
 		@customTypes = {}
 		for scope, extList of types
 			@addGrammar(scope)
-			patterns = extList.map makeRegExp
-			@customTypes[scope] = patterns
+			@customTypes[scope] = extList.map (e) ->
+				scopes.add(e)
+				makeRegExp(e)
 		
-		# Update the caches of any new types that were introduced
-		cachebust @customTypes[scope] for scope in added
+		# Burn the cache for every relevant filetype
+		cachebust Array.from(scopes).map makeRegExp
 		
 		if shouldRefresh then @delayedRefresh()
 	
