@@ -1,4 +1,4 @@
-{CompositeDisposable} = require "../utils"
+{CompositeDisposable, escapeRegExp} = require "../utils"
 
 
 # Controller for handling the painful, convoluted and absurd logic
@@ -14,6 +14,11 @@ class ScopeMatcher
 		@disposables.add atom.grammars.onDidAddGrammar (gram) => @registerScope gram.scopeName
 		@disposables.add atom.packages.onDidDeactivatePackage => @refresh()
 		
+		# Setup custom filetypes
+		@updateCustomTypes()
+		@disposables.add atom.config.onDidChange "core.customFileTypes", (changes) =>
+			@updateCustomTypes changes.newValue
+		
 		# Register currently-loaded grammars
 		@refresh()
 		
@@ -25,7 +30,6 @@ class ScopeMatcher
 		@registerScope(i) for i of atom.grammars.grammarsByScopeName
 	
 	
-	
 	# Set whether overriding a file's grammar can affect the icon it displays
 	enableOverrides: (enabled) ->
 		for path of atom.grammars.grammarOverridesByPath
@@ -34,7 +38,6 @@ class ScopeMatcher
 		if enabled then @showOverrides @overrideEnabled?
 		@service.delayedRefresh 10
 		
-	
 	
 	# Mark a file's path as overridden by a grammar
 	override: (path, scope, useDisabled) ->
@@ -56,7 +59,6 @@ class ScopeMatcher
 		result
 		
 	
-	
 	# Locate an IconRule that matches a TextMate scope, storing a connection if found
 	registerScope: (name) ->
 		rules = @service.fileIcons
@@ -75,7 +77,6 @@ class ScopeMatcher
 				return @icons[name] = iconInfo
 
 
-
 	# Display scope-related icons for files with overridden grammars
 	# - ignoreDisabled: If truthy, the scopes of disabled packages are ignored
 	showOverrides: (ignoreDisabled) ->
@@ -88,5 +89,19 @@ class ScopeMatcher
 			{ruleIndex, matchIndex}  = icons[scope]
 			@service.fileCache[path] = [ruleIndex, matchIndex]
 		
+
+
+	# Update the dictionary of custom filename/scope mappings
+	updateCustomTypes: (types) ->
+		@customTypes = {}
+		@customTypesEnabled = false
+		
+		for scope, extList of types || atom.config.get("core.customFileTypes")
+			patterns = extList.map (e) ->
+				new RegExp (escapeRegExp "." + e) + "$", "i"
+			@customTypes[scope] = patterns
+			@customTypesEnabled = true
+				
+				
 
 module.exports = {ScopeMatcher}
