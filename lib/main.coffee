@@ -10,6 +10,9 @@ module.exports =
 	activate: (state) ->
 		@disposables = new CompositeDisposable
 		@disposables.add atom.themes.onDidChangeActiveThemes => @onChangeThemes()
+		@disposables.add atom.grammars.onDidAddGrammar (add) => @iconService.addGrammar(add.scopeName)
+		@disposables.add atom.config.onDidChange "core.customFileTypes", (changes) =>
+			@iconService.updateCustomTypes changes.newValue, changes.oldValue
 		
 		# Ready a watcher to respond to project/editor changes
 		@watcher = new Watcher
@@ -45,7 +48,7 @@ module.exports =
 		
 		# Give the green light to update the tree-view's icons
 		@initialised = true
-		@iconService.delayedRefresh(10)
+		@iconService.delayedRefresh()
 
 
 	# Called when deactivating or uninstalling package
@@ -96,7 +99,7 @@ module.exports =
 	
 	setChangeOnOverride: (enabled) ->
 		@watcher.watchingEditors enabled
-		@iconService.scopeMatcher.enableOverrides enabled
+		@iconService.enableOverrides(enabled)
 
 
 
@@ -112,7 +115,7 @@ module.exports =
 		setTimeout (=>
 			@checkThemeColour()
 			@patchRuleset()
-			@iconService.delayedRefresh(10)
+			@iconService.delayedRefresh()
 		), 5
 
 
