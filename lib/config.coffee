@@ -580,7 +580,7 @@ module.exports.fileIcons =
 		]
 	
 	Cucumber:
-		icon: "comment"
+		icon: "cucumber"
 		scope: /(?:^|\.)(?:gherkin\.feature|cucumber\.steps)(?:\.|$)/i
 		match: ".feature"
 		colour: "medium-green"
