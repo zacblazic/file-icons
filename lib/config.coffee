@@ -1099,6 +1099,16 @@ module.exports.fileIcons =
 			[/^\.keep$/i]
 		]
 	
+	"Git - Commit":
+		icon: "git-commit"
+		match: /^COMMIT_EDITMSG$/
+		colour: "medium-red"
+	
+	"Git - Merge":
+		icon: "git-merge"
+		match: /^MERGE_(?:HEAD|MODE|MSG)$/
+		colour: "medium-red"
+	
 	Glade:
 		icon: "glade"
 		match: ".glade"
