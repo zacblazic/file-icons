@@ -57,6 +57,7 @@ module.exports.directoryIcons =
 	Dropbox:
 		icon: "dropbox"
 		match: /^(?:Dropbox|\.dropbox\.cache)$/
+		colour: "medium-blue"
 
 	TextMate:
 		icon: "textmate"
