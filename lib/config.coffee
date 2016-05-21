@@ -888,6 +888,11 @@ module.exports.fileIcons =
 		match: ".fan"
 		colour: "medium-blue"
 	
+	Finder:
+		icon: "finder"
+		match: /^Icon\r$/
+		colour: "medium-blue"
+	
 	Frege:
 		icon: "frege"
 		match: ".fr"
