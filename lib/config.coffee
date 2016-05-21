@@ -1019,7 +1019,7 @@ module.exports.fileIcons =
 	Generic:
 		icon: "code"
 		match: [
-			[".xml", "medium-blue", "xml"]
+			[".xml", "medium-blue"]
 			[".rdf", "dark-red"]
 			[".config", "medium-blue"]
 			[/^_service$/, "medium-blue"]
