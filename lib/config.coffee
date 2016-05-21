@@ -58,6 +58,10 @@ module.exports.directoryIcons =
 		icon: "dropbox"
 		match: /^(?:Dropbox|\.dropbox\.cache)$/
 
+	TextMate:
+		icon: "textmate"
+		match: ".tmBundle"
+
 
 module.exports.fileIcons =
 	
@@ -2805,6 +2809,7 @@ module.exports.fileIcons =
 			[".tmPreferences", "dark-blue"]
 			[".tmSnippet", "tmSnippet"]
 			[".tmTheme", "medium-pink"]
+			[".tmMacro", "medium-maroon"]
 			[".yaml-tmlanguage", "medium-orange"]
 			[".JSON-tmLanguage", "medium-purple"]
 		]
