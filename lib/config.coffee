@@ -643,6 +643,12 @@ module.exports.fileIcons =
 		scope: "d"
 		match: /\.di?$/i
 		colour: "medium-red"
+
+	Danmakufu:
+		icon: "yang"
+		scope: "danmakufu"
+		match: ".dnh"
+		colour: "medium-red"
 	
 	"Darcs Patch":
 		icon: "darcs"

@@ -4,6 +4,12 @@ All notable changes to the project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+[Unpublished]
+-------------
+### Added
+- **Support:** Danmakufu (`.dnh`)
+
+
 [1.7.12 - 2016-05-21]
 ---------------------
 ### Added
