@@ -444,11 +444,6 @@ module.exports.fileIcons =
 		match: "TODO"
 		colour: "medium-yellow"
 	
-	Chord:
-		icon: "music"
-		match: ".chord"
-		colour: "medium-orange"
-	
 	ChucK:
 		icon: "chuck"
 		scope: "chuck"
@@ -1583,13 +1578,6 @@ module.exports.fileIcons =
 		priority: 2
 		match: "project.clj"
 	
-	LilyPond:
-		icon: "music"
-		match: [
-			[".ly", "medium-green", /\.(?:At)?lilypond-/i]
-			[".ily", "dark-green"]
-		]
-	
 	LISP:
 		icon: "lisp"
 		match: [
@@ -1861,6 +1849,19 @@ module.exports.fileIcons =
 		icon: "mupad"
 		match: ".mu"
 		colour: "medium-red"
+	
+	Music:
+		icon: "music"
+		match: [
+			[".chord", "medium-orange"]
+			
+			# LilyPond
+			[".ly", "medium-green", /\.(?:At)?lilypond-/i]
+			[".ily", "dark-green"]
+			
+			# Pure Data
+			[".pd", "dark-red"]
+		]
 	
 	Mustache: # (Or Handlebars)
 		icon: "mustache"
@@ -2277,11 +2278,6 @@ module.exports.fileIcons =
 			[".pb", "medium-red", "purebasic"]
 			[".pbi", "dark-orange"]
 		]
-	
-	"Pure Data":
-		icon: "music"
-		match: ".pd"
-		colour: "dark-red"
 	
 	PureScript:
 		icon: "purescript"
