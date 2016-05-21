@@ -1978,7 +1978,7 @@ module.exports.fileIcons =
 	Nu:
 		icon: "recycle"
 		match: [
-			[".nu", "light-green"]
+			[".nu", "light-green", "nu"]
 			[/^Nukefile$/, "dark-green"]
 		]
 	
