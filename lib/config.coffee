@@ -603,10 +603,10 @@ module.exports.fileIcons =
 	Csound:
 		icon: "csound"
 		match: [
-			[".orc", "medium-maroon"]
+			[".orc", "medium-maroon", "csound"]
 			[".udo", "dark-orange"]
-			[".csd", "dark-maroon"]
-			[".sco", "dark-blue"]
+			[".csd", "dark-maroon", "csound-document"]
+			[".sco", "dark-blue", "csound-score"]
 		]
 	
 	CSS:
