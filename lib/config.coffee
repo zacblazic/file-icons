@@ -2356,7 +2356,7 @@ module.exports.fileIcons =
 	
 	Readme:
 		icon: "book"
-		match: /^(?:README\.md|(?:read|readme|click|delete|keep|test)\.me|authors|changelog|contributing|contributors|copying|history|install|license|news|projects|thanks)$|\.(?:readme|1st)$/i
+		match: /^(?:README(?:\.md)?|(?:read|readme|click|delete|keep|test)\.me|notice|authors|changelog|contributing|contributors|copying|history|install|license|news|projects|thanks)$|\.(?:readme|1st)$/i
 		colour: "medium-blue"
 		priority: 2
 	
