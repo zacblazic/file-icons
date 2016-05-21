@@ -78,6 +78,13 @@ module.exports.fileIcons =
 		match: /\.(ada|adb|ads)$/i
 		colour: "medium-blue"
 	
+	"Adobe After Effects":
+		icon: "ae"
+		match: [
+			[".aep", "dark-pink"]
+			[".aet", "dark-purple"]
+		]
+	
 	"Adobe Illustrator":
 		icon: "ai"
 		match: [
@@ -85,11 +92,30 @@ module.exports.fileIcons =
 			[".ait", "dark-orange"]
 		]
 	
+	"Adobe InDesign":
+		icon: "indesign"
+		match: [
+			[".indd", "dark-pink"]
+			[".indl", "medium-purple"]
+			[".indt", "dark-purple"]
+			[".indb", "dark-blue"]
+			[".inx", "dark-purple"]
+			[".idml", "dark-pink"]
+		]
+	
 	"Adobe Photoshop":
 		icon: "psd"
 		match: [
 			[".psd", "medium-blue"]
 			[".psb", "dark-purple"]
+		]
+	
+	"Adobe Premiere":
+		icon: "premiere"
+		match: [
+			[".prproj", "dark-purple"]
+			[".prel", "medium-maroon"]
+			[".psq", "medium-purple"]
 		]
 	
 	Alloy:
@@ -125,7 +151,7 @@ module.exports.fileIcons =
 	APL:
 		icon: "apl"
 		match: [
-			[".apl", "dark-red", "apl"]
+			[".apl", "dark-cyan", "apl"]
 			[".apl.history", "medium-maroon"]
 		]
 	
@@ -418,6 +444,11 @@ module.exports.fileIcons =
 		match: "TODO"
 		colour: "medium-yellow"
 	
+	Chord:
+		icon: "music"
+		match: ".chord"
+		colour: "medium-orange"
+	
 	ChucK:
 		icon: "chuck"
 		scope: "chuck"
@@ -571,6 +602,15 @@ module.exports.fileIcons =
 		match: /\.e?cr$/i
 		colour: "medium-cyan"
 	
+	Csound:
+		icon: "csound"
+		match: [
+			[".orc", "medium-maroon"]
+			[".udo", "dark-orange"]
+			[".csd", "dark-maroon"]
+			[".sco", "dark-blue"]
+		]
+	
 	CSS:
 		icon: "css3"
 		match: [
@@ -644,6 +684,11 @@ module.exports.fileIcons =
 			[".rviz", "dark-blue"]
 			[".syntax", "medium-blue"]
 		]
+	
+	dBASE:
+		icon: "dbase"
+		match: ".dbf"
+		colour: "medium-red"
 	
 	Debian:
 		icon: "debian"
@@ -963,6 +1008,7 @@ module.exports.fileIcons =
 			[/^configure\.ac$/, "medium-red"]
 			[/^Settings\.StyleCop$/, "medium-green"]
 			[".4th", "medium-blue"]
+			[".aepx", "medium-purple"]
 			[".agda", "dark-cyan"]
 			[".ash", "medium-cyan"]
 			[".axml", "dark-blue"]
@@ -1040,6 +1086,7 @@ module.exports.fileIcons =
 			[".rl", "medium-red"]
 			[".scxml", "light-cyan"]
 			[".sed", "dark-green"]
+			[/\.sgml?$/i, "dark-yellow"]
 			[".sig", "light-maroon"]
 			[".sml", "medium-red"]
 			[".smt", "light-blue"]
@@ -1471,6 +1518,13 @@ module.exports.fileIcons =
 			[/^karma\.conf\.coffee$/i, "medium-maroon"]
 		]
 	
+	Keynote:
+		icon: "keynote"
+		match: [
+			[".keynote", "medium-blue"]
+			[".knt", "dark-blue"]
+		]
+	
 	Kivy:
 		icon: "kivy"
 		scope: "kv"
@@ -1714,6 +1768,56 @@ module.exports.fileIcons =
 		match: ".metal"
 		colour: "dark-cyan"
 	
+	"Microsoft Access":
+		icon: "access"
+		match: [
+			[".accda", "dark-maroon"]
+			[".accdb", "medium-maroon"]
+			[".accde", "medium-green"]
+			[".accdr", "medium-red"]
+			[".accdt", "dark-red"]
+			[".adn", "light-maroon"]
+			[".laccdb", "light-maroon"]
+			[".mdw", "dark-purple"]
+		]
+	
+	"Microsoft Excel":
+		icon: "excel"
+		match: [
+			[".xls", "dark-orange"]
+			[".xlsx", "dark-green"]
+			[".xlsm", "medium-green"]
+			[".xlsb", "medium-red"]
+			[".xlt", "dark-cyan"]
+		]
+	
+	"Microsoft OneNote":
+		icon: "onenote"
+		match: ".one"
+		colour: "dark-purple"
+	
+	"Microsoft PowerPoint":
+		icon: "powerpoint"
+		match: [
+			[".pps", "dark-red"]
+			[".ppsx", "medium-orange"]
+			[".ppt", "dark-orange"]
+			[".pptx", "medium-red"]
+			[".potm", "medium-maroon"]
+		]
+	
+	"Microsoft Word":
+		icon: "word"
+		match: [
+			[".doc", "medium-blue"]
+			[".docx", "dark-blue"]
+			[".docm", "medium-maroon"]
+			[".docxml", "dark-cyan"]
+			[".dotm", "dark-maroon"]
+			[".dotx", "medium-cyan"]
+			[".wri", "medium-orange"]
+		]
+	
 	Minecraft:
 		icon: "minecraft"
 		scope: "forge-config"
@@ -1925,6 +2029,25 @@ module.exports.fileIcons =
 		scope: "abl"
 		match: ".p"
 		colour: "medium-red"
+	
+	OpenOffice:
+		icon: "openoffice"
+		match: [
+			[".odt", "medium-blue"]
+			[".ott", "dark-blue"]
+			[".fodt", "dark-purple"]
+			[".ods", "medium-green"]
+			[".ots", "dark-green"]
+			[".fods", "dark-cyan"]
+			[".odp", "medium-purple"]
+			[".otp", "dark-pink"]
+			[".fodp", "medium-pink"]
+			[".odg", "medium-red"]
+			[".otg", "dark-red"]
+			[".fodg", "dark-orange"]
+			[".odf", "medium-maroon"]
+			[".odb", "light-pink"]
+		]
 	
 	OpenSCAD:
 		icon: "scad"
@@ -2222,7 +2345,7 @@ module.exports.fileIcons =
 	
 	Readme:
 		icon: "book"
-		match: /^(?:README\.md|read\.me|authors|changelog|contributing|contributors|copying|history|install|license|news|projects|thanks)$|\.readme$/i
+		match: /^(?:README\.md|read\.me|authors|changelog|contributing|contributors|copying|history|install|license|news|projects|thanks)$|\.(?:readme|1st)$/i
 		colour: "medium-blue"
 		priority: 2
 	
@@ -2384,6 +2507,8 @@ module.exports.fileIcons =
 		match: [
 			[".csv", "light-red", /(?:^|\.)csv(?:\.semicolon)?(?:\.|$)/i]
 			[/\.(?:tab|tsv)$/i, "light-green"]
+			[".dif", "medium-green"]
+			[".slk", "medium-cyan"]
 		]
 
 	"Service Fabric":
@@ -2497,6 +2622,11 @@ module.exports.fileIcons =
 			[".matah", "light-cyan"]
 			[".sthlp", "medium-purple"]
 		]
+	
+	Storyist:
+		icon: "storyist"
+		match: ".story"
+		colour: "medium-blue"
 	
 	Stylelint:
 		icon: "stylelint"
@@ -2624,6 +2754,29 @@ module.exports.fileIcons =
 			[".mkvi", "auto-orange"]
 			[".mkii", "auto-orange"]
 			[".texi", "auto-red"]
+		]
+	
+	Text:
+		icon: "icon-file-text"
+		noSuffix: true
+		match: [
+			[".ans", "dark-orange"]
+			[".err", "medium-red"]
+			[".etx", "medium-yellow"]
+			[".irclog", "medium-blue"]
+			[".log", "medium-maroon"]
+			[".msg", "medium-orange"]
+			[".nfo", "dark-blue"]
+			[".rtf", "dark-red"]
+			[".srt", "medium-purple"]
+			[".sub", "dark-purple"]
+			[/\.te?xt$/i, "medium-blue"]
+			[/\.(?:utxt|utf8)$/i, "medium-cyan"]
+			[".weechatlog", "medium-green"]
+			[".uof", "dark-red"]
+			[".uot", "medium-blue"]
+			[".uos", "medium-green"]
+			[".uop", "medium-purple"]
 		]
 	
 	Textile:
@@ -2810,6 +2963,11 @@ module.exports.fileIcons =
 		match: ".vue"
 		colour: "light-green"
 	
+	"Wavefront OBJ":
+		icon: "obj"
+		match: ".obj"
+		colour: "medium-red"
+	
 	"Web Ontology Language":
 		icon: "owl"
 		match: ".owl"
@@ -2894,6 +3052,11 @@ module.exports.fileIcons =
 		scope: "yang"
 		match: ".yang"
 		colour: "medium-yellow"
+
+	ZBrush:
+		icon: "zbrush"
+		match: ".zpr"
+		colour: "dark-purple"
 
 	Zephir:
 		icon: "zephir"
