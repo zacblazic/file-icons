@@ -78,7 +78,7 @@ module.exports.fileIcons =
 	Ada:
 		icon: "ada"
 		scope: "ada"
-		match: /\.(ada|adb|ads)$/i
+		match: /\.(?:ada|adb|ads)$/i
 		colour: "medium-blue"
 	
 	"Adobe After Effects":
@@ -161,7 +161,7 @@ module.exports.fileIcons =
 	AppleScript:
 		icon: "apple"
 		scope: "applescript"
-		match: /\.(applescript|scpt)$/i
+		match: /\.(?:applescript|scpt)$/i
 		colour: "medium-purple"
 	
 	Arc:
@@ -178,7 +178,7 @@ module.exports.fileIcons =
 	AsciiDoc:
 		icon: "asciidoc"
 		scope: "asciidoc"
-		match: /\.(ad|adoc|asc|asciidoc)$/i
+		match: /\.(?:ad|adoc|asc|asciidoc)$/i
 		colour: "medium-blue"
 	
 	"ASP.net":
@@ -208,7 +208,7 @@ module.exports.fileIcons =
 		icon: "apache"
 		priority: 2
 		match: [
-			[/^(apache2?|httpd).conf$/i, "medium-red"]
+			[/^(?:apache2?|httpd).conf$/i, "medium-red"]
 			[".apacheconf", "dark-red", "apache-config"]
 			[".vhost", "dark-green"]
 			[".thrift", "medium-green"]
@@ -223,10 +223,10 @@ module.exports.fileIcons =
 	Assembly: # Or binary
 		icon: "binary"
 		match: [
-			[/\.(a|s?o|out|s|a51|nasm|asm|z80)$/i, "medium-red", /(?:^|\.)(?:a[rs]m|x86|z80|lc-?3|cpu12|x86asm|m68k|assembly|avr(?:dis)?asm|dasm)(\.|$)/i]
+			[/\.(?:a|s?o|out|s|a51|nasm|asm|z80)$/i, "medium-red", /(?:^|\.)(?:a[rs]m|x86|z80|lc-?3|cpu12|x86asm|m68k|assembly|avr(?:dis)?asm|dasm)(?:\.|$)/i]
 			[".ko", "dark-green"]
 			[".lst", "medium-blue", "lst-cpu12"]
-			[/\.((c([+px]{2}?)?-?)?objdump)$/i, "dark-orange"]
+			[/\.(?:(?:c(?:[+px]{2}?)?-?)?objdump)$/i, "dark-orange"]
 			[".d-objdump", "dark-blue"]
 			[/\.gcode|\.gco/i, "medium-orange"]
 			[/\.rpy[bc]$/i, "medium-red"]
@@ -290,7 +290,7 @@ module.exports.fileIcons =
 	Babel:
 		icon: "babel"
 		match: [
-			[/\.(babelrc|languagebabel|babel)$/i, "medium-yellow"]
+			[/\.(?:babelrc|languagebabel|babel)$/i, "medium-yellow"]
 			[".babelignore", "dark-yellow"]
 		]
 	
@@ -327,7 +327,7 @@ module.exports.fileIcons =
 	Bower:
 		icon: "bower"
 		priority: 2
-		match: /^(\.bowerrc|bower\.json)$/i
+		match: /^(?:\.bowerrc|bower\.json)$/i
 		colour: "bower"
 	
 	Brainfuck:
@@ -497,7 +497,7 @@ module.exports.fileIcons =
 	
 	ClojureScript:
 		icon: "cljs"
-		match: /\.cljs(\.hl|cm)?$/i
+		match: /\.cljs(?:\.hl|cm)?$/i
 		colour: "auto-blue"
 
 	CMake:
@@ -547,7 +547,7 @@ module.exports.fileIcons =
 		icon: "composer"
 		priority: 2
 		match: [
-			[/^composer\.(json|lock)$/i, "medium-yellow"]
+			[/^composer\.(?:json|lock)$/i, "medium-yellow"]
 			[/^composer\.phar$/i, "dark-blue"]
 		]
 	
@@ -557,7 +557,7 @@ module.exports.fileIcons =
 			[/\.(?:zip|z|xz)$/i]
 			[".rar", "medium-blue"]
 			[/\.t?gz$/i, "dark-blue"]
-			[/\.lz(o|ma)?/i, "medium-maroon"]
+			[/\.lz(?:o|ma)?/i, "medium-maroon"]
 			[".tar", "dark-blue"]
 			[".bz2", "dark-cyan"]
 			[".xpi", "medium-orange"]
@@ -572,7 +572,7 @@ module.exports.fileIcons =
 	Config:
 		icon: "config"
 		match: [
-			[/\.(ini|desktop(\.in)?|directory|cfg|conf|prefs)$/i, "medium-yellow"]
+			[/\.(?:ini|desktop(?:\.in)?|directory|cfg|conf|prefs)$/i, "medium-yellow"]
 			[".properties", "medium-purple", "java-properties"]
 			[".toml", "medium-green"]
 			[".ld", "dark-red"]
@@ -652,7 +652,7 @@ module.exports.fileIcons =
 	
 	"Darcs Patch":
 		icon: "darcs"
-		match: /\.d(arcs)?patch$/i
+		match: /\.d(?:arcs)?patch$/i
 		colour: "medium-green"
 	
 	Dart:
@@ -669,7 +669,7 @@ module.exports.fileIcons =
 	Data:
 		icon: "database"
 		match: [
-			[/\.(h|geo|topo)?json$/i, "medium-yellow"]
+			[/\.(?:h|geo|topo)?json$/i, "medium-yellow"]
 			[/\.ya?ml$/, "light-red"]
 			[".cson", "medium-maroon"]
 			[".json5", "dark-yellow", "json5"]
@@ -770,7 +770,7 @@ module.exports.fileIcons =
 		icon: "elixir"
 		match: [
 			[".ex", "dark-purple", "elixir"]
-			[/\.(exs|eex)$/i, "medium-purple"]
+			[/\.(?:exs|eex)$/i, "medium-purple"]
 			[/mix\.exs?$/i, "light-purple"]
 		]
 	
@@ -812,7 +812,7 @@ module.exports.fileIcons =
 	
 	"Emacs Lisp":
 		icon: "emacs"
-		match: /\.(el|emacs|spacemacs|emacs\.desktop)$/i
+		match: /\.(?:el|emacs|spacemacs|emacs\.desktop)$/i
 		colour: "medium-purple"
 	
 	EmberScript:
@@ -2133,7 +2133,7 @@ module.exports.fileIcons =
 	Perl:
 		icon: "perl"
 		match: [
-			[/\.p(er)?l$/i, "medium-blue", "perl"]
+			[/\.p(?:er)?l$/i, "medium-blue", "perl"]
 			[".ph", "dark-purple"]
 			[".plx", "medium-purple"]
 			[".pm", ".dark-blue"]
@@ -2374,7 +2374,7 @@ module.exports.fileIcons =
 	Rebol:
 		icon: "rebol"
 		match: [
-			[/\.reb(ol)?$/i, "dark-green", "rebol"]
+			[/\.reb(?:ol)?$/i, "dark-green", "rebol"]
 			[".r2", "dark-red"]
 			[".r3", "dark-blue"]
 		]
@@ -2399,7 +2399,7 @@ module.exports.fileIcons =
 	reStructuredText:
 		icon: "rst"
 		scope: "restructuredtext"
-		match: /\.re?st(\.txt)?$/i
+		match: /\.re?st(?:\.txt)?$/i
 		colour: "dark-blue"
 	
 	Riemann:
@@ -2435,7 +2435,7 @@ module.exports.fileIcons =
 			[/\.(?:rb|ru|ruby|erb|gemspec|god|irbrc|mspec|pluginspec|podspec|rabl|rake|opal)$/i, "medium-red", "ruby"]
 			[/^\.?(?:gemrc|pryrc|rspec|ruby-(?:gemset|version))$/i, "medium-red"]
 			[/^(?:Appraisals|(?:Rake|Gem|[bB]uild|Berks|Cap|Deliver|Fast|Guard|Jar|Maven|Pod|Puppet|Snap)file(?:\.lock)?)$/, "medium-red"]
-			[/\.(jbuilder|rbuild|rb[wx]|builder)$/i, "dark-red"]
+			[/\.(?:jbuilder|rbuild|rb[wx]|builder)$/i, "dark-red"]
 			["_spec.rb", "light-green"]
 			[/^rails$/, "medium-red"]
 			[".watchr", "dark-yellow"]
@@ -3014,7 +3014,7 @@ module.exports.fileIcons =
 	XQuery:
 		icon: "sql"
 		scope: "xq"
-		match: /\.(xquery|xq|xql|xqm|xqy)$/i
+		match: /\.(?:xquery|xq|xql|xqm|xqy)$/i
 		colour: "dark-red"
 
 	X10:
@@ -3077,5 +3077,5 @@ module.exports.fileIcons =
 		
 	Zimpl:
 		icon: "zimpl"
-		match: /\.(zimpl|zmpl|zpl)$/i
+		match: /\.(?:zimpl|zmpl|zpl)$/i
 		colour: "medium-orange"
