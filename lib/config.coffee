@@ -67,9 +67,9 @@ module.exports.fileIcons =
 	ActionScript:
 		icon: "as"
 		match: [
+			[".swf", "medium-blue"]
 			[".as", "medium-red", /\.(?:flex-config|actionscript(?:\.\d+)?)$/i]
 			[".jsfl", "auto-yellow"]
-			[".swf", "medium-blue"]
 		]
 	
 	Ada:
@@ -220,7 +220,6 @@ module.exports.fileIcons =
 	Assembly: # Or binary
 		icon: "binary"
 		match: [
-			[".DS_Store"]
 			[/\.(a|s?o|out|s|a51|nasm|asm|z80)$/i, "medium-red", /(?:^|\.)(?:a[rs]m|x86|z80|lc-?3|cpu12|x86asm|m68k|assembly|avr(?:dis)?asm|dasm)(\.|$)/i]
 			[".ko", "dark-green"]
 			[".lst", "medium-blue", "lst-cpu12"]
@@ -229,6 +228,7 @@ module.exports.fileIcons =
 			[/\.gcode|\.gco/i, "medium-orange"]
 			[/\.rpy[bc]$/i, "medium-red"]
 			[/\.py[co]$/i, "dark-purple"]
+			[".DS_Store"]
 		]
 	
 	ATS:
@@ -243,6 +243,7 @@ module.exports.fileIcons =
 		icon: "audio"
 		match: [
 			[".mp3", "medium-red"]
+			[".wav", "dark-yellow"]
 			[/\.(?:m4p|aac)$/i, "dark-cyan"]
 			[".aiff", "medium-purple"]
 			[".au", "medium-cyan"]
@@ -252,7 +253,6 @@ module.exports.fileIcons =
 			[".oga", "dark-orange"]
 			[".opus", "dark-maroon"]
 			[/\.r[am]$/i, "dark-blue"]
-			[".wav", "dark-yellow"]
 			[".wma", "medium-blue"]
 		]
 	
@@ -609,8 +609,8 @@ module.exports.fileIcons =
 	CSS:
 		icon: "css3"
 		match: [
-			[".less", "dark-blue", "css.less"]
 			[".css", "medium-blue", "css"]
+			[".less", "dark-blue", "css.less"]
 			[".styl", "medium-green", "stylus"]
 		]
 	
@@ -712,6 +712,7 @@ module.exports.fileIcons =
 	
 	Dogescript:
 		icon: "doge"
+		priority: 0 # Not much wow
 		match: ".djs"
 		colour: "medium-yellow"
 	
@@ -910,12 +911,12 @@ module.exports.fileIcons =
 	Font:
 		icon: "font"
 		match: [
+			[".woff2", "dark-blue"]
+			[".woff", "medium-blue"]
 			[".eot", "light-green"]
 			[".ttc", "dark-green"]
 			[".ttf", "medium-green"]
 			[".otf", "dark-yellow"]
-			[".woff", "medium-blue"]
-			[".woff2", "dark-blue"]
 		]
 	
 	"Font Metadata":
@@ -971,6 +972,9 @@ module.exports.fileIcons =
 	Gear:
 		icon: "gear"
 		match: [
+			[/^\.htaccess$/i, "medium-red"]
+			[/^\.htpasswd$/i, "medium-orange"]
+			[/^\.env\./i, "dark-green"]
 			[".editorconfig", "medium-orange"]
 			[/^\.lesshintrc$/, "dark-yellow"]
 			[/^\.csscomb\.json$/, "medium-yellow"]
@@ -980,11 +984,8 @@ module.exports.fileIcons =
 			[".coffeelintignore", "medium-maroon"]
 			[".jscsrc", "medium-yellow"]
 			[".module", "medium-blue"]
-			[/^\.htaccess$/i, "medium-red"]
-			[/^\.htpasswd$/i, "medium-orange"]
 			[".codoopts", "medium-maroon"]
 			[".yardopts", "medium-red"]
-			[/^\.env\./i, "dark-green"]
 			[".arcconfig", "dark-blue"]
 			[".ctags", "dark-purple"]
 			[".pairs", "dark-green"]
@@ -999,6 +1000,9 @@ module.exports.fileIcons =
 	Generic:
 		icon: "code"
 		match: [
+			[".xml", "medium-blue", "xml"]
+			[".rdf", "dark-red"]
+			[".config", "medium-blue"]
 			[/^_service$/, "medium-blue"]
 			[/^configure\.ac$/, "medium-red"]
 			[/^Settings\.StyleCop$/, "medium-green"]
@@ -1018,7 +1022,6 @@ module.exports.fileIcons =
 			[".clixml", "dark-blue"]
 			[".cob", "medium-maroon"]
 			[".cobol", "medium-maroon"]
-			[".config", "medium-blue"]
 			[".cpy", "dark-maroon"]
 			[".ct", "dark-pink"]
 			[".cw", "medium-red"]
@@ -1076,7 +1079,6 @@ module.exports.fileIcons =
 			[".props", "medium-cyan"]
 			[".psc1", "light-blue"]
 			[".pt", "medium-red"]
-			[".rdf", "dark-red"]
 			[".resx", "medium-cyan"]
 			[".rl", "medium-red"]
 			[".scxml", "light-cyan"]
@@ -1109,7 +1111,6 @@ module.exports.fileIcons =
 			[".xlf", "dark-cyan"]
 			[".xliff", "medium-red"]
 			[".xmi", "medium-green"]
-			[".xml", "medium-blue", "xml"]
 			[".xproj", "dark-red"]
 			[".xsd", "dark-blue"]
 			[".xsl", "medium-cyan", "xsl"]
@@ -1650,13 +1651,13 @@ module.exports.fileIcons =
 		scope: "makefile"
 		match: [
 			[/^Makefile/, "medium-yellow"]
+			[".mk", "medium-yellow"]
+			[".mak", "medium-yellow"]
 			[/^BSDmakefile$/i, "medium-red"]
 			[/^GNUmakefile$/i, "medium-green"]
 			[/^Kbuild$/, "medium-blue"]
 			[/^makefile$/, "medium-yellow"]
 			[/^mkfile$/i, "medium-yellow"]
-			[".mk", "medium-yellow"]
-			[".mak", "medium-yellow"]
 			[".am", "medium-red"]
 			[".bb", "dark-blue"]
 			[".ninja", "medium-blue"]
@@ -2223,8 +2224,8 @@ module.exports.fileIcons =
 	Prolog:
 		icon: "prolog"
 		match: [
-			[".prolog", "medium-cyan"]
 			[".pro", "medium-blue", "prolog"]
+			[".prolog", "medium-cyan"]
 			[".yap", "medium-purple"]
 		]
 	
@@ -2450,8 +2451,8 @@ module.exports.fileIcons =
 	Sass:
 		icon: "sass"
 		match: [
-			[".sass", "dark-pink", "sass"]
 			[".scss", "light-pink", "scss"]
+			[".sass", "dark-pink", "sass"]
 		]
 	
 	SBT:
@@ -2592,12 +2593,12 @@ module.exports.fileIcons =
 	"SSH keys":
 		icon: "key"
 		match: [
-			[/^id_rsa/, "medium-red"]
 			[".pub", "medium-yellow"]
 			[".pem", "medium-orange"]
-			[".der", "medium-purple"]
 			[".key", "medium-blue"]
 			[".crt", "medium-blue"]
+			[".der", "medium-purple"]
+			[/^id_rsa/, "medium-red"]
 			[/\.glyphs\d*License$/i, "medium-green"]
 		]
 	
@@ -2756,17 +2757,17 @@ module.exports.fileIcons =
 		icon: "icon-file-text"
 		noSuffix: true
 		match: [
-			[".ans", "dark-orange"]
+			[/\.te?xt$/i, "medium-blue"]
+			[".log", "medium-maroon"]
 			[".err", "medium-red"]
+			[".rtf", "dark-red"]
+			[".nfo", "dark-blue"]
+			[".ans", "dark-orange"]
 			[".etx", "medium-yellow"]
 			[".irclog", "medium-blue"]
-			[".log", "medium-maroon"]
 			[".msg", "medium-orange"]
-			[".nfo", "dark-blue"]
-			[".rtf", "dark-red"]
 			[".srt", "medium-purple"]
 			[".sub", "dark-purple"]
-			[/\.te?xt$/i, "medium-blue"]
 			[/\.(?:utxt|utf8)$/i, "medium-cyan"]
 			[".weechatlog", "medium-green"]
 			[".uof", "dark-red"]
