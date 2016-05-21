@@ -1869,7 +1869,7 @@ module.exports.fileIcons =
 	
 	Mustache: # (Or Handlebars)
 		icon: "mustache"
-		scope: "mustache"
+		scope: /(?:^|\.)(?:mustache|handlebars)(?:\.|$)/i
 		match: /\.(?:hbs|handlebars|mustache)$/i
 		colour: "medium-orange"
 	
