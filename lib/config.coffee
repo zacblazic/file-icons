@@ -54,6 +54,9 @@ module.exports.directoryIcons =
 		icon: "meteor"
 		match: /^\.meteor$/
 	
+	Dropbox:
+		icon: "dropbox"
+		match: /^(?:Dropbox|\.dropbox\.cache)$/
 
 
 module.exports.fileIcons =
