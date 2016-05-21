@@ -2780,6 +2780,7 @@ module.exports.fileIcons =
 			[".etx", "medium-yellow"]
 			[".irclog", "medium-blue"]
 			[".msg", "medium-orange"]
+			[".no", "medium-red"]
 			[".srt", "medium-purple"]
 			[".sub", "dark-purple"]
 			[/\.(?:utxt|utf8)$/i, "medium-cyan"]
