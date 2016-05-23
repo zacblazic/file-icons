@@ -619,7 +619,6 @@ module.exports.fileIcons =
 		match: [
 			[".css", "medium-blue", "css"]
 			[".less", "dark-blue", "css.less"]
-			[".styl", "medium-green", "stylus"]
 		]
 	
 	Cucumber:
@@ -1928,6 +1927,11 @@ module.exports.fileIcons =
 			[".nginxconf", "medium-green", "nginx"]
 		]
 	
+	Nib:
+		icon: "nib"
+		match: ".nib"
+		colour: "dark-orange"
+	
 	Nimrod:
 		icon: "nimrod"
 		scope: "nim"
@@ -2653,6 +2657,12 @@ module.exports.fileIcons =
 			[/^stylelint\.config\.js$/, "auto-yellow"]
 			[".stylelintignore", "dark-blue"]
 		]
+	
+	Stylus:
+		icon: "stylus"
+		scope: "stylus"
+		match: ".styl"
+		colour: "medium-green"
 	
 	SAS:
 		icon: "sas"

@@ -7,7 +7,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 [Unpublished]
 -------------
 ### Added
+- **New icons:** Khronos, Nib, Stylus (new logo)
 - **Support:** Danmakufu (`.dnh`), PHPUnit Config (`.xml.dist`), Stylelint (`.stylelintrc.{json, yaml, js}`, `stylelint.config.js`)
+
+### Fixed
+- `CMakeLists.txt` no longer replaced with standard text-file icon
 
 
 [1.7.12 - 2016-05-21]
