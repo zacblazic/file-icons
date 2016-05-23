@@ -535,6 +535,11 @@ module.exports.fileIcons =
 			[/\.cfml?$/i, "medium-cyan", /\.cfml?$/i]
 		]
 	
+	COLLADA:
+		icon: "khronos"
+		match: ".dae"
+		colour: "medium-orange"
+	
 	"Common Lisp":
 		icon: "cl"
 		scope: "common-lisp"
