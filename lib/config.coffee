@@ -1130,6 +1130,7 @@ module.exports.fileIcons =
 			[".xlf", "dark-cyan"]
 			[".xliff", "medium-red"]
 			[".xmi", "medium-green"]
+			[".xml.dist", "medium-blue"]
 			[".xproj", "dark-red"]
 			[".xsd", "dark-blue"]
 			[".xsl", "medium-cyan", "xsl"]
@@ -2646,8 +2647,10 @@ module.exports.fileIcons =
 	
 	Stylelint:
 		icon: "stylelint"
+		priority: 2
 		match: [
-			[".stylelintrc", "medium-purple"]
+			[/^\.stylelintrc(?:\.|$)/i, "medium-purple"]
+			[/^stylelint\.config\.js$/, "auto-yellow"]
 			[".stylelintignore", "dark-blue"]
 		]
 	
