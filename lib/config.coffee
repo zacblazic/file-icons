@@ -1975,6 +1975,7 @@ module.exports.fileIcons =
 	
 	NPM:
 		icon: "npm"
+		priority: 2
 		match: /^(?:package\.json|\.npmignore|\.?npmrc|npm-debug\.log)$/
 		colour: "medium-red"
 	
