@@ -3000,10 +3000,12 @@ module.exports.fileIcons =
 		match: ".vue"
 		colour: "light-green"
 	
-	"Wavefront OBJ":
+	Wavefront:
 		icon: "obj"
-		match: ".obj"
-		colour: "medium-red"
+		match: [
+			[".obj", "medium-red"]
+			[".mtl", "dark-blue"]
+		]
 	
 	"Web Ontology Language":
 		icon: "owl"
