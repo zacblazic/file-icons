@@ -127,7 +127,7 @@ class IconService
 			for e in patterns when e.test(filename)
 				if result = @scopeCache[scope]
 					@fileCache[path] = result
-				return result
+				return result if result
 		
 		null
 	
