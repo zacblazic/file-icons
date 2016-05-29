@@ -1751,11 +1751,15 @@ module.exports.fileIcons =
 			[".pat", "medium-green"]
 		]
 	
-	MAXScript:
+	MAXScript: # Or 3DSMax-specific files
 		icon: "maxscript"
-		scope: "maxscript"
-		match: /\.(?:ms|mcr|mce)$/i
-		colour: "dark-blue"
+		match: [
+			[".ms", "dark-blue", "maxscript"]
+			[".mcr", "dark-purple"]
+			[".mce", "medium-red"]
+			[".max", "dark-cyan"]
+			[".3ds", "medium-cyan"]
+		]
 	
 	"Manual Page":
 		icon: "manpage"
@@ -1849,7 +1853,15 @@ module.exports.fileIcons =
 			[/\.dr?uby$/g, "medium-blue", "mirah"]
 			[/\.mir(?:ah)?$/g, "light-blue"]
 		]
-	
+
+	Model: # Or generic 3D asset
+		icon: "model"
+		match: [
+			[".obj", "medium-red"]
+			[".mtl", "dark-blue"]
+			[".stl", "dark-green"]
+		]
+
 	Modelica:
 		icon: "circle"
 		scope: /\.modelica(?:script)?$/i
@@ -3005,13 +3017,6 @@ module.exports.fileIcons =
 		scope: "vue"
 		match: ".vue"
 		colour: "light-green"
-	
-	Wavefront:
-		icon: "obj"
-		match: [
-			[".obj", "medium-red"]
-			[".mtl", "dark-blue"]
-		]
 	
 	"Web Ontology Language":
 		icon: "owl"
