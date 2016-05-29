@@ -1590,7 +1590,7 @@ module.exports.fileIcons =
 	"Last resort - Config":
 		icon: "config"
 		priority: 0
-		match: /config|settings/i
+		match: /config|settings|prefs/i
 	
 	"Last resort - Dotfile":
 		icon: "gear"
