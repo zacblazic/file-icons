@@ -734,11 +734,6 @@ module.exports.fileIcons =
 		match: ".djs"
 		colour: "medium-yellow"
 	
-	Dotfile: # Last-resort for unmatched dotfiles
-		icon: "gear"
-		priority: 0
-		match: /^\./
-	
 	Doxyfile:
 		icon: "doxygen"
 		scope: "doxygen"
@@ -1591,6 +1586,16 @@ module.exports.fileIcons =
 			[".lasso9", "medium-purple"]
 			[".ldml", "medium-red"]
 		]
+	
+	"Last resort - Config":
+		icon: "config"
+		priority: 0
+		match: /config|settings/i
+	
+	"Last resort - Dotfile":
+		icon: "gear"
+		priority: 0
+		match: /^\./
 	
 	Lean:
 		icon: "lean"
