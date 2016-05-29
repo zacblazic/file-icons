@@ -72,12 +72,13 @@ module.exports.fileIcons =
 		match: ".abap"
 		colour: "medium-orange"
 	
-	ActionScript:
+	ActionScript: # Or Flash-related
 		icon: "as"
 		match: [
 			[".swf", "medium-blue"]
 			[".as", "medium-red", /\.(?:flex-config|actionscript(?:\.\d+)?)$/i]
 			[".jsfl", "auto-yellow"]
+			[".swc", "dark-red"]
 		]
 	
 	Ada:
@@ -247,6 +248,11 @@ module.exports.fileIcons =
 			[".sats", "dark-yellow"]
 		]
 	
+	Audacity:
+		icon: "audacity"
+		match: ".aup"
+		colour: "medium-yellow"
+	
 	Audio:
 		icon: "audio"
 		match: [
@@ -312,6 +318,14 @@ module.exports.fileIcons =
 		scope: "bison"
 		match: ".bison"
 		colour: "medium-red"
+	
+	Blender:
+		icon: "blender"
+		match: [
+			[".blend", "medium-orange"]
+			[/\.blend\d+$/i, "dark-orange"]
+			[".bphys", "dark-blue"]
+		]
 	
 	Bluespec:
 		icon: "bluespec"
@@ -898,6 +912,11 @@ module.exports.fileIcons =
 		match: ".fan"
 		colour: "medium-blue"
 	
+	FBX:
+		icon: "fbx"
+		match: ".fbx"
+		colour: "medium-maroon"
+	
 	Finder:
 		icon: "finder"
 		match: /^Icon\r$/
@@ -1367,6 +1386,7 @@ module.exports.fileIcons =
 			[".cd5", "dark-green"]
 			[".cpc", "light-yellow"]
 			[".dcm", "medium-cyan"]
+			[".dds", "dark-green"]
 			[".ecw", "light-blue"]
 			[".exr", "dark-yellow"]
 			[".fit", "medium-cyan"]
@@ -1609,6 +1629,13 @@ module.exports.fileIcons =
 		priority: 2
 		match: "project.clj"
 	
+	LightWave3D:
+		icon: "lightwave"
+		match: [
+			[".lwo", "medium-red"]
+			[".lws", "medium-blue"]
+		]
+	
 	LISP:
 		icon: "lisp"
 		match: [
@@ -1761,6 +1788,14 @@ module.exports.fileIcons =
 			[".3ds", "medium-cyan"]
 		]
 	
+	Maya:
+		icon: "maya"
+		match: [
+			[".mb", "dark-cyan"]
+			[".mel", "dark-blue"]
+			[/\.mcf[ip]$/i, "dark-purple"]
+		]
+	
 	"Manual Page":
 		icon: "manpage"
 		match: [
@@ -1860,6 +1895,7 @@ module.exports.fileIcons =
 			[".obj", "medium-red"]
 			[".mtl", "dark-blue"]
 			[".stl", "dark-green"]
+			[".u3d", "medium-orange"]
 		]
 
 	Modelica:
@@ -2648,6 +2684,7 @@ module.exports.fileIcons =
 			[".der", "medium-purple"]
 			[/^id_rsa/, "medium-red"]
 			[/\.glyphs\d*License$/i, "medium-green"]
+			[/^git-credential-osxkeychain$/i, "medium-green"]
 		]
 	
 	Stan:
@@ -2915,6 +2952,7 @@ module.exports.fileIcons =
 			[".meta", "dark-red"]
 			[".prefab", "dark-cyan"]
 			[".unity", "medium-blue"]
+			[".unityproj", "medium-maroon"]
 		]
 	
 	Uno:
@@ -2926,6 +2964,11 @@ module.exports.fileIcons =
 		icon: "unreal"
 		scope: "uc"
 		match: ".uc"
+	
+	URL:
+		icon: "link"
+		match: ".url"
+		colour: "dark-blue"
 	
 	UrWeb:
 		icon: "urweb"
@@ -3010,6 +3053,7 @@ module.exports.fileIcons =
 			[".vcxproj", "dark-purple"]
 			[".vssettings", "dark-green"]
 			[".builds", "medium-maroon"]
+			[".sln", "medium-orange"]
 		]
 	
 	Vue:
