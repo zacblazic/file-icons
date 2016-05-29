@@ -1032,6 +1032,7 @@ module.exports.fileIcons =
 			[".4th", "medium-blue"]
 			[".aepx", "medium-purple"]
 			[".agda", "dark-cyan"]
+			[".appxmanifest", "medium-orange"]
 			[".ash", "medium-cyan"]
 			[".axml", "dark-blue"]
 			[".befunge", "medium-orange"]
