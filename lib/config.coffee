@@ -187,8 +187,8 @@ module.exports.fileIcons =
 	
 	AppleScript:
 		icon: "apple"
-		alias: "osascript"
 		scope: "applescript"
+		alias: "osascript"
 		interpreter: "osascript"
 		match: /\.(?:applescript|scpt)$/i
 		colour: "medium-purple"
@@ -255,7 +255,7 @@ module.exports.fileIcons =
 			[/\.(?:a|s?o|out|s|a51|nasm|asm|z80)$/i, "medium-red", /(?:^|\.)(?:a[rs]m|x86|z80|lc-?3|cpu12|x86asm|m68k|assembly|avr(?:dis)?asm|dasm)(?:\.|$)/i, "nasm"]
 			[".ko", "dark-green"]
 			[".lst", "medium-blue", "lst-cpu12"]
-			[/\.(?:(?:c(?:[+px]{2}?)?-?)?objdump)$/i, "dark-orange", null, /C(?:pp|\+\+)-?ObjDump/i]
+			[/\.(?:(?:c(?:[+px]{2}?)?-?)?objdump)$/i, "dark-orange"]
 			[".d-objdump", "dark-blue"]
 			[/\.gcode|\.gco/i, "medium-orange"]
 			[/\.rpy[bc]$/i, "medium-red"]
@@ -594,7 +594,7 @@ module.exports.fileIcons =
 	"Component Pascal":
 		icon: "cp"
 		match: [
-			[".cp", "medium-maroon", null, /Delphi|Object\s?Pascal/i]
+			[".cp", "medium-maroon"]
 			[".cps", "dark-red"]
 		]
 	
@@ -708,7 +708,6 @@ module.exports.fileIcons =
 	
 	"Darcs Patch":
 		icon: "darcs"
-		alias: "dpatch"
 		match: /\.d(?:arcs)?patch$/i
 		colour: "medium-green"
 	
@@ -866,6 +865,7 @@ module.exports.fileIcons =
 	
 	"Emacs Lisp":
 		icon: "emacs"
+		scope: "emacs.lisp"
 		alias: /elisp|emacs/i
 		match: /\.(?:el|emacs|spacemacs|emacs\.desktop)$/i
 		colour: "medium-purple"
@@ -966,8 +966,8 @@ module.exports.fileIcons =
 	
 	FSharp:
 		icon: "fsharp"
-		alias: "f#"
 		scope: "fsharp"
+		alias: "f#"
 		match: /\.fs[xi]?$/i
 		colour: "medium-blue"
 	
@@ -1297,7 +1297,6 @@ module.exports.fileIcons =
 	
 	"Grammatical Framework":
 		icon: "gf"
-		alias: "gf"
 		match: ".gf"
 		colour: "medium-red"
 	
@@ -1706,7 +1705,6 @@ module.exports.fileIcons =
 	
 	LFE:
 		icon: "lfe"
-		alias: /Lisp[- ]?Flavou?red[- ]?Erlang/i
 		match: ".lfe"
 		colour: "dark-red"
 	
@@ -2243,8 +2241,8 @@ module.exports.fileIcons =
 		icon: "parrot"
 		match: [
 			[".parrot", "medium-green", null, null, "parrot"]
-			[".pasm", "dark-green", null, "pasm"]
-			[".pir",  "dark-blue",  null, "pir"]
+			[".pasm", "dark-green", "parrot.pasm", "pasm"]
+			[".pir",  "dark-blue",  "parrot.pir", "pir"]
 		]
 	
 	Pascal:
@@ -2391,7 +2389,6 @@ module.exports.fileIcons =
 	
 	"POV-Ray SDL":
 		icon: "povray"
-		alias: /pov[- ]?ray/i
 		match: ".pov"
 		colour: "dark-blue"
 	
@@ -2666,7 +2663,7 @@ module.exports.fileIcons =
 			[/^(?:\.?bash(?:rc|_(?:profile|login|logout|history))|_osc|install-sh|PKGBUILD)$/i, "medium-purple"]
 			[".ksh", "dark-yellow"]
 			[".sh-session", "auto-yellow", "shell-session", /(?:Bash|Shell|Sh)[-\s]?Session|Console/i]
-			[/\.zsh(?:-theme)?$|^\.?(?:zlogin|zlogout|zprofile|zshenv|zshrc)$/i, "medium-blue", null, "zsh"]
+			[/\.zsh(?:-theme)?$|^\.?(?:zlogin|zlogout|zprofile|zshenv|zshrc)$/i, "medium-blue"]
 			[/\.fish$|^\.fishrc$/i, "medium-green", "fish", null, "fish"]
 			[".sh.in", "dark-red"]
 			[".tmux", "medium-blue"]
@@ -2912,7 +2909,7 @@ module.exports.fileIcons =
 		icon: "icon-file-text"
 		noSuffix: true
 		match: [
-			[/\.te?xt$/i, "medium-blue", null, "fundamental"]
+			[/\.te?xt$/i, "medium-blue"]
 			[".log", "medium-maroon"]
 			[".err", "medium-red"]
 			[".rtf", "dark-red"]
