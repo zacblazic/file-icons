@@ -14,25 +14,39 @@ match:     Pattern(s) to match against the filename. This may be a string, an ar
                Therefore, passing ".json" is functionally equivalent to /\.json$/i, but spares
                an author the tedium of writing out the latter. Regex characters are escaped so
                names like ".c++" don't require backslashes (no need for ".c\+\+")
-           
+
            Array:
                If passed an array, it's used to provide multiple colour variants for different
-               filenames/extensions. Each value should be an array containing two values - the
-               path-matching pattern, and an optional colour name. A third value may be passed
-               to designate a TextMate scope for a particular icon/colour combination: see the
-               "scope" property described below.
+               filenames/extensions. Each value is expected to be an array containing:
+
+                   0. Path-matching pattern (required)
+                   1. Colour name
+                   2. TextMate scope
+                   3. Interpreter name
+
+               Most contributors will only need to touch the first two elements.
 
 priority:  More than one pattern may match a filename. To ensure more specific patterns aren't overridden
            by more general patterns, set the priority index to a value greater than 1. This property is
            optional and defaults to 1 if omitted.
 
-scope:     Name of any TextMate grammars which trigger the icon when overriding a file's grammar. This may be
-           a string or regex; if provided the former, it's used to construct a case-insensitive pattern that's
-           checked against the end of the string (e.g., "js" will be treated as if /\.js$/i were written). Not
-           every grammar will/should change an icon, especially for very generic formats like JSON or YAML.
 
-noSuffix:  By default, icon names are suffixed with "-icon". Set noSuffix to true if you need to specify an
-           icon class in its entirety (such as a default Atom icon). This should otherwise rarely be used.
+ADVANCED SETTINGS
+-----------------
+
+scope:        Name of any TextMate grammars which trigger the icon when overriding a file's grammar. This may be
+              a string or regex; if provided the former, it's used to construct a case-insensitive pattern that's
+              checked against the end of the string (e.g., "js" will be treated as if /\.js$/i were written). Not
+              every grammar will/should change an icon, especially for very generic formats like JSON or YAML.
+
+interpreter:  Program name(s) to look for in hashbang lines. This may be a string or a regular expression, both
+              of which are matched against the program's name, instead of the entire hashbang line. E.g., /python/
+              will be tested against "python2", not "#!/usr/local/bin/python2". Matching is case-sensitive, and
+              strings are not converted into regular expressions the way other options are. Ergo, /python/ will
+              match "python2" but "python" would not.
+
+noSuffix:     By default, icon names are suffixed with "-icon". Set noSuffix to true if you need to specify an
+              icon class in its entirety (such as a default Atom icon). This should otherwise rarely be used.
 ###
 
 
