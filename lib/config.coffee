@@ -155,6 +155,11 @@ module.exports.fileIcons =
 		match: ".als"
 		colour: "medium-red"
 	
+	"Alpine Linux":
+		icon: "alpine"
+		match: /(?:\.|^)APKBUILD$/
+		colour: "dark-blue"
+	
 	AMPL:
 		icon: "ampl"
 		scope: "ampl"
