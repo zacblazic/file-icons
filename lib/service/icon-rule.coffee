@@ -1,4 +1,4 @@
-{isRegExp, escapeRegExp} = require "../utils"
+{isString, isRegExp, escapeRegExp, fuzzyRegExp} = require "../utils"
 
 
 # Represents a named icon-matching rule defined by icon-config
@@ -6,32 +6,73 @@ class IconRule
 	
 	constructor: (name, args) ->
 		@name = name
-		{@icon, @priority, @noSuffix, match, colour, scope} = args
+		{@icon, @priority, @generic, @noSuffix} = args
 		@priority ?= 1
+		
+		# Don't let undefined booleans clutter the dev-tools
+		delete @generic  unless @generic
+		delete @noSuffix unless @noSuffix
 		
 		# Store the name in lowercase for quicker sorting
 		@nameLowercased = name.toLowerCase()
 		
 		# Make sure we're always dealing with an array
+		{match, colour, scope, alias, interpreter} = args
 		unless Array.isArray match
-			match = [[match, colour, scope]]
+			match = [[match, colour, {scope, alias, interpreter}]]
+		
 		
 		# Refine each match definition
 		@match = for i, value of match
-			[pattern, colour, scope] = value
+			[pattern, colour, adv] = value
+			
+			# Third element was a string: shorthand to set all three properties
+			if isString adv then scope=alias=interpreter = adv
+			
+			# Not a string: properties were given individually
+			else if adv
+				{scope, alias, interpreter} = adv
+			
+			# Not specified: reset properties
+			else scope=alias=interpreter = null
 			
 			# Convert string-based patterns into actual regex
 			unless isRegExp pattern
 				source = escapeRegExp(pattern)+"$"
 				value[0] = new RegExp source, "i"
 			
+			
 			# A TextMate grammar's been associated with this match
 			if scope
-				@scopes ?= {}
+				@aliases ?= {}
+				@scopes  ?= {}
+				
+				# Convert file-extension strings into regex
 				unless isRegExp scope
 					source = "\\." + escapeRegExp(scope) + "$"
 					scope = new RegExp source, "i"
 				@scopes[i] = scope
+				
+				
+				# Ignore aliases which repeat the rule's name (unless it's marked as generic).
+				if not @generic and isString(alias) and @name.toLowerCase() is alias.toLowerCase()
+					alias = null
+				
+				# Construct a pattern to match this rule's name/s
+				source = fuzzyRegExp @name, true
+				
+				# Are additional aliases defined?
+				if alias then source = source + "|" + fuzzyRegExp(alias, true)
+				
+				@aliases[i] = new RegExp source, "i"
+			
+			
+			# One or more interpreters are associated with this match
+			if interpreter
+				@interpreters   ?= {}
+				@interpreters[i] = interpreter
+			
+			
 			
 			# Flag that bloody Bower-bird which needs special treatment
 			if /^bower$/i.test colour
