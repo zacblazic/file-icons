@@ -3191,6 +3191,11 @@ module.exports.fileIcons =
 		match: ".x10"
 		colour: "light-maroon"
 
+	X11:
+		icon: "x11"
+		match: /\.X(?:authority|clients|initrc|profile|resources|session-errors|screensaver)$/i
+		colour: "medium-orange"
+
 	XC:
 		icon: "xmos"
 		match: ".xc"
