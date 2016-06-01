@@ -1952,9 +1952,10 @@ module.exports.fileIcons =
 
 	Model: # Or generic 3D asset
 		icon: "model"
+		generic: true
 		match: [
-			[".obj", "medium-red"]
-			[".mtl", "dark-blue"]
+			[".obj", "medium-red", scope: "wavefront.obj"]
+			[".mtl", "dark-blue",  scope: "wavefront.mtl"]
 			[".stl", "dark-green"]
 			[".u3d", "medium-orange"]
 		]
