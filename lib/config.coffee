@@ -2681,12 +2681,12 @@ module.exports.fileIcons =
 				scope: "shell"
 				alias: /sh|shell|Shell-?Script|Bash/i
 				interpreter: /bash|sh|zsh|rc/]
-			[/^(?:\.?bash(?:rc|_(?:profile|login|logout|history))|_osc|install-sh|PKGBUILD)$/i, "medium-purple"]
+			[/^(?:\.?bash(?:rc|_(?:profile|login|logout|history))|_osc|config|install-sh|PKGBUILD)$/i, "medium-purple"]
 			[".ksh", "dark-yellow"]
 			[".sh-session", "auto-yellow"
 				scope: "shell-session"
 				alias: /(?:Bash|Shell|Sh)[-\s]?Session|Console/i]
-			[/\.zsh(?:-theme)?$|^\.?(?:zlogin|zlogout|zprofile|zshenv|zshrc)$/i, "medium-blue"]
+			[/\.zsh(?:-theme|_history)?$|^\.?(?:zlogin|zlogout|zprofile|zshenv|zshrc)$/i, "medium-blue"]
 			[/\.fish$|^\.fishrc$/i, "medium-green", "fish"]
 			[".sh.in", "dark-red"]
 			[".tmux", "medium-blue"]
@@ -3123,7 +3123,7 @@ module.exports.fileIcons =
 		icon: "vim"
 		match: [
 			[/\.(?:vim|n?vimrc)$/i, "medium-green", scope: "viml", alias: /VimL?|NVim|Vim\s?Script/i, interpreter: /Vim?/i]
-			[/^[gn_]?vimrc$/i, "medium-green"]
+			[/^[gn_]?vim(?:rc|info)$/i, "dark-green"]
 		]
 	
 	"Visual Studio":
