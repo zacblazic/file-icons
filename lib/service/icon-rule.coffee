@@ -59,12 +59,13 @@ class IconRule
 					alias = null
 				
 				# Construct a pattern to match this rule's name/s
-				source = fuzzyRegExp @name, true
+				namePattern = fuzzyRegExp @name, true
+				@aliases[i] = new RegExp namePattern, "i"
 				
-				# Are additional aliases defined?
-				if alias then source = source + "|" + fuzzyRegExp(alias, true)
-				
-				@aliases[i] = new RegExp source, "i"
+				# Should we worry about additional aliases?
+				if alias
+					source = [@aliases[i], fuzzyRegExp(alias, true)]
+					@aliases[i] = if isRegExp alias then source else source.join("|")
 			
 			
 			# One or more interpreters are associated with this match
