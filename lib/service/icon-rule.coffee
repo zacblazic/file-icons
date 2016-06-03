@@ -59,14 +59,24 @@ class IconRule
 					alias = null
 				
 				# Construct a pattern to match this rule's name/s
-				namePattern = fuzzyRegExp @name, true
-				@aliases[i] = new RegExp namePattern, "i"
+				unless @generic
+					namePattern = "^" + fuzzyRegExp(@name, true) + "$"
+					@aliases[i] = new RegExp namePattern, "i"
+					
+					# Should we worry about additional aliases?
+					if alias
+						source = [@aliases[i], fuzzyRegExp(alias, true)]
+						@aliases[i] = if isRegExp alias then source else source.join("|")
 				
-				# Should we worry about additional aliases?
-				if alias
-					source = [@aliases[i], fuzzyRegExp(alias, true)]
-					@aliases[i] = if isRegExp alias then source else source.join("|")
-			
+				
+				# Generic rule, but an alias is defined anyway
+				else if alias
+					if isRegExp alias
+						@aliases[i] = alias
+					else
+						alias = "^" + escapeRegExp(alias) + "$"
+						@aliases[i] = new RegExp(alias, "i")
+				
 			
 			# One or more interpreters are associated with this match
 			if interpreter
@@ -85,12 +95,33 @@ class IconRule
 				value[3] = true
 			
 			value
-			
-		
 	
+	
+	
+	# Return a match index for a filename
 	matches: (path) ->
 		for value, index in @match
 			if value[0].test path then return index
+		false
+	
+	
+	# Return the index of a match containing an interpreter name
+	matchesInterpreter: (name) ->
+		for index, match of @interpreters
+			if match is name or match.test?(name) then return index
+		false
+	
+	
+	# Return the index of a match containing a recognised alias
+	matchesAlias: (name) ->
+		for index, pattern of @aliases
+			
+			# Array of expressions
+			return index if pattern.some? (p) -> p.test name
+			
+			# String or successfully-matched regex
+			return index if pattern is name or pattern.test?(name)
+			
 		false
 	
 	

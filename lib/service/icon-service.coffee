@@ -1,6 +1,7 @@
 {basename}     = require "path"
 {IconRule}     = require "./icon-rule"
 {escapeRegExp} = require "../utils"
+Modelines      = require "./modelines"
 {directoryIcons, fileIcons} = require "../config"
 
 
@@ -13,6 +14,8 @@ class IconService
 	constructor: ->
 		@scopeCache     = {}
 		@fileCache      = {}
+		@hashbangCache  = {}
+		@modelineCache  = {}
 		@fileIcons      = @compile fileIcons
 		@directoryIcons = @compile directoryIcons
 		
@@ -130,6 +133,34 @@ class IconService
 				return result if result
 		
 		null
+	
+	
+	
+	# Return an IconRule match for a shebang
+	iconMatchForHashbang: (line) ->
+		return cached if cached = @hashbangCache[line]
+		
+		if match = line.match /^#!\s*\S*\/(\S+)(?:\s+\S+=\S*)*\s+(\S+)/
+			name = match[1]
+			name = match[2].split("/").pop() if name is "env"
+			
+			for rule, index in @fileIcons
+				matchIndex = rule.matchesInterpreter name
+				if matchIndex? and matchIndex isnt false
+					return @hashbangCache[line] = [index, matchIndex]
+		null
+	
+
+	# Return an IconRule match for a modeline
+	iconMatchForModeline: (line) ->
+		return cached if cached = @modelineCache[line]
+		
+		# We found a language, but is it recognised?
+		if lang = Modelines.get(line)
+			for rule, index in @fileIcons
+				matchIndex = rule.matchesAlias lang
+				if matchIndex? and matchIndex isnt false
+					return @modelineCache[line] = [index, matchIndex]
 	
 	
 	# Return the CSS classes for a directory's icon.
