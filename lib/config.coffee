@@ -5,7 +5,7 @@ PRIMARY CONFIGURATION FILE
 
 icon:      An icon defined in `icons.less`.
 
-colour:    Optional icon colour. Must match one of the colour names defined in `colors.less`.
+colour:    Optional icon colour. Must match one of the colour names defined in `colours.less`.
 
 match:     Pattern(s) to match against the filename. This may be a string, an array, or a regular expression.
 
