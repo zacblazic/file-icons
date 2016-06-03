@@ -136,11 +136,11 @@ class IconService
 	
 	
 	
-	# Return an IconRule match for a shebang
+	# Locate an IconRule match for a shebang
 	iconMatchForHashbang: (line) ->
 		return cached if cached = @hashbangCache[line]
 		
-		if match = line.match /^#!\s*\S*\/(\S+)(?:\s+\S+=\S*)*\s+(\S+)/
+		if match = line.match /^#!\s*\S*\/(\S+)(?:(?:\s+\S+=\S*)*\s+(\S+))?/
 			name = match[1]
 			name = match[2].split("/").pop() if name is "env"
 			
@@ -148,7 +148,9 @@ class IconService
 				matchIndex = rule.matchesInterpreter name
 				if matchIndex? and matchIndex isnt false
 					return @hashbangCache[line] = [index, matchIndex]
-		null
+			
+			false # Hashbang matched, but nothing found
+		else null # No hashbang found whatsoever
 	
 
 	# Return an IconRule match for a modeline
