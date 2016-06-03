@@ -521,7 +521,7 @@ module.exports.fileIcons =
 	Clean:
 		icon: "clean"
 		match: [
-			[".icl", "dark-cyan"]
+			[".icl", "dark-cyan", "clean"]
 			[".dcl", "medium-cyan"]
 			[".abc", "medium-blue"]
 		]
