@@ -66,9 +66,10 @@ class Scanner
 		
 		# Scan each item for hashbangs/modelines
 		for name, entry of dir.entries
+			size = entry.stats?.size || 0
 			
-			# Skip symlinks, directories, and obvious binary files
-			unless entry.expansionState? or @BINARY_FILES.test(name)
+			# Skip symlinks, directories, binaries, and blank files
+			unless entry.expansionState? or size < 4 or @BINARY_FILES.test(name)
 				files.push entry
 		
 		# If there's at least one file to scan, go for it
