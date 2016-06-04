@@ -2,6 +2,7 @@ fs       = require("fs")
 ScanTask = require.resolve("./scan-task.coffee")
 {Task, CompositeDisposable} = require "atom"
 
+
 class Scanner
 	metadata: Symbol "FileIconsMetadata"
 	

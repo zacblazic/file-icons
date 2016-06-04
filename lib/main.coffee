@@ -1,4 +1,4 @@
-{CompositeDisposable} = require "./utils"
+{CompositeDisposable} = require "atom"
 
 IconService = require "./service/icon-service"
 Watcher     = require "./watcher"

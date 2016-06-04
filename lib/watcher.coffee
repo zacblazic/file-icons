@@ -1,4 +1,4 @@
-{CompositeDisposable} = require "./utils"
+{CompositeDisposable} = require "atom"
 
 # Controller to manage auxiliary event subscriptions
 class Watcher

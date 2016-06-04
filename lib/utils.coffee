@@ -14,24 +14,6 @@ escapeRegExp = (string) ->
 	string.replace /([/\\^$*+?{}\[\]().|])/g, "\\$1"
 
 
-# Pinched from event-kit; spares a hard dependency for something so simple
-class CompositeDisposable
-	disposed: false
-
-	constructor:-> @disposables = new Set; @add(i) for i in arguments
-	add:        -> @disposables.add(i) for i in arguments unless @disposed; return
-	remove: (i) -> @disposables.delete(i) unless @disposed; return
-	clear:      -> @disposables.clear()   unless @disposed; return
-
-	dispose: ->
-		unless @disposed
-			@disposed = true
-			@disposables.forEach (i) -> i.dispose()
-			@disposables = null
-		return
-
-
-
 # Generate a regex to match a string, bypassing intermediate punctuation.
 fuzzyRegExp = (input, keepString) ->
 	return input unless isString input
@@ -50,4 +32,4 @@ fuzzyRegExp = (input, keepString) ->
 	new RegExp output, "i"
 
 
-module.exports = {isString, isRegExp, escapeRegExp, fuzzyRegExp, CompositeDisposable}
+module.exports = {isString, isRegExp, escapeRegExp, fuzzyRegExp}
