@@ -1071,7 +1071,6 @@ module.exports.fileIcons =
 			[".codoopts", "medium-maroon"]
 			[".yardopts", "medium-red"]
 			[".arcconfig", "dark-blue"]
-			[".ctags", "dark-purple"]
 			[".pairs", "dark-green"]
 			[".python-version", "dark-blue"]
 		]
@@ -2882,8 +2881,10 @@ module.exports.fileIcons =
 	
 	Tagfile: # CTags
 		icon: "tag"
-		match: /^\.?tags$/i
-		colour: "medium-blue"
+		match: [
+			[/\.?c?tags$/i, "medium-blue"]
+			[/\.gemtags/i, "medium-red"]
+		]
 	
 	Tcl:
 		icon: "tcl"
