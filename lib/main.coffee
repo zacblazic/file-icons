@@ -43,8 +43,8 @@ module.exports =
 
 		# Initialise directory scanner
 		@scanner = new Scanner
-		@scanner.onOpenFolder = (dir) =>
-		@scanner.onAddFolder = (dir, el) => @iconService.setDirectoryIcon(dir, el)
+		@scanner.onAddFolder = (dir, el) =>
+			@iconService.setDirectoryIcon(dir, el)
 		
 		# Give the green light to update the tree-view's icons
 		@initialised = true
