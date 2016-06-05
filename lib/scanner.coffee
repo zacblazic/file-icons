@@ -4,13 +4,19 @@ ScanTask = require.resolve("./scan-task.coffee")
 
 
 class Scanner
-	metadata: Symbol "FileIconsMetadata"
 	
 	# File extensions to skip when scanning file contents
 	BINARY_FILES: /\.(exe|jpe?g|png|gif|bmp|py[co]|woff2?|ttf|ico|webp|zip|[tr]ar|gz|bz2)$/i
 	
 	# Number of bytes to read from each file
 	SCAN_LENGTH: 32
+	
+	
+	# Files that've already been scanned
+	fileCache: {}
+	
+	# Symbol to store package-specific metadata in DOM elements
+	metadata: Symbol "FileIconsMetadata"
 	
 	
 	constructor: ->
@@ -60,7 +66,6 @@ class Scanner
 			@directories.delete(i)
 
 
-
 	# Parse the contents of a newly-added/opened directory
 	readFolder: (dir, item) ->
 		files = []
@@ -101,7 +106,7 @@ class Scanner
 			if(bytes < data.length)
 				data = data.replace /\x00+$/, ""
 			
-			# If the data contains null-bytes, it's likely binary. Skip.
+			# If the data contains null bytes, it's likely binary. Skip.
 			unless /\x00/.test data
 				emit "file-scan", {data, file}
 			resolve data

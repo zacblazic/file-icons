@@ -136,17 +136,37 @@ class IconService
 	
 	
 	# Check a string of data from a file-scan for hashbangs/modelines
+	#
+	# If a match was found, and the icon differs to the file's existing icon,
+	# TRUE is returned. If nothing was found or different, FALSE is returned.
 	checkFileHeader: ({data, file}) ->
-		if hashbangIcon = @iconMatchForHashbang data
-			@fileCache[file.path] = hashbangIcon
-			@delayedRefresh()
-			return
 		
-		if modelineIcon = @iconMatchForModeline data
-			@fileCache[file.path] = modelineIcon
-			@delayedRefresh()
+		icon = @iconMatchForHashbang data
+		if icon?
+			unless @sameIcons @fileCache[file.path], icon
+				@fileCache[file.path] = icon
+				@delayedRefresh()
+				return true
+			return false
 		
+		icon = @iconMatchForModeline data
+		if icon? and not @sameIcons @fileCache[file.path], icon
+			@fileCache[file.path] = icon
+			@delayedRefresh()
+			return true
+		
+		false
 
+
+	# Return TRUE if two icon-rule matches are equal
+	sameIcons: (a, b) ->
+		
+		# Avoid checking falsy values
+		return null unless a and b
+		
+		# Use loose-type comparison: some indexes might be strings
+		`a[0] == b[0] && a[1] == b[1] && a[2] == b[2]`
+			
 	
 	# Locate an IconRule match for a shebang
 	iconMatchForHashbang: (line) ->
