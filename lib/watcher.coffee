@@ -1,14 +1,36 @@
-{CompositeDisposable} = require "atom"
+{CompositeDisposable, Emitter} = require "atom"
 
 # Controller to manage auxiliary event subscriptions
 class Watcher
 	
 	constructor: ->
-		@editors     = new Set
-		@repos       = new Set
+		@editors = new Set
+		@repos   = new Set
+		@emitter = new Emitter
 		
 		@editorDisposables = new CompositeDisposable
 		@repoDisposables   = new CompositeDisposable
+	
+	
+	# Handler triggered when a VCS repository's changed status
+	onRepoUpdate: (fn) -> @emitter.on("repo-update", fn)
+	
+	# Triggered when user changes a file's grammar
+	onGrammarChange: (fn) -> @emitter.on("grammar-change", fn)
+	
+	
+	# Clear up memory
+	destroy: ->
+		@watchingRepos false
+		@watchingEditors false
+		
+		@editorDisposables.dispose()
+		@repoDisposables.dispose()
+		@editors.clear()
+		@editors = null
+		@repos.clear()
+		@repos = null
+		@emitter.emit "did-destroy"
 	
 	
 	# Set whether the project's VCS repositories are being monitored for changes
@@ -27,8 +49,8 @@ class Watcher
 		unless @repos.has repo
 			@repos.add repo
 			
-			@repoDisposables.add repo.onDidChangeStatus (event) => @onRepoUpdate?(event)
-			@repoDisposables.add repo.onDidChangeStatuses       => @onRepoUpdate?()
+			@repoDisposables.add repo.onDidChangeStatus (event) => @emitter.emit "repo-update", event
+			@repoDisposables.add repo.onDidChangeStatuses       => @emitter.emit "repo-update"
 			
 			# When repository's removed from memory
 			@repoDisposables.add repo.onDidDestroy =>
@@ -66,12 +88,16 @@ class Watcher
 	watchEditor: (editor) ->
 		unless @editors.has editor
 			@editors.add editor
-			onChange = editor.onDidChangeGrammar (to) => @onGrammarChange?(editor, to)
+			
+			onChange = editor.onDidChangeGrammar (to) =>
+				@emitter.emit "grammar-change", to
+			
 			onDestroy = editor.onDidDestroy =>
 				@editors.delete editor
 				@editorDisposables.remove(i) for i in [onChange, onDestroy]
 				onChange.dispose()
 				onDestroy.dispose()
+			
 			@editorDisposables.add onChange
 			@editorDisposables.add onDestroy
 			

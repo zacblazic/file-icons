@@ -1,6 +1,6 @@
 fs       = require("fs")
 ScanTask = require.resolve("./scan-task.coffee")
-{Task, CompositeDisposable} = require "atom"
+{Task, CompositeDisposable, Emitter} = require "atom"
 
 
 class Scanner
@@ -18,13 +18,8 @@ class Scanner
 	# Files that've already been scanned
 	fileCache: {}
 	
-	# Booleans controlling different scanning mechanisms
-	scanFiles: true
-	checkHashbangs: true
-	checkModelines: true
 	
-	
-	constructor: ->
+	constructor: (@main) ->
 		@directories = new Set
 		@disposables = new CompositeDisposable
 		
@@ -75,7 +70,7 @@ class Scanner
 	readFolder: (dir, item) ->
 		
 		# Check if we need to scan any files
-		if @scanFiles
+		if @main.checkHashbangs or @main.checkModelines
 			files = []
 			
 			# Scan each item for hashbangs/modelines
@@ -89,7 +84,7 @@ class Scanner
 			# If there's at least one file to scan, go for it
 			if files.length
 				task = Task.once ScanTask, files
-				task.on "file-scan", (data) => @iconService.checkFileHeader(data)
+				task.on "file-scan", (data) => @main.iconService.checkFileHeader(data)
 		
 		@update()
 	
@@ -119,27 +114,6 @@ class Scanner
 				emit "file-scan", {data, file}
 			resolve data
 
-	
-	# Set whether hashbang-checking is enabled
-	enableHashbangChecks: (enabled) ->
-		if enabled
-			@checkHashbangs = true
-			@scanFiles      = true
-		else
-			@checkHashbangs = false
-			@scanFiles      = false unless @checkModelines
-		enabled
-	
-	
-	# Set whether modeline-checking is enabled
-	enableModelineChecks: (enabled) ->
-		if enabled
-			@checkModelines = true
-			@scanFiles      = true
-		else
-			@checkModelines = false
-			@scanFiles      = false unless @checkHashbangs
-		enabled
 		
 
 module.exports = Scanner

@@ -3,29 +3,36 @@
 {escapeRegExp} = require "../utils"
 Modelines      = require "./modelines"
 {directoryIcons, fileIcons} = require "../config"
+{CompositeDisposable, Emitter} = require "atom"
 
 
 class IconService
-	useColour:   true
-	showInTabs:  true
-	changedOnly: false
-	lightTheme:  false
-	checkHashbangs: true
-	checkModelines: true
 	
-	constructor: ->
-		@scopeCache     = {}
-		@fileCache      = {}
-		@hashbangCache  = {}
-		@modelineCache  = {}
+	scopeCache:    {}
+	fileCache:     {}
+	hashbangCache: {}
+	modelineCache: {}
+	
+	
+	constructor: (@main) ->
+		@emitter        = new Emitter
+		@disposables    = new CompositeDisposable
 		@fileIcons      = @compile fileIcons
 		@directoryIcons = @compile directoryIcons
-		
-		@addInitialGrammars()
+
+		# Register what grammars have already loaded
+		@addGrammar(scope) for scope    of atom.grammars.grammarsByScopeName
+		@addGrammar(scope) for i, scope of atom.grammars.grammarOverridesByPath
+		@disposables.add atom.grammars.onDidAddGrammar (add) =>
+			@addGrammar(add.scopeName)
+
+		# Configure custom-types
+		@disposables.add atom.config.onDidChange "core.customFileTypes", (changes) =>
+			@updateCustomTypes changes.newValue, changes.oldValue
 		@updateCustomTypes()
 		
 		# Perform an early update of every directory icon to stop a FOUC
-		@delayedRefresh()
+		@queueRefresh()
 
 	
 	onWillDeactivate: ->
@@ -55,7 +62,7 @@ class IconService
 	# Queue a delayed refresh. Repeated calls to this method do nothing:
 	# only one refresh will be fired after a specified delay has elapsed.
 	# - delay: Amount of time to wait, expressed in milliseconds
-	delayedRefresh: (delay = 10) ->
+	queueRefresh: (delay = 10) ->
 		clearTimeout @timeoutID
 		@timeoutID = setTimeout (=> @refresh()), delay
 	
@@ -69,7 +76,7 @@ class IconService
 		isTab     = nodeClass?.contains("tab") and nodeClass?.contains("texteditor")
 		
 		# Don't show tab-icons unless the "Tab Pane Icon" setting is enabled
-		return if !@showInTabs and isTab
+		return if !@main.showInTabs and isTab
 		
 		# Use cached matches for quicker lookup
 		if (match = @fileCache[path] || @matchCustom path)?
@@ -96,13 +103,14 @@ class IconService
 			auto    = ruleMatch[3]
 			
 			# Determine if colour should be used
-			if colour && @useColour && (!@changedOnly || file?.status)
+			if colour && @main.useColour && (!@main.changedOnly || file?.status)
+				lightTheme = @main.themeHelper.lightTheme
 				
 				# Bower needs special treatment to be visible
-				if auto is "bower" then colour = (if @lightTheme then "medium-orange" else "medium-yellow")
+				if auto is "bower" then colour = (if lightTheme then "medium-orange" else "medium-yellow")
 				
 				# This match is flagged as motif-sensitive: select colour based on theme brightness
-				else if auto then colour = (if @lightTheme then "dark-" else "medium-") + colour
+				else if auto then colour = (if lightTheme then "dark-" else "medium-") + colour
 				
 				classes.push(colour)
 		
@@ -122,7 +130,7 @@ class IconService
 	matchCustom: (path) ->
 		
 		# Is this path overridden with a user-assigned grammar?
-		if @overridesEnabled and scope = atom.grammars.grammarOverridesByPath[path]
+		if @main.overridesEnabled and scope = atom.grammars.grammarOverridesByPath[path]
 			if result = @scopeCache[scope]
 				return @fileCache[path] = result
 		
@@ -143,20 +151,20 @@ class IconService
 	# TRUE is returned. If nothing was found or different, FALSE is returned.
 	checkFileHeader: ({data, file}) ->
 		
-		if @checkHashbangs
+		if @main.checkHashbangs
 			icon = @iconMatchForHashbang data
 			if icon?
 				unless @sameIcons @fileCache[file.path], icon
 					@fileCache[file.path] = icon
-					@delayedRefresh()
+					@queueRefresh()
 					return true
 				return false
 		
-		if @checkModelines
+		if @main.checkModelines
 			icon = @iconMatchForModeline data
 			if icon? and not @sameIcons @fileCache[file.path], icon
 				@fileCache[file.path] = icon
-				@delayedRefresh()
+				@queueRefresh()
 				return true
 		
 		false
@@ -219,7 +227,7 @@ class IconService
 		if ruleMatch?
 			suffix = if rule.noSuffix then "" else "-icon"
 			classes = ["#{rule.icon}#{suffix}"]
-			if @useColour && colour = ruleMatch[1]
+			if @main.useColour && colour = ruleMatch[1]
 				classes.push(colour)
 		classes
 	
@@ -262,26 +270,19 @@ class IconService
 		@scopeCache[scope] = false
 	
 	
-	# Register what grammars have already loaded upon initialisation
-	addInitialGrammars: () ->
-		@addGrammar(scope) for scope    of atom.grammars.grammarsByScopeName
-		@addGrammar(scope) for i, scope of atom.grammars.grammarOverridesByPath
-			
-	
 	# Handle the assignment of user-specified grammars
 	handleOverride: (editor, grammar) ->
-		return unless @overridesEnabled
+		return unless @main.overridesEnabled
 		path = editor.getPath()
 		delete @fileCache[path]
-		@delayedRefresh()
+		@queueRefresh()
 	
 	
-	# Specify whether overriding a file's grammar affects the icon it displays
-	enableOverrides: (enabled) ->
-		@overridesEnabled = enabled
+	# Clear icons cached for overridden grammars and update the display
+	resetOverrides: ->
 		for path of atom.grammars.grammarOverridesByPath
 			delete @fileCache[path]
-		@delayedRefresh()
+		@queueRefresh()
 	
 	
 	# Update the dictionary of custom filename/scope mappings
@@ -326,7 +327,7 @@ class IconService
 		# Burn the cache for every relevant filetype
 		cachebust Array.from(scopes).map makeRegExp
 		
-		if shouldRefresh then @delayedRefresh()
+		if shouldRefresh then @queueRefresh()
 	
 
 module.exports = IconService

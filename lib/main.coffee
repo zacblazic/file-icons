@@ -1,4 +1,4 @@
-{CompositeDisposable} = require "atom"
+{CompositeDisposable, Emitter} = require "atom"
 
 IconService = require "./service/icon-service"
 ThemeHelper = require "./theme-helper"
@@ -9,59 +9,40 @@ module.exports =
 	
 	# Called on startup
 	activate: (state) ->
+		@emitter     = new Emitter
 		@disposables = new CompositeDisposable
-		@disposables.add atom.grammars.onDidAddGrammar (add) =>
-			@iconService.addGrammar(add.scopeName)
 		
 		# Controller to manage theme-related logic
 		@themeHelper = new ThemeHelper(@)
-		@themeHelper.onChangeThemes => @iconService.delayedRefresh()
-		
-		@disposables.add atom.config.onDidChange "core.customFileTypes", (changes) =>
-			@iconService.updateCustomTypes changes.newValue, changes.oldValue
+		@themeHelper.onChangeThemes => @iconService.queueRefresh()
 		
 		# Ready a watcher to respond to project/editor changes
 		@watcher = new Watcher
-		@watcher.onRepoUpdate    = => @iconService.delayedRefresh(10)
-		@watcher.onGrammarChange = => @iconService.handleOverride(arguments...)
+		@watcher.onRepoUpdate    => @iconService.queueRefresh(10)
+		@watcher.onGrammarChange => @iconService.handleOverride(arguments...)
 		
-		# Initialise icon-service
-		@iconService = new IconService
-		@iconService.useColour   = atom.config.get "file-icons.coloured"
-		@iconService.changedOnly = atom.config.get "file-icons.onChanges"
-		@iconService.showInTabs  = atom.config.get "file-icons.tabPaneIcon"
+		# Service to provide icons to Atom's APIs
+		@iconService = new IconService(@)
 		
-		# Configure package settings
+		# Filesystem scanner
+		@scanner = new Scanner(@)
+		@scanner.onAddFolder = (dir, el) =>
+			@iconService.setDirectoryIcon(dir, el)
+		
+		# Configure package settings/commands
 		@initSetting "coloured"
 		@initSetting "onChanges"
 		@initSetting "tabPaneIcon"
 		@initSetting "iconMatching.changeOnOverride"
 		@initSetting "iconMatching.checkHashbangs"
 		@initSetting "iconMatching.checkModelines"
-		
-		@addCommand "toggle-colours", (event) =>
-			name = "file-icons.coloured"
-			atom.config.set name, !(atom.config.get name)
-
-		# Toggle outlines around icons and their adjoining filenames
-		@addCommand "debug-outlines", (event) =>
-			body = document.querySelector("body")
-			body.classList.toggle "file-icons-debug-outlines"
-
-		# Initialise directory scanner
-		@scanner = new Scanner
-		@scanner.iconService = @iconService
-		@scanner.onAddFolder = (dir, el) =>
-			@iconService.setDirectoryIcon(dir, el)
-		
-		# Give the green light to update the tree-view's icons
-		@initialised = true
-		@iconService.delayedRefresh()
+		@addCommands()
 
 
 	# Called when deactivating or uninstalling package
 	deactivate: ->
 		@disposables.dispose()
+		@watcher.destroy()
 		@setOnChanges false
 		@setColoured true
 		@setTabPaneIcon false
@@ -82,52 +63,45 @@ module.exports =
 
 
 	# "Coloured icons"
-	setColoured: (enabled) ->
+	setColoured: (@useColour) ->
 		body = document.querySelector "body"
-		body.classList.toggle "file-icons-colourless", !enabled
-		@iconService.useColour = enabled
-		@iconService.refresh() if @initialised
-	
+		body.classList.toggle "file-icons-colourless", !@useColour
+		@iconService.queueRefresh()
 	
 	# "Colour only on changes"
-	setOnChanges: (enabled) ->
-		@watcher.watchingRepos(enabled)
-		@iconService.changedOnly = enabled
-		@iconService.refresh() if @initialised
-
+	setOnChanges: (@changedOnly) ->
+		@watcher.watchingRepos(@changedOnly)
+		@iconService.queueRefresh()
 
 	# "Show icons in file tabs"
-	setTabPaneIcon: (enabled) ->
+	setTabPaneIcon: (@showInTabs) ->
 		body = document.querySelector "body"
-		body.classList.toggle "file-icons-tab-pane-icon", enabled
-		@iconService.showInTabs = enabled
-		@iconService.refresh() if @initialised
-	
+		body.classList.toggle "file-icons-tab-pane-icon", @showInTabs
+		@iconService.queueRefresh()
 	
 	# "Change icons on override"
-	setChangeOnOverride: (enabled) ->
-		@watcher.watchingEditors enabled
-		@iconService.enableOverrides(enabled)
+	setChangeOnOverride: (@overridesEnabled) ->
+		@watcher.watchingEditors @overridesEnabled
+		@iconService.resetOverrides()
 
-	# "Check hashbangs"
-	setCheckHashbangs: (enabled) ->
-		unless @initialised
-			return setTimeout (=> @setCheckHashbangs enabled)
-		@scanner.enableHashbangChecks(enabled)
-		@iconService.checkHashbangs = enabled
-		@iconService.delayedRefresh()
-	
-	# "Check modelines"
-	setCheckModelines: (enabled) ->
-		unless @initialised
-			return setTimeout (=> @setCheckModelines enabled)
-		@scanner.enableModelineChecks(enabled)
-		@iconService.checkModelines = enabled
-		@iconService.delayedRefresh()
+	setCheckHashbangs: (@checkHashbangs) -> @iconService.queueRefresh()
+	setCheckModelines: (@checkModelines) -> @iconService.queueRefresh()
 
 
-	# Register a command with Atom's command registry
-	addCommand: (name, callback) ->
-		name = "file-icons:#{name}"
-		return if atom.commands.registeredCommands[name]
-		@disposables.add atom.commands.add "body", name, callback
+	# Fire-and-forget method to register commands for custom keybindings
+	addCommands: ->
+		
+		# Register a command with Atom's command registry
+		add = (name, callback) =>
+			name = "file-icons:#{name}"
+			return if atom.commands.registeredCommands[name]
+			@disposables.add atom.commands.add "body", name, callback
+		
+		add "toggle-colours", (event) =>
+			name = "file-icons.coloured"
+			atom.config.set name, !(atom.config.get name)
+
+		# Toggle outlines around icons and their adjoining filenames
+		add "debug-outlines", (event) =>
+			body = document.querySelector("body")
+			body.classList.toggle "file-icons-debug-outlines"
