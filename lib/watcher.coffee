@@ -90,7 +90,7 @@ class Watcher
 			@editors.add editor
 			
 			onChange = editor.onDidChangeGrammar (to) =>
-				@emitter.emit "grammar-change", to
+				@emitter.emit "grammar-change", editor, to
 			
 			onDestroy = editor.onDidDestroy =>
 				@editors.delete editor
