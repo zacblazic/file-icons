@@ -19,6 +19,7 @@ class IconService
 		@disposables    = new CompositeDisposable
 		@fileIcons      = @compile fileIcons
 		@directoryIcons = @compile directoryIcons
+		@terminalIcon   = @iconMatchForName "a.sh"
 
 		# Register what grammars have already loaded
 		@addGrammar(scope) for scope    of atom.grammars.grammarsByScopeName
@@ -154,7 +155,13 @@ class IconService
 		if @main.checkHashbangs
 			icon = @iconMatchForHashbang data
 			if icon?
-				unless @sameIcons @fileCache[file.path], icon
+				
+				# Valid hashbang, unknown executable
+				if icon is false and (0o111 & file.stats.mode)
+					@fileCache[file.path] = @terminalIcon
+				
+				# Icon differs to what the extension/filename uses
+				else unless @sameIcons @fileCache[file.path], icon
 					@fileCache[file.path] = icon
 					@queueRefresh()
 					return true
@@ -207,6 +214,22 @@ class IconService
 				matchIndex = rule.matchesAlias lang
 				if matchIndex? and matchIndex isnt false
 					return @modelineCache[line] = [index, matchIndex]
+	
+	
+	
+	# Locate an IconRule match for an arbitrary filename
+	#
+	# NOTE: This is provided for developer convenience only. Actual matching is
+	# performed in the iconClassForPath method. Results aren't cached and will
+	# bypass caches and other matching mechanisms. It should NOT be used as an
+	# indicator of which icon will be used for a particular filename.
+	#
+	iconMatchForName: (name) ->
+		for rule, index in @fileIcons
+			matchIndex = rule.matches name
+			if matchIndex? and matchIndex isnt false
+				return [index, matchIndex]
+		null
 	
 	
 	# Return the CSS classes for a directory's icon.
