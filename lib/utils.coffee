@@ -1,6 +1,12 @@
 {toString} = Object.prototype
 
 
+# Uppercase the first letter of a string
+ucFirst = (value) ->
+	value.replace /\b(\w)(.*$)/g, (match, firstLetter, remainder) ->
+		firstLetter.toUpperCase() + remainder
+
+
 # Return TRUE if a value is a string
 isString = (value) -> "[object String]" is toString.call(value)
 
@@ -32,4 +38,4 @@ fuzzyRegExp = (input, keepString) ->
 	new RegExp output, "i"
 
 
-module.exports = {isString, isRegExp, escapeRegExp, fuzzyRegExp}
+module.exports = {ucFirst, isString, isRegExp, escapeRegExp, fuzzyRegExp}

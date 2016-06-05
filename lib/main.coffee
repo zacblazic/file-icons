@@ -4,6 +4,7 @@ IconService = require "./service/icon-service"
 ThemeHelper = require "./theme-helper"
 Watcher     = require "./watcher"
 Scanner     = require "./scanner"
+{ucFirst}   = require "./utils"
 
 module.exports =
 	
@@ -56,10 +57,9 @@ module.exports =
 	# Register a listener to handle changes of package settings
 	initSetting: (path) ->
 		[name] = path.match /\w+$/
-		setter = "set" + name.replace /\b(\w)(.*$)/g, (match, firstLetter, remainder) ->
-			firstLetter.toUpperCase() + remainder
-		@disposables.add atom.config.onDidChange "file-icons.#{path}", ({newValue}) =>
-			@[setter] newValue
+		setter = "set" + ucFirst name
+		@disposables.add atom.config.onDidChange "file-icons.#{path}",
+			({newValue}) => @[setter] newValue
 		@[setter] atom.config.get("file-icons."+path)
 
 
