@@ -9,7 +9,7 @@ class Scanner
 	BINARY_FILES: /\.(exe|jpe?g|png|gif|bmp|py[co]|woff2?|ttf|ico|webp|zip|[tr]ar|gz|bz2)$/i
 	
 	# Number of bytes to read from each file
-	SCAN_LENGTH: 32
+	SCAN_LENGTH: 90
 	
 	
 	# Symbol to store package-specific metadata in DOM elements

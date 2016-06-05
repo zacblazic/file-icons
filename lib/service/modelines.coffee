@@ -13,11 +13,11 @@ class Modelines
 	get: (string) ->
 		
 		# Emacs modeline
-		if (match = string.match @EMACS) and not (match[1].toLowerCase() is "fundamental")
+		if (match = string.match @EMACS) and match[1].toLowerCase() isnt "fundamental"
 			match[1]
 		
 		# Vim modeline
-		else if match = (string.match @VIM1 || string.match @VIM2) then match[1]
+		else if match = (string.match(@VIM1) || string.match(@VIM2)) then match[1]
 		
 		# Nothing
 		else null
