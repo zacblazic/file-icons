@@ -10,6 +10,8 @@ class IconService
 	showInTabs:  true
 	changedOnly: false
 	lightTheme:  false
+	checkHashbangs: true
+	checkModelines: true
 	
 	constructor: ->
 		@scopeCache     = {}
@@ -141,19 +143,21 @@ class IconService
 	# TRUE is returned. If nothing was found or different, FALSE is returned.
 	checkFileHeader: ({data, file}) ->
 		
-		icon = @iconMatchForHashbang data
-		if icon?
-			unless @sameIcons @fileCache[file.path], icon
+		if @checkHashbangs
+			icon = @iconMatchForHashbang data
+			if icon?
+				unless @sameIcons @fileCache[file.path], icon
+					@fileCache[file.path] = icon
+					@delayedRefresh()
+					return true
+				return false
+		
+		if @checkModelines
+			icon = @iconMatchForModeline data
+			if icon? and not @sameIcons @fileCache[file.path], icon
 				@fileCache[file.path] = icon
 				@delayedRefresh()
 				return true
-			return false
-		
-		icon = @iconMatchForModeline data
-		if icon? and not @sameIcons @fileCache[file.path], icon
-			@fileCache[file.path] = icon
-			@delayedRefresh()
-			return true
 		
 		false
 

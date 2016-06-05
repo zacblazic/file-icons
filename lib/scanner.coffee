@@ -12,11 +12,16 @@ class Scanner
 	SCAN_LENGTH: 32
 	
 	
+	# Symbol to store package-specific metadata in DOM elements
+	metadata: Symbol "FileIconsMetadata"
+	
 	# Files that've already been scanned
 	fileCache: {}
 	
-	# Symbol to store package-specific metadata in DOM elements
-	metadata: Symbol "FileIconsMetadata"
+	# Booleans controlling different scanning mechanisms
+	scanFiles: true
+	checkHashbangs: true
+	checkModelines: true
 	
 	
 	constructor: ->
@@ -68,20 +73,23 @@ class Scanner
 
 	# Parse the contents of a newly-added/opened directory
 	readFolder: (dir, item) ->
-		files = []
 		
-		# Scan each item for hashbangs/modelines
-		for name, entry of dir.entries
-			size = entry.stats?.size || 0
+		# Check if we need to scan any files
+		if @scanFiles
+			files = []
 			
-			# Skip symlinks, directories, binaries, and blank files
-			unless entry.expansionState? or size < 4 or @BINARY_FILES.test(name)
-				files.push entry
-		
-		# If there's at least one file to scan, go for it
-		if files.length
-			task = Task.once ScanTask, files
-			task.on "file-scan", (data) => @iconService.checkFileHeader(data)
+			# Scan each item for hashbangs/modelines
+			for name, entry of dir.entries
+				size = entry.stats?.size || 0
+				
+				# Skip symlinks, directories, binaries, and blank files
+				unless entry.expansionState? or size < 4 or @BINARY_FILES.test(name)
+					files.push entry
+			
+			# If there's at least one file to scan, go for it
+			if files.length
+				task = Task.once ScanTask, files
+				task.on "file-scan", (data) => @iconService.checkFileHeader(data)
 		
 		@update()
 	
@@ -111,5 +119,27 @@ class Scanner
 				emit "file-scan", {data, file}
 			resolve data
 
+	
+	# Set whether hashbang-checking is enabled
+	enableHashbangChecks: (enabled) ->
+		if enabled
+			@checkHashbangs = true
+			@scanFiles      = true
+		else
+			@checkHashbangs = false
+			@scanFiles      = false unless @checkModelines
+		enabled
+	
+	
+	# Set whether modeline-checking is enabled
+	enableModelineChecks: (enabled) ->
+		if enabled
+			@checkModelines = true
+			@scanFiles      = true
+		else
+			@checkModelines = false
+			@scanFiles      = false unless @checkHashbangs
+		enabled
+		
 
 module.exports = Scanner

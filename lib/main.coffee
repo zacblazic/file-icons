@@ -31,6 +31,8 @@ module.exports =
 		@initSetting "onChanges"
 		@initSetting "tabPaneIcon"
 		@initSetting "iconMatching.changeOnOverride"
+		@initSetting "iconMatching.checkHashbangs"
+		@initSetting "iconMatching.checkModelines"
 		
 		@addCommand "toggle-colours", (event) =>
 			name = "file-icons.coloured"
@@ -75,7 +77,7 @@ module.exports =
 		@[setter] atom.config.get("file-icons."+path)
 
 
-	# Called when "Coloured" setting's been modified
+	# "Coloured icons"
 	setColoured: (enabled) ->
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-colourless", !enabled
@@ -83,14 +85,14 @@ module.exports =
 		@iconService.refresh() if @initialised
 	
 	
-	# Triggered when the "Colour only on changes" setting's been modified
+	# "Colour only on changes"
 	setOnChanges: (enabled) ->
 		@watcher.watchingRepos(enabled)
 		@iconService.changedOnly = enabled
 		@iconService.refresh() if @initialised
 
 
-	# Called when user changes the setting of the "Tab Pane Icon" option
+	# "Show icons in file tabs"
 	setTabPaneIcon: (enabled) ->
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-tab-pane-icon", enabled
@@ -98,10 +100,26 @@ module.exports =
 		@iconService.refresh() if @initialised
 	
 	
+	# "Change icons on override"
 	setChangeOnOverride: (enabled) ->
 		@watcher.watchingEditors enabled
 		@iconService.enableOverrides(enabled)
 
+	# "Check hashbangs"
+	setCheckHashbangs: (enabled) ->
+		unless @initialised
+			return setTimeout (=> @setCheckHashbangs enabled)
+		@scanner.enableHashbangChecks(enabled)
+		@iconService.checkHashbangs = enabled
+		@iconService.delayedRefresh()
+	
+	# "Check modelines"
+	setCheckModelines: (enabled) ->
+		unless @initialised
+			return setTimeout (=> @setCheckModelines enabled)
+		@scanner.enableModelineChecks(enabled)
+		@iconService.checkModelines = enabled
+		@iconService.delayedRefresh()
 
 
 	# Register a command with Atom's command registry
