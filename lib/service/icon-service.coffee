@@ -221,8 +221,8 @@ class IconService
 	#
 	# NOTE: This is provided for developer convenience only. Actual matching is
 	# performed in the iconClassForPath method. Results aren't cached and will
-	# bypass caches and other matching mechanisms. It should NOT be used as an
-	# indicator of which icon will be used for a particular filename.
+	# bypass cached paths and other matching mechanisms. It should NOT be used
+	# as an accurate indicator of which icon will be shown for a filename.
 	#
 	iconMatchForName: (name) ->
 		for rule, index in @fileIcons
