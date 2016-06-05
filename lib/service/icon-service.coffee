@@ -135,12 +135,24 @@ class IconService
 		null
 	
 	
+	# Check a string of data from a file-scan for hashbangs/modelines
+	checkFileHeader: ({data, file}) ->
+		if hashbangIcon = @iconMatchForHashbang data
+			@fileCache[file.path] = hashbangIcon
+			@delayedRefresh()
+			return
+		
+		if modelineIcon = @iconMatchForModeline data
+			@fileCache[file.path] = modelineIcon
+			@delayedRefresh()
+		
+
 	
 	# Locate an IconRule match for a shebang
 	iconMatchForHashbang: (line) ->
 		return cached if cached = @hashbangCache[line]
 		
-		if match = line.match /^#!\s*\S*\/(\S+)(?:(?:\s+\S+=\S*)*\s+(\S+))?/
+		if match = line.match /^#!(?:(?:\s*\S*\/|\s*(?=perl))(\S+))(?:(?:\s+\S+=\S*)*\s+(\S+))?/
 			name = match[1]
 			name = match[2].split("/").pop() if name is "env"
 			

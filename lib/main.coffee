@@ -43,6 +43,7 @@ module.exports =
 
 		# Initialise directory scanner
 		@scanner = new Scanner
+		@scanner.iconService = @iconService
 		@scanner.onAddFolder = (dir, el) =>
 			@iconService.setDirectoryIcon(dir, el)
 		

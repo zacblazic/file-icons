@@ -76,14 +76,10 @@ class Scanner
 		# If there's at least one file to scan, go for it
 		if files.length
 			task = Task.once ScanTask, files
-			task.on "file-scan", @checkHeader
+			task.on "file-scan", (data) => @iconService.checkFileHeader(data)
 		
 		@update()
 	
-	
-	# Check a string of data read from a file scan to see if it holds a hashbang/modeline
-	checkHeader: (data) ->
-		
 	
 	
 	# Scan the first couple lines of a file. Used by scan-task.coffee
@@ -92,8 +88,8 @@ class Scanner
 		new Promise (resolve, reject) ->
 			fd = fs.openSync file.realPath || file.path, "r"
 			
-			# Future-proof way to create a buffer.
-			# TODO: Remove once Atom supports Buffer.alloc (added in Node v5.1.0)
+			# Future-proof way to create a buffer (added in Node v5.1.0).
+			# TODO: Replace with simply "Buffer.alloc(length)" once Atom supports it
 			buffer = if Buffer.alloc? then Buffer.alloc(length) else new Buffer(length)
 			
 			# Read the first chunk of the file
@@ -107,7 +103,7 @@ class Scanner
 			
 			# If the data contains null-bytes, it's likely binary. Skip.
 			unless /\x00/.test data
-				emit "file-scan", {data}
+				emit "file-scan", {data, file}
 			resolve data
 
 
