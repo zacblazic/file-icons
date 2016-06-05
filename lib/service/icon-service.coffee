@@ -115,7 +115,7 @@ class IconService
 				classes.push(colour)
 		
 		# Return the array of classes
-		classes || "default-icon"
+		classes || @main.defaultIconClass
 	
 	
 	

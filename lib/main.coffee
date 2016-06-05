@@ -33,6 +33,7 @@ module.exports =
 		@initSetting "coloured"
 		@initSetting "onChanges"
 		@initSetting "tabPaneIcon"
+		@initSetting "defaultIconClass"
 		@initSetting "iconMatching.changeOnOverride"
 		@initSetting "iconMatching.checkHashbangs"
 		@initSetting "iconMatching.checkModelines"
@@ -77,6 +78,10 @@ module.exports =
 	setTabPaneIcon: (@showInTabs) ->
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-tab-pane-icon", @showInTabs
+		@iconService.queueRefresh()
+	
+	# "Default icon class"
+	setDefaultIconClass: (@defaultIconClass) ->
 		@iconService.queueRefresh()
 	
 	# "Change icons on override"

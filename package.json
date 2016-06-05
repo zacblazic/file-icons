@@ -45,10 +45,17 @@
       "title": "Show icons in file tabs",
       "order": 3
     },
+    "defaultIconClass": {
+      "type": "string",
+      "default": "default-icon",
+      "title": "Default icon class",
+      "description": "CSS class added to files that lack an icon.",
+      "order": 4
+    },
     "iconMatching": {
       "type": "object",
       "description": "Advanced settings for dynamic icon assignment.",
-      "order": 4,
+      "order": 5,
       "properties": {
         "changeOnOverride": {
           "type": "boolean",
