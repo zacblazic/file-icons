@@ -75,6 +75,11 @@ module.exports.directoryIcons =
 		icon: "meteor"
 		match: /^\.meteor$/
 	
+	NodeJS:
+		icon: "node"
+		match: /^node_modules$/
+		colour: "medium-green"
+	
 	Dropbox:
 		icon: "dropbox"
 		match: /^(?:Dropbox|\.dropbox\.cache)$/
@@ -2558,6 +2563,11 @@ module.exports.fileIcons =
 		icon: "robot"
 		match: ".robot"
 		colour: "medium-purple"
+	
+	Rollup:
+		icon: "rollup"
+		match: /^rollup\.config\./i
+		colour: "auto-red"
 	
 	Rouge:
 		icon: "clojure"
