@@ -1,5 +1,6 @@
-fs       = require("fs")
-ScanTask = require.resolve("./scan-task.coffee")
+fs       = require "fs"
+{equal}  = require "./utils"
+ScanTask = require.resolve "./scan-task"
 {Task, CompositeDisposable, Emitter} = require "atom"
 
 
@@ -10,6 +11,9 @@ class Scanner
 	
 	# Number of bytes to read from each file
 	SCAN_LENGTH: 90
+	
+	# Minimum number of bytes needed to scan a file
+	MINIMUM_SIZE: 6
 	
 	
 	# Symbol to store package-specific metadata in DOM elements
@@ -75,11 +79,7 @@ class Scanner
 			
 			# Scan each item for hashbangs/modelines
 			for name, entry of dir.entries
-				size = entry.stats?.size || 0
-				
-				# Skip symlinks, directories, binaries, and blank files
-				unless entry.expansionState? or size < 4 or @BINARY_FILES.test(name)
-					files.push entry
+				if @shouldScan entry then files.push entry
 			
 			# If there's at least one file to scan, go for it
 			if files.length
@@ -87,6 +87,44 @@ class Scanner
 				task.on "file-scan", (data) => @main.iconService.checkFileHeader(data)
 		
 		@update()
+	
+	
+	
+	# Check whether a file's data should be scanned
+	shouldScan: (file) ->
+		
+		# No stats? Bail, this isn't right
+		return false unless file.stats?
+		
+		# Skip directories and symlinks
+		return false if file.expansionState? or file.symlink
+		
+		{ino, dev, size, ctime, mtime} = file.stats
+		size ?= 0
+		
+		# Skip files that're too small or obviously binary
+		return false if size < @MINIMUM_SIZE or @BINARY_FILES.test file.name
+		
+		
+		# If we have access to inodes, use it to build a GUID
+		if ino
+			guid = ino
+			guid = dev + "_" + guid if dev
+		
+		# Otherwise, use the filesystem path instead, which is less reliable
+		else guid = file.path
+		
+		
+		stats = {ino, dev, size, ctime, mtime}
+		
+		# This file's been scanned, and it hasn't changed
+		return false if equal stats, @fileCache[guid]?.stats
+		
+		
+		# Record the file's state to avoid pointless rescanning
+		@fileCache[guid] = {path: file.path, stats}
+		
+		true
 	
 	
 	

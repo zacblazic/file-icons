@@ -1,4 +1,5 @@
 {toString} = Object.prototype
+assert     = require "assert"
 
 
 # Uppercase the first letter of a string
@@ -6,12 +7,10 @@ ucFirst = (value) ->
 	value.replace /\b(\w)(.*$)/g, (match, firstLetter, remainder) ->
 		firstLetter.toUpperCase() + remainder
 
-
-# Return TRUE if a value is a string
+# Type-checking helpers
+isArray  = (value) -> "[object Array]"  is toString.call(value)
+isObject = (value) -> "[object Object]" is toString.call(value)
 isString = (value) -> "[object String]" is toString.call(value)
-
-
-# Return TRUE if a value is a regular expression
 isRegExp = (value) -> "[object RegExp]" is toString.call(value)
 
 
@@ -38,4 +37,20 @@ fuzzyRegExp = (input, keepString) ->
 	new RegExp output, "i"
 
 
-module.exports = {ucFirst, isString, isRegExp, escapeRegExp, fuzzyRegExp}
+# Check if two values are equal
+equal = (A, B) ->
+	try
+		assert.deepEqual A, B
+		return true
+	false
+
+
+# Export
+module.exports = {
+	equal
+	escapeRegExp
+	fuzzyRegExp
+	isRegExp
+	isString
+	ucFirst
+}
