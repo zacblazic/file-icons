@@ -20,7 +20,8 @@ class Scanner
 	metadata: Symbol "FileIconsMetadata"
 	
 	# Files that've already been scanned
-	fileCache: {}
+	guidsByPath: {}
+	fileCache:   {}
 	
 	
 	constructor: (@main) ->
@@ -100,6 +101,7 @@ class Scanner
 		return false if file.expansionState? or file.symlink
 		
 		{ino, dev, size, ctime, mtime} = file.stats
+		{path} = file
 		size ?= 0
 		
 		# Skip files that're too small or obviously binary
@@ -112,7 +114,7 @@ class Scanner
 			guid = dev + "_" + guid if dev
 		
 		# Otherwise, use the filesystem path instead, which is less reliable
-		else guid = file.path
+		else guid = path
 		
 		
 		stats = {ino, dev, size, ctime, mtime}
@@ -121,8 +123,13 @@ class Scanner
 		return false if equal stats, @fileCache[guid]?.stats
 		
 		
+		# Burn any cached entries with the same path
+		for key, value of @fileCache
+			delete @fileCache[key] if value.path is path
+		
 		# Record the file's state to avoid pointless rescanning
-		@fileCache[guid] = {path: file.path, stats}
+		@fileCache[guid]   = {path, stats}
+		@guidsByPath[path] = guid
 		
 		true
 	
