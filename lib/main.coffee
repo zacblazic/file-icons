@@ -24,6 +24,7 @@ module.exports =
 		
 		# Service to provide icons to Atom's APIs
 		@iconService = new IconService(@)
+		@iconService.unfreeze state
 		
 		# Filesystem scanner
 		@scanner = new Scanner(@)
@@ -52,6 +53,10 @@ module.exports =
 
 	# Hook into Atom's file-icon service
 	displayIcons: -> @iconService
+	
+	
+	# Compile whatever data needs to be saved between sessions
+	serialize: -> @iconService.freeze()
 
 
 	# Register a listener to handle changes of package settings

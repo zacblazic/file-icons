@@ -10,6 +10,7 @@ class IconService
 	
 	scopeCache:    {}
 	fileCache:     {}
+	headerCache:   {}
 	hashbangCache: {}
 	modelineCache: {}
 	
@@ -39,6 +40,21 @@ class IconService
 	onWillDeactivate: ->
 		# Currently a no-op
 	
+	
+	# Collate whatever data needs to be saved between reboots
+	freeze: ->
+		data = atom.packages.loadedPackages["file-icons"].metadata
+		return {@headerCache, version: data.version}
+	
+	
+	# Restore data from an earlier session
+	unfreeze: (state) ->
+		data = atom.packages.loadedPackages["file-icons"].metadata
+		if state and state.version is data.version
+			for path, icon of @headerCache = state.headerCache
+				@fileCache[path] = icon
+	
+			
 	
 	# Force a complete refresh of the icon display.
 	# Intended to be called when a package setting's been modified.
@@ -151,6 +167,7 @@ class IconService
 	# If a match was found, and the icon differs to the file's existing icon,
 	# TRUE is returned. If nothing was found or different, FALSE is returned.
 	checkFileHeader: ({data, file}) ->
+		{path} = file
 		
 		if @main.checkHashbangs
 			icon = @iconMatchForHashbang data
@@ -158,19 +175,22 @@ class IconService
 				
 				# Valid hashbang, unknown executable
 				if icon is false and (0o111 & file.stats.mode)
-					@fileCache[file.path] = @terminalIcon
+					icon = @terminalIcon
 				
 				# Icon differs to what the extension/filename uses
-				else unless @sameIcons @fileCache[file.path], icon
-					@fileCache[file.path] = icon
+				unless @sameIcons @fileCache[path], icon
+					@headerCache[path] = icon
+					@fileCache[path]   = icon
 					@queueRefresh()
 					return true
+				
 				return false
 		
 		if @main.checkModelines
 			icon = @iconMatchForModeline data
-			if icon? and not @sameIcons @fileCache[file.path], icon
-				@fileCache[file.path] = icon
+			if icon? and not @sameIcons @fileCache[path], icon
+				@headerCache[path] = icon
+				@fileCache[path]   = icon
 				@queueRefresh()
 				return true
 		
