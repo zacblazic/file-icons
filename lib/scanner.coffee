@@ -9,11 +9,11 @@ class Scanner
 	# File extensions to skip when scanning file contents
 	BINARY_FILES: /\.(exe|jpe?g|png|gif|bmp|py[co]|woff2?|ttf|ico|webp|zip|[tr]ar|gz|bz2)$/i
 	
-	# Number of bytes to read from each file
-	SCAN_LENGTH: 90
-	
 	# Minimum number of bytes needed to scan a file
-	MINIMUM_SIZE: 6
+	minScanLength: 6
+	
+	# Number of bytes to read from each file
+	maxScanLength: 90
 	
 	
 	# Symbol to store package-specific metadata in DOM elements
@@ -105,7 +105,7 @@ class Scanner
 		size ?= 0
 		
 		# Skip files that're too small or obviously binary
-		return false if size < @MINIMUM_SIZE or @BINARY_FILES.test file.name
+		return false if size < @minScanLength or @BINARY_FILES.test file.name
 		
 		
 		# If we have access to inodes, use it to build a GUID
@@ -136,7 +136,7 @@ class Scanner
 	
 	
 	# Scan the first couple lines of a file. Used by scan-task.coffee
-	@scanFile: (file, length = @::SCAN_LENGTH) ->
+	@scanFile: (file, length = @::maxScanLength) ->
 		
 		new Promise (resolve, reject) ->
 			fd = fs.openSync file.realPath || file.path, "r"
