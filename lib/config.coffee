@@ -2566,6 +2566,7 @@ module.exports.fileIcons =
 	
 	Rollup:
 		icon: "rollup"
+		priority: 2
 		match: /^rollup\.config\./i
 		colour: "auto-red"
 	
