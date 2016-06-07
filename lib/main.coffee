@@ -59,6 +59,37 @@ module.exports =
 	serialize: -> @iconService.freeze()
 
 
+
+	#==[ PACKAGE SETTING HANDLERS ]=======================================#
+	
+	setColoured: (@useColour) ->
+		body = document.querySelector "body"
+		body.classList.toggle "file-icons-colourless", !@useColour
+		@iconService.queueRefresh()
+	
+	setOnChanges: (@changedOnly) ->
+		@watcher.watchingRepos(@changedOnly)
+		@iconService.queueRefresh()
+
+	setTabPaneIcon: (@showInTabs) ->
+		body = document.querySelector "body"
+		body.classList.toggle "file-icons-tab-pane-icon", @showInTabs
+		@iconService.queueRefresh()
+	
+	setDefaultIconClass: (@defaultIconClass) ->
+		@iconService.queueRefresh()
+	
+	setChangeOnOverride: (@overridesEnabled) ->
+		@watcher.watchingEditors @overridesEnabled
+		@iconService.resetOverrides()
+
+	setCheckHashbangs: (@checkHashbangs) -> @iconService.setHeadersEnabled(@checkHashbangs)
+	setCheckModelines: (@checkModelines) -> @iconService.setHeadersEnabled(@checkModelines, 1)
+
+
+
+	#==[ HELPER METHODS ]=================================================#
+
 	# Register a listener to handle changes of package settings
 	initSetting: (path) ->
 		[name] = path.match /\w+$/
@@ -66,36 +97,6 @@ module.exports =
 		@disposables.add atom.config.onDidChange "file-icons.#{path}",
 			({newValue}) => @[setter] newValue
 		@[setter] atom.config.get("file-icons."+path)
-
-
-	# "Coloured icons"
-	setColoured: (@useColour) ->
-		body = document.querySelector "body"
-		body.classList.toggle "file-icons-colourless", !@useColour
-		@iconService.queueRefresh()
-	
-	# "Colour only on changes"
-	setOnChanges: (@changedOnly) ->
-		@watcher.watchingRepos(@changedOnly)
-		@iconService.queueRefresh()
-
-	# "Show icons in file tabs"
-	setTabPaneIcon: (@showInTabs) ->
-		body = document.querySelector "body"
-		body.classList.toggle "file-icons-tab-pane-icon", @showInTabs
-		@iconService.queueRefresh()
-	
-	# "Default icon class"
-	setDefaultIconClass: (@defaultIconClass) ->
-		@iconService.queueRefresh()
-	
-	# "Change icons on override"
-	setChangeOnOverride: (@overridesEnabled) ->
-		@watcher.watchingEditors @overridesEnabled
-		@iconService.resetOverrides()
-
-	setCheckHashbangs: (@checkHashbangs) -> @iconService.queueRefresh()
-	setCheckModelines: (@checkModelines) -> @iconService.queueRefresh()
 
 
 	# Fire-and-forget method to register commands for custom keybindings

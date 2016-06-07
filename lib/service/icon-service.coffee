@@ -52,7 +52,7 @@ class IconService
 		data = atom.packages.loadedPackages["file-icons"].metadata
 		if state and state.version is data.version
 			for path, icon of @headerCache = state.headerCache
-				@fileCache[path] = icon
+				@fileCache[path] = icon[0]
 	
 			
 	
@@ -179,7 +179,7 @@ class IconService
 				
 				# Icon differs to what the extension/filename uses
 				unless @sameIcons @fileCache[path], icon
-					@headerCache[path] = icon
+					@headerCache[path] = [icon]
 					@fileCache[path]   = icon
 					@queueRefresh()
 					return true
@@ -189,7 +189,7 @@ class IconService
 		if @main.checkModelines
 			icon = @iconMatchForModeline data
 			if icon? and not @sameIcons @fileCache[path], icon
-				@headerCache[path] = icon
+				@headerCache[path] = [icon, true]
 				@fileCache[path]   = icon
 				@queueRefresh()
 				return true
@@ -234,6 +234,27 @@ class IconService
 				matchIndex = rule.matchesAlias lang
 				if matchIndex? and matchIndex isnt false
 					return @modelineCache[line] = [index, matchIndex]
+	
+	
+	
+	# Set whether header-assigned icons should be displayed
+	# - enabled: Boolean designating the new value
+	# - forType: 0 or 1 to affect hashbangs or modelines, respectively
+	setHeadersEnabled: (enabled, forType) ->
+		shouldRefresh = false
+		affectedPaths = (path for path, match of @headerCache when !!match[1] is !!forType)
+		
+		if affectedPaths.length
+			shouldRefresh = true
+			
+			if enabled
+				for path in affectedPaths
+					@fileCache[path] = @headerCache[path][0]
+			
+			else delete @fileCache[path] for path in affectedPaths
+
+		
+		if shouldRefresh then @queueRefresh()
 	
 	
 	
