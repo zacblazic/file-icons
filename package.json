@@ -12,7 +12,9 @@
   "engines": {
     "atom": ">0.181.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "minimatch": "*"
+  },
   "bugs": {
     "url": "https://github.com/DanBrooker/file-icons/issues"
   },
@@ -74,6 +76,12 @@
           "default": true,
           "title": "Check modelines",
           "description": "Allow [Vim](http://vim.wikia.com/wiki/Modeline_magic) and [Emacs](https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html#Specifying-File-Variables) modelines to change icons."
+        },
+        "useGitAttributes": {
+          "type": "boolean",
+          "default": true,
+          "title": "Use .gitattributes",
+          "description": "Honour [`linguist-language`](https://github.com/github/linguist#using-gitattributes) attributes in local `.gitattributes` files."
         }
       }
     }
