@@ -119,11 +119,15 @@ class IconService
 					ruleMatch = rule.match[matchIndex]
 					break
 		
+		# Display a shortcut icon for symbolic links
+		file      = node?.file
+		isSymlink = file?.symlink
+		if isSymlink then classes = ["icon-file-symlink-file"]
+		
 		
 		if ruleMatch?
-			file    = node?.file
 			suffix  = if rule.noSuffix then "" else "-icon"
-			classes = if file?.symlink then ["icon-file-symlink-file"] else ["#{rule.icon}#{suffix}"]
+			classes = ["#{rule.icon}#{suffix}"] unless isSymlink
 			colour  = ruleMatch[1]
 			auto    = ruleMatch[3]
 			
