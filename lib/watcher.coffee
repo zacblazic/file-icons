@@ -12,6 +12,9 @@ class Watcher
 		@repoDisposables   = new CompositeDisposable
 	
 	
+	# Invoked whenever a file's saved
+	onFileSave: (fn) -> @emitter.on("file-saved", fn)
+	
 	# Handler triggered when a VCS repository's changed status
 	onRepoUpdate: (fn) -> @emitter.on("repo-update", fn)
 	
@@ -89,15 +92,20 @@ class Watcher
 		unless @editors.has editor
 			@editors.add editor
 			
+			onSave = editor.onDidSave =>
+				@emitter.emit "file-saved", editor
+			
 			onChange = editor.onDidChangeGrammar (to) =>
 				@emitter.emit "grammar-change", editor, to
 			
 			onDestroy = editor.onDidDestroy =>
 				@editors.delete editor
 				@editorDisposables.remove(i) for i in [onChange, onDestroy]
+				onSave.dispose()
 				onChange.dispose()
 				onDestroy.dispose()
 			
+			@editorDisposables.add onSave
 			@editorDisposables.add onChange
 			@editorDisposables.add onDestroy
 			

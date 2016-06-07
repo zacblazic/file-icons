@@ -33,6 +33,14 @@ class IconService
 			@updateCustomTypes changes.newValue, changes.oldValue
 		@updateCustomTypes()
 		
+		# Subscribe to workspace events
+		@main.watcher.onRepoUpdate    => @queueRefresh(10)
+		@main.watcher.onGrammarChange => @handleOverride(arguments...)
+		@main.watcher.onFileSave (ed) =>
+			{lines, file} = ed.buffer
+			args = {data: lines[0], file: file}
+			@checkFileHeader args
+		
 		# Perform an early update of every directory icon to stop a FOUC
 		@queueRefresh()
 
@@ -167,14 +175,15 @@ class IconService
 	# If a match was found, and the icon differs to the file's existing icon,
 	# TRUE is returned. If nothing was found or different, FALSE is returned.
 	checkFileHeader: ({data, file}) ->
-		{path} = file
+		{path, stats} = file
+		stats ?= {}
 		
 		if @main.checkHashbangs
 			icon = @iconMatchForHashbang data
 			if icon?
 				
 				# Valid hashbang, unknown executable
-				if icon is false and (0o111 & file.stats.mode)
+				if icon is false and (0o111 & stats.mode)
 					icon = @terminalIcon
 				
 				# Icon differs to what the extension/filename uses
@@ -194,7 +203,13 @@ class IconService
 				@queueRefresh()
 				return true
 		
-		false
+		# File's header was erased. Clean cache and refresh.
+		if @headerCache[path]
+			delete @headerCache[path]
+			delete @fileCache[path]
+			@queueRefresh()
+		
+		null
 
 
 	# Return TRUE if two icon-rule matches are equal

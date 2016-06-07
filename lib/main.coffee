@@ -19,8 +19,6 @@ module.exports =
 		
 		# Ready a watcher to respond to project/editor changes
 		@watcher = new Watcher
-		@watcher.onRepoUpdate    => @iconService.queueRefresh(10)
-		@watcher.onGrammarChange => @iconService.handleOverride(arguments...)
 		
 		# Service to provide icons to Atom's APIs
 		@iconService = new IconService(@)
