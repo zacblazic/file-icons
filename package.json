@@ -84,6 +84,24 @@
           "description": "Honour [`linguist-language`](https://github.com/github/linguist#using-gitattributes) attributes in local `.gitattributes` files."
         }
       }
+    },
+    "debugging": {
+      "type": "object",
+      "order": 6,
+      "properties": {
+        "ignoreCacheOnStartup": {
+          "type": "boolean",
+          "default": false,
+          "title": "Ignore cache on startup",
+          "description": "Don't reuse cached modelines and hashbangs from previous sessions."
+        },
+        "verboseLogging": {
+          "type": "boolean",
+          "default": false,
+          "title": "Verbose logging",
+          "description": "Print detailed debugging feedback to the console."
+        }
+      }
     }
   }
 }

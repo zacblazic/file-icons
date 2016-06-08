@@ -57,6 +57,9 @@ class IconService
 	
 	# Restore data from an earlier session
 	unfreeze: (state) ->
+		if atom.config.get "file-icons.debugging.ignoreCacheOnStartup"
+			console.log "Ignoring cache"
+			return
 		data = atom.packages.loadedPackages["file-icons"].metadata
 		if state and state.version is data.version
 			for path, icon of @headerCache = state.headerCache
