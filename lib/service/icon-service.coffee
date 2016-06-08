@@ -2,6 +2,7 @@
 {IconRule}     = require "./icon-rule"
 {escapeRegExp} = require "../utils"
 Modelines      = require "./modelines"
+$              = require("./debugging") __filename
 {directoryIcons, fileIcons} = require "../config"
 {CompositeDisposable, Emitter} = require "atom"
 
@@ -16,6 +17,7 @@ class IconService
 	
 	
 	constructor: (@main) ->
+		$ "Created"
 		@emitter        = new Emitter
 		@disposables    = new CompositeDisposable
 		@fileIcons      = @compile fileIcons

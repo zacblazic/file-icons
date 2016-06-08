@@ -1,6 +1,7 @@
 fs       = require "fs"
 {equal}  = require "./utils"
 ScanTask = require.resolve "./scan-task"
+$        = require("./service/debugging") __filename
 {Task, CompositeDisposable, Emitter} = require "atom"
 
 
@@ -25,6 +26,7 @@ class Scanner
 	
 	
 	constructor: (@main) ->
+		$ "Created"
 		@directories = new Set
 		@disposables = new CompositeDisposable
 		
@@ -36,6 +38,7 @@ class Scanner
 	
 	# Clear up memory when deactivating package
 	destroy: ->
+		$ "Destroyed"
 		@disposables.dispose()
 		@directories.clear()
 	

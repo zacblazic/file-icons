@@ -1,5 +1,6 @@
 {CompositeDisposable, Emitter} = require "atom"
 
+$           = require("./service/debugging") __filename
 IconService = require "./service/icon-service"
 ThemeHelper = require "./theme-helper"
 Watcher     = require "./watcher"
@@ -10,6 +11,7 @@ module.exports =
 	
 	# Called on startup
 	activate: (state) ->
+		$ "Activating"
 		@emitter     = new Emitter
 		@disposables = new CompositeDisposable
 		
@@ -38,6 +40,7 @@ module.exports =
 		@initSetting "iconMatching.checkHashbangs"
 		@initSetting "iconMatching.checkModelines"
 		@addCommands()
+		$ "Done"
 
 
 	# Called when deactivating or uninstalling package
