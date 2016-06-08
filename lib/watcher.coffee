@@ -1,9 +1,11 @@
 {CompositeDisposable, Emitter} = require "atom"
+$ = require("./service/debugging") __filename
 
 # Controller to manage auxiliary event subscriptions
 class Watcher
 	
 	constructor: ->
+		$ "Created"
 		@editors = new Set
 		@repos   = new Set
 		@emitter = new Emitter
@@ -24,6 +26,7 @@ class Watcher
 	
 	# Clear up memory
 	destroy: ->
+		$ "Destroyed"
 		@editorDisposables.dispose()
 		@repoDisposables.dispose()
 		@emitter.dispose()
@@ -36,9 +39,11 @@ class Watcher
 	# Set whether the project's VCS repositories are being monitored for changes
 	watchingRepos: (enabled) ->
 		if enabled
+			$ "Repo-watching: Enabled"
 			repos = atom.project.getRepositories()
 			@watchRepo(i) for i in repos when i
 		else
+			$ "Repo-watching: Disabled"
 			@repos.clear()
 			@repoDisposables.dispose()
 			@repoDisposables = new CompositeDisposable
@@ -47,6 +52,7 @@ class Watcher
 	# Register a repository with the watcher, if it hasn't been already
 	watchRepo: (repo) ->
 		unless @repos.has repo
+			$ "Watching repo", repo
 			@repos.add repo
 			
 			@repoDisposables.add repo.onDidChangeStatus (event) => @emitter.emit "repo-update", event
@@ -64,6 +70,7 @@ class Watcher
 	# Set whether editors are being monitored for certain events
 	watchingEditors: (enabled) ->
 		if enabled
+			$ "Editor-watching: Enabled"
 			editors = atom.workspace.getTextEditors()
 			
 			# Even though observeTextEditors fires for currently-open editors, race
@@ -79,6 +86,7 @@ class Watcher
 					once.dispose()
 
 		else
+			$ "Editor-watching: Disabled"
 			@editors.clear()
 			@editorDisposables.dispose()
 			@editorDisposables = new CompositeDisposable
@@ -87,6 +95,7 @@ class Watcher
 	# Attach listeners to a TextEditor, unless it was already done
 	watchEditor: (editor) ->
 		unless @editors.has editor
+			$ "Watching editor", editor
 			@editors.add editor
 			
 			onSave = editor.onDidSave =>

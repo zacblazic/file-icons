@@ -1,4 +1,5 @@
 {CompositeDisposable, Emitter} = require "atom"
+$ = require("./service/debugging") __filename
 
 
 # Class to handle motif-sensitive colour adjustments
@@ -8,6 +9,7 @@ class ThemeHelper
 
 	
 	constructor: (@main) ->
+		$ "Created"
 		@disposables = new CompositeDisposable
 		@emitter     = new Emitter
 		
@@ -21,6 +23,7 @@ class ThemeHelper
 	
 	# Clear up memory
 	destroy: ->
+		$ "Destroyed"
 		@destroyed = true
 		@restoreRuleset()
 		@disposables.dispose()
@@ -41,6 +44,7 @@ class ThemeHelper
 		
 		for index, rule of sheet.cssRules
 			if rule.selectorText is ".list-group .icon::before, .list-tree .icon::before"
+				$ "Patching ruleset", rule
 				offset = rule.style.top
 				@patchedRuleset = {rule, offset}
 				rule.style.top = ""
@@ -48,6 +52,7 @@ class ThemeHelper
 
 	# Restore the previously-removed CSS property
 	restoreRuleset: () ->
+		$ "Restoring ruleset"
 		@patchedRuleset?.rule.style.top = @patchedRuleset?.offset
 
 		

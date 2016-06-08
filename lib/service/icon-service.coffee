@@ -59,11 +59,15 @@ class IconService
 	
 	# Restore data from an earlier session
 	unfreeze: (state) ->
+		
+		# User has "Ignore cache" setting on
 		if atom.config.get "file-icons.debugging.ignoreCacheOnStartup"
-			console.log "Ignoring cache"
+			$ "Ignoring cache"
 			return
-		data = atom.packages.loadedPackages["file-icons"].metadata
-		if state and state.version is data.version
+		
+		$ "Deserialising", state
+		meta = atom.packages.loadedPackages["file-icons"].metadata
+		if state and state.version is meta.version
 			for path, icon of @headerCache = state.headerCache
 				@fileCache[path] = icon[0]
 	
@@ -72,6 +76,7 @@ class IconService
 	# Force a complete refresh of the icon display.
 	# Intended to be called when a package setting's been modified.
 	refresh: () ->
+		$ "Refreshing file icons"
 		
 		# Update the icon classes of a specific file-entry
 		updateIcon = (label, baseClass) =>
@@ -113,6 +118,7 @@ class IconService
 			[ruleIndex, matchIndex] = match
 			rule      = @fileIcons[ruleIndex]
 			ruleMatch = rule.match[matchIndex]
+			$ "Reusing cache", path, match, {rule, ruleMatch}
 		
 		# Match by filename/extension
 		else
@@ -122,12 +128,15 @@ class IconService
 				if matchIndex? and matchIndex isnt false
 					@fileCache[path] = [index, matchIndex]
 					ruleMatch = rule.match[matchIndex]
+					$ "Matched by name", filename, rule, @fileCache[path]
 					break
 		
 		# Display a shortcut icon for symbolic links
 		file      = node?.file
 		isSymlink = file?.symlink
-		if isSymlink then classes = ["icon-file-symlink-file"]
+		if isSymlink
+			$ "Using symlink icon"
+			classes = ["icon-file-symlink-file"]
 		
 		
 		if ruleMatch?
@@ -147,6 +156,9 @@ class IconService
 				else if auto then colour = (if lightTheme then "dark-" else "medium-") + colour
 				
 				classes.push(colour)
+			
+		
+		$ "Returning classes", classes
 		
 		# Return the array of classes
 		classes || @main.defaultIconClass
@@ -166,6 +178,7 @@ class IconService
 		# Is this path overridden with a user-assigned grammar?
 		if @main.overridesEnabled and scope = atom.grammars.grammarOverridesByPath[path]
 			if result = @scopeCache[scope]
+				$ "Overridden-grammar matched", result
 				return @fileCache[path] = result
 		
 		# The user has at least one custom filetype set in their config
@@ -173,6 +186,7 @@ class IconService
 		for scope, patterns of @customTypes
 			for e in patterns when e.test(filename)
 				if result = @scopeCache[scope]
+					$ "Custom filetype matched", scope, {patterns}, {result}
 					@fileCache[path] = result
 				return result if result
 		
@@ -190,13 +204,16 @@ class IconService
 		if @main.checkHashbangs
 			icon = @iconMatchForHashbang data
 			if icon?
+				$ "Hashbang found", icon, data
 				
 				# Valid hashbang, unknown executable
 				if icon is false and (0o111 & stats.mode)
+					$ "Unrecognised interpreter"
 					icon = @terminalIcon
 				
 				# Icon differs to what the extension/filename uses
 				unless @sameIcons @fileCache[path], icon
+					$ "Updating cache with hashbang icon", icon
 					@headerCache[path] = [icon]
 					@fileCache[path]   = icon
 					@queueRefresh()
@@ -207,13 +224,17 @@ class IconService
 		if @main.checkModelines
 			icon = @iconMatchForModeline data
 			if icon? and not @sameIcons @fileCache[path], icon
+				$ "Modeline found", icon, data
+				
 				@headerCache[path] = [icon, true]
 				@fileCache[path]   = icon
 				@queueRefresh()
 				return true
+			return false
 		
 		# File's header was erased. Clean cache and refresh.
 		if @headerCache[path]
+			$ "File header erased. Clearing cache."
 			delete @headerCache[path]
 			delete @fileCache[path]
 			@queueRefresh()
@@ -242,6 +263,7 @@ class IconService
 			for rule, index in @fileIcons
 				matchIndex = rule.matchesInterpreter name
 				if matchIndex? and matchIndex isnt false
+					$ "Caching hashbang", line, [index, matchIndex]
 					return @hashbangCache[line] = [index, matchIndex]
 			
 			false # Hashbang matched, but nothing found
@@ -257,6 +279,7 @@ class IconService
 			for rule, index in @fileIcons
 				matchIndex = rule.matchesAlias lang
 				if matchIndex? and matchIndex isnt false
+					$ "Caching modeline", line, [index, matchIndex]
 					return @modelineCache[line] = [index, matchIndex]
 	
 	
@@ -323,6 +346,7 @@ class IconService
 	
 	# Update the icons of ALL currently-visible directories in the tree-view
 	updateDirectoryIcons: ->
+		$ "Updating icons for visible directories"
 		for i in document.querySelectorAll(".tree-view .directory.entry")
 			@setDirectoryIcon(i.directory, i)
 	
@@ -349,6 +373,8 @@ class IconService
 		# Process each scopeName only once
 		return if @scopeCache[scope]?
 		
+		$ "Adding grammar", scope
+		
 		for ruleIndex, rule of @fileIcons
 			if rule.scopes?
 				for matchIndex, pattern of rule.scopes when pattern.test(scope)
@@ -361,6 +387,7 @@ class IconService
 	# Handle the assignment of user-specified grammars
 	handleOverride: (editor, grammar) ->
 		return unless @main.overridesEnabled
+		$ "Grammar overridden", grammar, editor, path
 		path = editor.getPath()
 		delete @fileCache[path]
 		@queueRefresh()
@@ -368,7 +395,10 @@ class IconService
 	
 	# Clear icons cached for overridden grammars and update the display
 	resetOverrides: ->
+		$ "Resetting grammar-assigned icons"
+		
 		for path of atom.grammars.grammarOverridesByPath
+			$ "Resetting path", path, {existingValue: @fileCache[path]}
 			delete @fileCache[path]
 		@queueRefresh()
 	
@@ -397,6 +427,8 @@ class IconService
 		
 		# Default to whatever the current Atom config is if no value was passed
 		types = types || atom.config.get("core.customFileTypes") || {}
+
+		$ "Updating custom types", types, previousValue
 
 		# Compile a list of every scope that's affected by these changes
 		scopes = new Set

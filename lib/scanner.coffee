@@ -21,7 +21,6 @@ class Scanner
 	metadata: Symbol "FileIconsMetadata"
 	
 	# Files that've already been scanned
-	guidsByPath: {}
 	fileCache:   {}
 	
 	
@@ -45,6 +44,7 @@ class Scanner
 	
 	# Reparse the tree-view for newly-added directories
 	update: ->
+		$ "Updating"
 		for i in @treeViewEl.find ".directory.entry"
 			@add(i) unless @directories.has(i)
 
@@ -52,6 +52,7 @@ class Scanner
 	# Register a directory instance in the Scanner's directories list
 	# - item: A tree-view entry representing a directory
 	add: (item) ->
+		$ "Directory added", item
 		@directories.add(item)
 		dir            = item.directory
 		onExpand       = dir.onDidExpand     => @readFolder dir, item
@@ -85,6 +86,8 @@ class Scanner
 		
 		# Check if we need to scan any files
 		if @main.checkHashbangs or @main.checkModelines
+			$ "Reading directory", dir, item
+			
 			files = []
 			
 			# Scan each item for hashbangs/modelines
@@ -93,6 +96,7 @@ class Scanner
 			
 			# If there's at least one file to scan, go for it
 			if files.length
+				$ "Scanning files", files
 				task = Task.once ScanTask, files
 				task.on "file-scan", (data) => @main.iconService.checkFileHeader(data)
 		
@@ -106,15 +110,29 @@ class Scanner
 		# No stats? Bail, this isn't right
 		return false unless file.stats?
 		
-		# Skip directories and symlinks
-		return false if file.expansionState? or file.symlink
+		# Skip directories
+		return false if file.expansionState?
+		
+		# Skip symbolic links
+		if file.symlink
+			$ "Skipping file (Symlink)", file
+			return false
 		
 		{ino, dev, size, ctime, mtime} = file.stats
 		{path} = file
 		size ?= 0
 		
-		# Skip files that're too small or obviously binary
-		return false if size < @minScanLength or @BINARY_FILES.test file.name
+		
+		# Skip files that're too small
+		if size < @minScanLength
+			$ "Skipping file (#{size} bytes)", file
+			return false
+		
+		
+		# Skip anything that's obviously binary
+		if @BINARY_FILES.test file.name
+			$ "Skipping file (Binary)", file
+			return false
 		
 		
 		# If we have access to inodes, use it to build a GUID
@@ -129,16 +147,20 @@ class Scanner
 		stats = {ino, dev, size, ctime, mtime}
 		
 		# This file's been scanned, and it hasn't changed
-		return false if equal stats, @fileCache[guid]?.stats
+		if equal stats, @fileCache[guid]?.stats
+			$ "Already scanned; file unchanged", file, stats, @fileCache[guid]
+			return false
 		
 		
 		# Burn any cached entries with the same path
 		for key, value of @fileCache
-			delete @fileCache[key] if value.path is path
+			if value.path is path
+				$ "Deleting stale path", {path, deleted: @fileCache[key]}
+				delete @fileCache[key]
 		
 		# Record the file's state to avoid pointless rescanning
-		@fileCache[guid]   = {path, stats}
-		@guidsByPath[path] = guid
+		@fileCache[guid] = {path, stats}
+		$ "Marking file as scanned", path, "guid: #{guid}", stats
 		
 		true
 	
