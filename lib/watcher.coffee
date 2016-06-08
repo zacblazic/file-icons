@@ -24,16 +24,13 @@ class Watcher
 	
 	# Clear up memory
 	destroy: ->
-		@watchingRepos false
-		@watchingEditors false
-		
 		@editorDisposables.dispose()
 		@repoDisposables.dispose()
+		@emitter.dispose()
 		@editors.clear()
 		@editors = null
 		@repos.clear()
 		@repos = null
-		@emitter.emit "did-destroy"
 	
 	
 	# Set whether the project's VCS repositories are being monitored for changes

@@ -42,11 +42,11 @@ module.exports =
 
 	# Called when deactivating or uninstalling package
 	deactivate: ->
-		@disposables.dispose()
 		@watcher.destroy()
-		@setOnChanges false
-		@setColoured true
-		@setTabPaneIcon false
+		@themeHelper.destroy()
+		@scanner.destroy()
+		@disposables.dispose()
+		@emitter.dispose()
 
 
 	# Hook into Atom's file-icon service

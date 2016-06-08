@@ -28,10 +28,16 @@ class Scanner
 		@directories = new Set
 		@disposables = new CompositeDisposable
 		
-		atom.packages.onDidActivateInitialPackages =>
+		@disposables.add atom.packages.onDidActivateInitialPackages =>
 			@treeView   = atom.packages.loadedPackages["tree-view"].mainModule
 			@treeViewEl = @treeView.treeView
 			@update()
+	
+	
+	# Clear up memory when deactivating package
+	destroy: ->
+		@disposables.dispose()
+		@directories.clear()
 	
 	
 	# Reparse the tree-view for newly-added directories

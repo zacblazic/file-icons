@@ -24,7 +24,7 @@ class ThemeHelper
 		@destroyed = true
 		@restoreRuleset()
 		@disposables.dispose()
-		@emitter.emit "did-destroy"
+		@emitter.dispose()
 	
 
 	# Handler fired when user changes themes
