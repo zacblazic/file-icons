@@ -59,6 +59,11 @@ noSuffix:     By default, icon names are suffixed with "-icon". Set noSuffix to 
 
 module.exports.directoryIcons =
 	
+	Bower:
+		icon: "bower"
+		match: /^bower[-_]components$/
+		colour: "bower"
+	
 	Git:
 		icon: "git"
 		match: /^\.git$/
