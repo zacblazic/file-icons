@@ -260,6 +260,18 @@ module.exports.fileIcons =
 		match: /^appveyor\.yml$/i
 		colour: "medium-blue"
 	
+	"Arch Linux":
+		icon: "archlinux"
+		priority: 2
+		match: [
+			[/^\.install$/, "dark-purple"]
+			[/^\.SRCINFO$/, "dark-maroon"]
+			[/^pacman\.conf$/, "dark-yellow"]
+			[/^pamac\.conf$/, "light-yellow"]
+			[/^PKGBUILD$/, "dark-cyan"]
+			["yaourtrc", "light-yellow"]
+		]
+	
 	Assembly: # Or binary
 		icon: "binary"
 		match: [
@@ -765,8 +777,11 @@ module.exports.fileIcons =
 	
 	Debian:
 		icon: "debian"
-		match: ".deb"
-		colour: "medium-red"
+		match: [
+			[".deb", "medium-red"]
+			[/^control$/, "dark-cyan"]
+			[/^rules$/, "medium-cyan"]
+		]
 	
 	Diff:
 		icon: "diff"
@@ -2532,8 +2547,10 @@ module.exports.fileIcons =
 	
 	"Red Hat":
 		icon: "red-hat"
-		match: ".rpm"
-		colour: "medium-red"
+		match: [
+			[".rpm", "medium-red"]
+			[".spec", "dark-red"]
+		]
 	
 	RenderScript:
 		icon: "android"
@@ -3027,6 +3044,12 @@ module.exports.fileIcons =
 		match: ".txl"
 		colour: "medium-orange"
 	
+	TypeDoc:
+		icon: "typedoc"
+		priority: 2
+		match: /^typedoc\.json$/i
+		colour: "dark-purple"
+	
 	TypeScript:
 		icon: "ts"
 		scope: "ts"
@@ -3167,8 +3190,10 @@ module.exports.fileIcons =
 	Webpack:
 		icon: "webpack"
 		priority: 2
-		match: /webpack\.config\./i
-		colour: "medium-blue"
+		match: [
+			[/webpack\.config\./i, "medium-blue"]
+			[/^webpackfile\.js$/i, "medium-blue"]
+		]
 	
 	Windows:
 		icon: "windows"
