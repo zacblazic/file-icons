@@ -59,6 +59,11 @@ noSuffix:     By default, icon names are suffixed with "-icon". Set noSuffix to 
 
 module.exports.directoryIcons =
 	
+	Atom:
+		icon: "atom"
+		match: /^\.atom$/
+		colour: "dark-green"
+	
 	Bower:
 		icon: "bower"
 		match: /^bower[-_]components$/
