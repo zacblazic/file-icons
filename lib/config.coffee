@@ -2743,6 +2743,11 @@ module.exports.fileIcons =
 		match: ".liquid"
 		colour: "medium-green"
 	
+	Sigils:
+		icon: "sigils"
+		match: ".sigils"
+		colour: "dark-red"
+	
 	Sketch:
 		icon: "sketch"
 		match: ".sketch"
