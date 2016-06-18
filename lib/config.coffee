@@ -368,6 +368,7 @@ module.exports.fileIcons =
 			[".cbx", "auto-red"]
 			[".bbx", "auto-orange"]
 			[".bib", "auto-yellow", "bibtex"]
+			[".bst", "auto-green"]
 		]
 	
 	Bison:
