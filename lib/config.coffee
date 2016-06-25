@@ -2126,7 +2126,7 @@ module.exports.fileIcons =
 	NPM:
 		icon: "npm"
 		priority: 2
-		match: /^(?:package\.json|\.npmignore|\.?npmrc|npm-debug\.log)$/
+		match: /^(?:package\.json|\.npmignore|\.?npmrc|npm-debug\.log|npm-shrinkwrap\.json)$/
 		colour: "medium-red"
 	
 	NSIS:
