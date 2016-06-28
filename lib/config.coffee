@@ -751,6 +751,7 @@ module.exports.fileIcons =
 		scope: "dart"
 		match: ".dart"
 		colour: "medium-cyan"
+		interpreter: "dart"
 
 	Dashboard:
 		icon: "dashboard"
@@ -831,6 +832,7 @@ module.exports.fileIcons =
 		icon: "e"
 		match: /\.E$/
 		colour: "medium-green"
+		interpreter: "rune"
 	
 	Eagle:
 		icon: "eagle"
@@ -1392,7 +1394,7 @@ module.exports.fileIcons =
 	Haskell:
 		icon: "haskell"
 		match: [
-			[".hs", "medium-purple", scope: "source.haskell"]
+			[".hs", "medium-purple", scope: "source.haskell", interpreter: "runhaskell"]
 			[".hsc", "medium-blue", scope: "hsc2hs"]
 			[".c2hs", "dark-purple", scope: "c2hs", alias: /C2hs(?:\s?Haskell)?/i]
 			[".lhs", "dark-blue", scope: "latex.haskell", alias: /lhaskell|lhs|Literate\s?Haskell/i]
@@ -1534,6 +1536,7 @@ module.exports.fileIcons =
 		scope: /^source\.io$/i
 		match: ".io"
 		colour: "dark-purple"
+		interpreter: "io"
 	
 	Ioke:
 		icon: "ioke"
@@ -2180,7 +2183,7 @@ module.exports.fileIcons =
 	OCaml:
 		icon: "ocaml"
 		match: [
-			[".ml", "medium-orange", scope: "ocaml", interpreter: /ocaml(?:run)?/]
+			[".ml", "medium-orange", scope: "ocaml", interpreter: /ocaml(?:run|script)?/]
 			[".mli", "dark-orange"]
 			[".eliom", "medium-red"]
 			[".eliomi", "dark-red"]
@@ -2292,7 +2295,7 @@ module.exports.fileIcons =
 	Pascal:
 		icon: "pascal"
 		match: [
-			[".pas", "medium-purple", "pascal"]
+			[".pas", "medium-purple", scope: "pascal", interpreter: /pascal|instantfpc/]
 			[".dfm", "medium-blue"]
 			[".dpr", "dark-blue"]
 			[".lpr", "dark-purple"]
