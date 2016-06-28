@@ -21,7 +21,9 @@ match:     Pattern(s) to match against the filename. This may be a string, an ar
 
                    0. Path-matching pattern (required)
                    1. Colour name
-                   2. Advanced properties
+                   2. Additional properties, expressed as either an object literal or a string.
+                      Strings are treated as shorthand for setting alias, scope and interpreter
+                      properties to the same value.
 
                Most contributors will only need to touch the first two elements.
 
