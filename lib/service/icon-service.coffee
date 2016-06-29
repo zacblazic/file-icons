@@ -210,13 +210,15 @@ class IconService
 		
 		if @main.checkModelines
 			icon = @iconMatchForModeline data
-			if icon? and icon isnt @fileCache[path]
+			if icon?
 				$ "Modeline found", icon, data
-				@headerCache[path] = [icon.index, 1]
-				@fileCache[path]   = icon
-				@queueRefresh()
-				return true
-			return false
+				if icon isnt @fileCache[path]
+					$ "Updating cache with modeline icon", icon
+					@headerCache[path] = [icon.index, 1]
+					@fileCache[path]   = icon
+					@queueRefresh()
+					return true
+				return false
 		
 		# File's header was erased. Clean cache and refresh.
 		if @headerCache[path]
