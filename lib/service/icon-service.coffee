@@ -116,7 +116,7 @@ class IconService
 		
 		# Use cached matches for quicker lookup
 		if (match = @fileCache[path] || @matchCustom path)?
-			$ "Reusing cache", path, match
+			$ "Using cache", path, match
 		
 		# Match by filename/extension
 		else
@@ -147,7 +147,6 @@ class IconService
 				if colourClass = match.getColourClass()
 					iconClass += " " + colourClass
 
-		$ "Returning classes", iconClass
 		iconClass || @main.defaultIconClass
 	
 	
