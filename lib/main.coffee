@@ -58,11 +58,10 @@ module.exports =
 	
 	# Compile whatever data needs to be saved between sessions
 	serialize: ->
-		data = atom.packages.loadedPackages["file-icons"].metadata
-		{version}     = data
+		iconCount     = @iconService.fileIcons.length
 		{headerCache} = @iconService
 		{lightTheme}  = ThemeHelper
-		{version, lightTheme, headerCache}
+		{iconCount, lightTheme, headerCache}
 
 
 

@@ -60,12 +60,17 @@ class IconService
 			$ "Ignoring cache"
 			return
 		
-		$ "Deserialising", state
-		meta = atom.packages.loadedPackages["file-icons"].metadata
-		if state and state.version is meta.version
+		if state and state.iconCount is @fileIcons.length
+			$ "Deserialising cache", state
 			for path, match of @headerCache = state.headerCache
 				[ruleIndex] = match
 				@fileCache[path] = ruleIndex
+		
+		else if state
+			$ "Ignoring outdated cache",
+				cachedIconCount: state.iconCount
+				actualIconCount: @fileIcons.length
+			
 	
 			
 	
