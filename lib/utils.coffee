@@ -50,6 +50,7 @@ module.exports = {
 	equal
 	escapeRegExp
 	fuzzyRegExp
+	isObject
 	isRegExp
 	isString
 	ucFirst

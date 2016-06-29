@@ -295,6 +295,7 @@ module.exports.fileIcons =
 			[/\.gcode|\.gco/i, "medium-orange"]
 			[/\.rpy[bc]$/i, "medium-red"]
 			[/\.py[co]$/i, "dark-purple"]
+			[".swp", "dark-green", priority: 4]
 			[".DS_Store"]
 		]
 	
@@ -603,6 +604,8 @@ module.exports.fileIcons =
 		match: [
 			[".coffee", "medium-maroon", scope: "coffee", alias: /Coffee(?:-Script)?/i, interpreter: "coffee"]
 			[".cjsx", "dark-maroon"]
+			[".coffee.ecr", "medium-cyan", priority: 2]
+			[".coffee.erb", "medium-red",  priority: 2]
 			[".litcoffee", "light-maroon", "litcoffee"]
 			[".iced", "medium-blue"]
 		]
@@ -672,6 +675,7 @@ module.exports.fileIcons =
 			[/^ld\.script$/i, "medium-orange"]
 			[".reek", "medium-red"]
 			["apl.ascii", "medium-red"]
+			[/config|settings|prefs/i, priority: 0]
 		]
 	
 	Coq:
@@ -782,6 +786,7 @@ module.exports.fileIcons =
 			[".ttl", "medium-cyan", scope: "turtle"]
 			[".rviz", "dark-blue"]
 			[".syntax", "medium-blue"]
+			[/^METADATA\.pb$/, "medium-red", priority: 2]
 		]
 	
 	dBASE:
@@ -882,24 +887,6 @@ module.exports.fileIcons =
 			[".classpath", "medium-red"]
 		]
 	
-	"ECR - JavaScript": # Embedded Crystal
-		icon: "js"
-		match: ".js.ecr"
-		colour: "medium-cyan"
-		priority: 2
-	
-	"ECR - CoffeeScript":
-		icon: "coffee"
-		match: ".coffee.ecr"
-		colour: "medium-cyan"
-		priority: 2
-	
-	"ECR - HTML":
-		icon: "html5"
-		match: /\.html?\.ecr$/i
-		colour: "medium-cyan"
-		priority: 2
-	
 	Elm:
 		icon: "elm"
 		scope: "elm"
@@ -924,25 +911,6 @@ module.exports.fileIcons =
 		scope: "emblem"
 		match: /\.em(?:blem)?$/i
 		colour: "medium-blue"
-	
-	"ERB - JavaScript":
-		icon: "js"
-		match: ".js.erb"
-		colour: "medium-red"
-		priority: 2
-	
-	"ERB - CoffeeScript":
-		icon: "coffee"
-		match: ".coffee.erb"
-		colour: "medium-red"
-		priority: 2
-	
-	"ERB - HTML":
-		icon: "html5"
-		scope: "html.erb"
-		match: /\.(?:html?\.erb|rhtml)$/i
-		colour: "medium-red"
-		priority: 2
 	
 	Erlang:
 		icon: "erlang"
@@ -1037,12 +1005,6 @@ module.exports.fileIcons =
 			[".otf", "dark-yellow"]
 		]
 	
-	"Font Metadata":
-		icon: "database"
-		priority: 2 # Overrides PureBasic icon
-		match: /^METADATA\.pb$/
-		colour: "medium-red"
-	
 	Fortran:
 		icon: "fortran"
 		match: [
@@ -1108,6 +1070,9 @@ module.exports.fileIcons =
 			[".arcconfig", "dark-blue"]
 			[".pairs", "dark-green"]
 			[".python-version", "dark-blue"]
+			[/^nodemon\.json$|^\.nodemonignore$/i, "medium-green"]
+			[".indent.pro", "medium-blue", priority: 2]
+			[/^\./, priority: 0]
 		]
 	
 	Gears:
@@ -1227,6 +1192,7 @@ module.exports.fileIcons =
 			[".wxs", "dark-purple"]
 			[".x3d", "medium-blue"]
 			[".xacro", "medium-red"]
+			[".xaml", "medium-blue"]
 			[".xib", "dark-purple"]
 			[".xlf", "dark-cyan"]
 			[".xliff", "medium-red"]
@@ -1431,6 +1397,8 @@ module.exports.fileIcons =
 			[".shtml", "medium-cyan"]
 			[".scaml", "dark-red", "scaml"]
 			[".swig", "medium-green", "swig"]
+			[/\.html?\.ecr$/i, "medium-cyan", priority: 2]
+			[/\.(?:html?\.erb|rhtml)$/i, "medium-red", scope: "html.erb", priority: 2]
 		]
 	
 	Hy:
@@ -1507,12 +1475,6 @@ module.exports.fileIcons =
 			[".wdp", "dark-red"]
 		]
 	
-	"Indent Config":
-		icon: "gear"
-		priority: 2
-		match: ".indent.pro"
-		colour: "medium-blue"
-
 	"Inform 7":
 		icon: "inform7"
 		match: [
@@ -1593,6 +1555,8 @@ module.exports.fileIcons =
 			[".xsjs", "auto-purple"]
 			[".xsjslib", "auto-blue"]
 			[".dust", "auto-maroon"]
+			[".js.ecr", "medium-cyan", priority: 2]
+			[".js.erb", "medium-red", priority: 2]
 		]
 
 	Jenkins:
@@ -1697,16 +1661,6 @@ module.exports.fileIcons =
 			[".lasso9", "medium-purple"]
 			[".ldml", "medium-red"]
 		]
-	
-	"Last resort - Config":
-		icon: "config"
-		priority: 0
-		match: /config|settings|prefs/i
-	
-	"Last resort - Dotfile":
-		icon: "gear"
-		priority: 0
-		match: /^\./
 	
 	Lean:
 		icon: "lean"
@@ -1896,6 +1850,7 @@ module.exports.fileIcons =
 				alias: /[gtn]?roff|manpage/i
 				interpreter: /man|mandoc|(?:[gnt]|dit)roff/i]
 			[/\.(?:rnh|rno|roff|run|runoff)$/i, "dark-maroon", "runoff"]
+			[/^tmac\.|^(?:mmn|mmt)$/i, "dark-green", priority: 2]
 		]
 
 	MediaWiki:
@@ -2122,11 +2077,6 @@ module.exports.fileIcons =
 			[".njs", "medium-green"]
 			[".node-version", "dark-green"]
 		]
-	
-	Nodemon:
-		icon: "gear"
-		match: /^nodemon\.json$|^\.nodemonignore$/i
-		colour: "medium-green"
 	
 	NPM:
 		icon: "npm"
@@ -2901,12 +2851,6 @@ module.exports.fileIcons =
 		match: ".svg"
 		colour: "dark-yellow"
 	
-	"Swap file":
-		icon: "binary"
-		priority: 4
-		match: ".swp"
-		colour: "dark-green"
-	
 	Swift:
 		icon: "swift"
 		scope: "swift"
@@ -3034,12 +2978,6 @@ module.exports.fileIcons =
 		priority: 2
 		match: /^\.travis/i
 		colour: "medium-red"
-	
-	"Troff macro":
-		icon: "manpage"
-		priority: 2
-		match: /^tmac\.|^(?:mmn|mmt)$/i
-		colour: "dark-green"
 	
 	TSX: # React/Typescript
 		icon: "tsx"
@@ -3230,11 +3168,6 @@ module.exports.fileIcons =
 		icon: "link"
 		priority: 3
 		match: ".lnk"
-		colour: "medium-blue"
-
-	XAML:
-		icon: "code"
-		match: ".xaml"
 		colour: "medium-blue"
 
 	XQuery:

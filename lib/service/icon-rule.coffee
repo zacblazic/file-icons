@@ -1,4 +1,4 @@
-{isString, isRegExp, escapeRegExp, fuzzyRegExp} = require "../utils"
+{isString, isObject, isRegExp, escapeRegExp, fuzzyRegExp} = require "../utils"
 ThemeHelper = require "../theme-helper"
 
 
@@ -96,6 +96,11 @@ class IconRule
 		# Refine each match definition
 		for i, value of match
 			[pattern, colour, props] = value
+			
+			# Colour can be omitted if tertiary argument is an object
+			if isObject(colour) && !props?
+				props = colour
+				colour = undefined
 			
 			# Third element was a string: shorthand to set all three properties
 			if isString props then props =
