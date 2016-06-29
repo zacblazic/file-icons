@@ -51,11 +51,6 @@ class IconService
 		# Currently a no-op
 	
 	
-	# Collate whatever data needs to be saved between reboots
-	freeze: ->
-		data = atom.packages.loadedPackages["file-icons"].metadata
-		return {@headerCache, version: data.version}
-	
 	
 	# Restore data from an earlier session
 	unfreeze: (state) ->
@@ -68,8 +63,9 @@ class IconService
 		$ "Deserialising", state
 		meta = atom.packages.loadedPackages["file-icons"].metadata
 		if state and state.version is meta.version
-			for path, icon of @headerCache = state.headerCache
-				@fileCache[path] = icon[0]
+			for path, match of @headerCache = state.headerCache
+				[ruleIndex] = match
+				@fileCache[path] = ruleIndex
 	
 			
 	
@@ -115,53 +111,39 @@ class IconService
 		
 		# Use cached matches for quicker lookup
 		if (match = @fileCache[path] || @matchCustom path)?
-			[ruleIndex, matchIndex] = match
-			rule      = @fileIcons[ruleIndex]
-			ruleMatch = rule.match[matchIndex]
-			$ "Reusing cache", path, match, {rule, ruleMatch}
+			$ "Reusing cache", path, match
 		
 		# Match by filename/extension
 		else
-			filename  = basename path
+			filename = basename path
 			for rule, index in @fileIcons
-				matchIndex = rule.matches filename
-				if matchIndex? and matchIndex isnt false
-					@fileCache[path] = [index, matchIndex]
-					ruleMatch = rule.match[matchIndex]
-					$ "Matched by name", filename, rule, @fileCache[path]
+				if rule.pattern.test filename
+					$ "Matched by name", filename, rule
+					@fileCache[path] = match = rule
 					break
 		
+		
+		file = node?.file
+		
 		# Display a shortcut icon for symbolic links
-		file      = node?.file
-		isSymlink = file?.symlink
-		if isSymlink
+		if file?.symlink
 			$ "Using symlink icon"
-			classes = ["icon-file-symlink-file"]
+			iconClass = "icon-file-symlink-file"
 		
 		
-		if ruleMatch?
-			suffix  = if rule.noSuffix then "" else "-icon"
-			classes = ["#{rule.icon}#{suffix}"] unless isSymlink
-			colour  = ruleMatch[1]
-			auto    = ruleMatch[3]
+		# An IconRule matches this path
+		if match?
+			
+			# Allow symlinks to override usual icons
+			iconClass ?= match.iconClass
 			
 			# Determine if colour should be used
-			if colour && @main.useColour && (!@main.changedOnly || file?.status)
-				lightTheme = @main.themeHelper.lightTheme
-				
-				# Bower needs special treatment to be visible
-				if auto is "bower" then colour = (if lightTheme then "medium-orange" else "medium-yellow")
-				
-				# This match is flagged as motif-sensitive: select colour based on theme brightness
-				else if auto then colour = (if lightTheme then "dark-" else "medium-") + colour
-				
-				classes.push(colour)
-			
-		
-		$ "Returning classes", classes
-		
-		# Return the array of classes
-		classes || @main.defaultIconClass
+			if @main.useColour && (!@main.changedOnly || file?.status)
+				if colourClass = match.getColourClass()
+					iconClass += " " + colourClass
+
+		$ "Returning classes", iconClass
+		iconClass || @main.defaultIconClass
 	
 	
 	
@@ -212,9 +194,9 @@ class IconService
 					icon = @terminalIcon
 				
 				# Icon differs to what the extension/filename uses
-				unless @sameIcons @fileCache[path], icon
+				if icon isnt @fileCache[path]
 					$ "Updating cache with hashbang icon", icon
-					@headerCache[path] = [icon]
+					@headerCache[path] = [icon.index]
 					@fileCache[path]   = icon
 					@queueRefresh()
 					return true
@@ -223,10 +205,9 @@ class IconService
 		
 		if @main.checkModelines
 			icon = @iconMatchForModeline data
-			if icon? and not @sameIcons @fileCache[path], icon
+			if icon? and icon isnt @fileCache[path]
 				$ "Modeline found", icon, data
-				
-				@headerCache[path] = [icon, true]
+				@headerCache[path] = [icon.index, 1]
 				@fileCache[path]   = icon
 				@queueRefresh()
 				return true
@@ -242,15 +223,6 @@ class IconService
 		null
 
 
-	# Return TRUE if two icon-rule matches are equal
-	sameIcons: (a, b) ->
-		
-		# Avoid checking falsy values
-		return null unless a and b
-		
-		# Use loose-type comparison: some indexes might be strings
-		`a[0] == b[0] && a[1] == b[1] && a[2] == b[2]`
-			
 	
 	# Locate an IconRule match for a shebang
 	iconMatchForHashbang: (line) ->
@@ -261,10 +233,9 @@ class IconService
 			name = match[2].split("/").pop() if name is "env"
 			
 			for rule, index in @fileIcons
-				matchIndex = rule.matchesInterpreter name
-				if matchIndex? and matchIndex isnt false
-					$ "Caching hashbang", line, [index, matchIndex]
-					return @hashbangCache[line] = [index, matchIndex]
+				if rule.matchesInterpreter name
+					$ "Caching hashbang", line, rule
+					return @hashbangCache[line] = rule
 			
 			false # Hashbang matched, but nothing found
 		else null # No hashbang found whatsoever
@@ -277,10 +248,9 @@ class IconService
 		# We found a language, but is it recognised?
 		if lang = Modelines.get(line)
 			for rule, index in @fileIcons
-				matchIndex = rule.matchesAlias lang
-				if matchIndex? and matchIndex isnt false
-					$ "Caching modeline", line, [index, matchIndex]
-					return @modelineCache[line] = [index, matchIndex]
+				if rule.matchesAlias lang
+					$ "Caching modeline", line, {rule, lang}
+					return @modelineCache[line] = rule
 	
 	
 	
@@ -296,7 +266,8 @@ class IconService
 			
 			if enabled
 				for path in affectedPaths
-					@fileCache[path] = @headerCache[path][0]
+					[ruleIndex] = @headerCache[path]
+					@fileCache[path] = @fileIcons[ruleIndex]
 			
 			else delete @fileCache[path] for path in affectedPaths
 
@@ -314,9 +285,7 @@ class IconService
 	#
 	iconMatchForName: (name) ->
 		for rule, index in @fileIcons
-			matchIndex = rule.matches name
-			if matchIndex? and matchIndex isnt false
-				return [index, matchIndex]
+			return rule if rule.pattern.test name
 		null
 	
 	
@@ -330,17 +299,10 @@ class IconService
 		dirname = basename dir.path
 		
 		for rule in @directoryIcons
-			matchIndex = rule.matches dirname
-			if matchIndex? and matchIndex isnt false
-				ruleMatch = rule.match[matchIndex]
-				break
+			if rule.pattern.test dirname
+				coloured = @main.useColour && (!@main.changedOnly || dir?.status)
+				return rule.getClass !coloured
 		
-		if ruleMatch?
-			suffix = if rule.noSuffix then "" else "-icon"
-			classes = ["#{rule.icon}#{suffix}"]
-			if @main.useColour && colour = ruleMatch[1]
-				classes.push(colour)
-		classes
 	
 	
 	
@@ -353,17 +315,19 @@ class IconService
 	
 	# Set the icon of a single directory
 	setDirectoryIcon: (dir, el) ->
-		className = @iconClassForDirectory(dir)
-		if className
-			if Array.isArray(className) then className = className.join(" ")
+		if className = @iconClassForDirectory(dir)
 			el.directoryName.className = "name icon " + className
 	
 	
 	# Parse a dictionary of file-matching patterns loaded from icon-config
 	compile: (rules) ->
-		results = for name, attr of rules
-			new IconRule name, attr
-		results.sort IconRule.sort
+		results = []
+		for name, attr of rules
+			results.push IconRule.parseConfig(name, attr)...
+		results = results.sort IconRule.sort
+		results.forEach (value, index) -> value.index = index
+		return results
+		
 	
 	
 	
@@ -376,9 +340,8 @@ class IconService
 		$ "Adding grammar", scope
 		
 		for ruleIndex, rule of @fileIcons
-			if rule.scopes?
-				for matchIndex, pattern of rule.scopes when pattern.test(scope)
-					return @scopeCache[scope] = [ruleIndex, matchIndex]
+			if rule.scope?.test scope
+				return @scopeCache[scope] = rule
 		
 		# If this scope wasn't matched, store a bogus entry just to prevent reevaluation
 		@scopeCache[scope] = false

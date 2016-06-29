@@ -8,7 +8,7 @@ class ThemeHelper
 	themeColour: {}
 
 	
-	constructor: (@main) ->
+	constructor: ->
 		$ "Created"
 		@disposables = new CompositeDisposable
 		@emitter     = new Emitter
@@ -98,4 +98,4 @@ class ThemeHelper
 		[hue||0, sat||0, lum||0]
 
 
-module.exports = ThemeHelper
+module.exports = new ThemeHelper

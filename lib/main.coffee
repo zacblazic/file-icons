@@ -16,8 +16,8 @@ module.exports =
 		@disposables = new CompositeDisposable
 		
 		# Controller to manage theme-related logic
-		@themeHelper = new ThemeHelper(@)
-		@themeHelper.onChangeThemes => @iconService.queueRefresh()
+		ThemeHelper.onChangeThemes => @iconService.queueRefresh()
+		ThemeHelper.lightTheme = state.lightTheme
 		
 		# Ready a watcher to respond to project/editor changes
 		@watcher = new Watcher
@@ -57,7 +57,12 @@ module.exports =
 	
 	
 	# Compile whatever data needs to be saved between sessions
-	serialize: -> @iconService.freeze()
+	serialize: ->
+		data = atom.packages.loadedPackages["file-icons"].metadata
+		{version}     = data
+		{headerCache} = @iconService
+		{lightTheme}  = ThemeHelper
+		{version, lightTheme, headerCache}
 
 
 
