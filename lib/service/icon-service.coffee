@@ -1,9 +1,8 @@
 {basename}     = require "path"
-{IconRule}     = require "./icon-rule"
 {escapeRegExp} = require "../utils"
 Modelines      = require "./modelines"
+ConfigLoader   = require "./config-loader"
 $              = require("./debugging") __filename
-{directoryIcons, fileIcons} = require "../config"
 {CompositeDisposable, Emitter} = require "atom"
 
 
@@ -20,9 +19,9 @@ class IconService
 		$ "Created"
 		@emitter        = new Emitter
 		@disposables    = new CompositeDisposable
-		@fileIcons      = @compile fileIcons
-		@directoryIcons = @compile directoryIcons
-		@terminalIcon   = @iconMatchForName "a.sh"
+		{@directoryIcons, @fileIcons} = ConfigLoader.load()
+
+		@terminalIcon = @iconMatchForName "a.sh"
 
 		# Register what grammars have already loaded
 		@addGrammar(scope) for scope    of atom.grammars.grammarsByScopeName
@@ -329,18 +328,6 @@ class IconService
 			el.directoryName.className = "name icon " + className
 	
 	
-	# Parse a dictionary of file-matching patterns loaded from icon-config
-	compile: (rules) ->
-		results = []
-		for name, attr of rules
-			results.push IconRule.parseConfig(name, attr)...
-		results = results.sort IconRule.sort
-		results.forEach (value, index) ->
-			value.index = index
-			delete value._sortName
-			delete value._sortIndex
-		return results
-		
 	
 	
 	

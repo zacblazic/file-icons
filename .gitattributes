@@ -1,0 +1,3 @@
+# Hide the config cache from diffs
+lib/config-cache.json linguist-vendored
+lib/config-cache.json -diff
