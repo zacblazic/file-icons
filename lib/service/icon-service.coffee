@@ -331,7 +331,10 @@ class IconService
 		for name, attr of rules
 			results.push IconRule.parseConfig(name, attr)...
 		results = results.sort IconRule.sort
-		results.forEach (value, index) -> value.index = index
+		results.forEach (value, index) ->
+			value.index = index
+			delete value._sortName
+			delete value._sortIndex
 		return results
 		
 	

@@ -22,7 +22,7 @@ class IconRule
 		@aliases     = props.alias       if props.alias
 		@scope       = props.scope       if props.scope
 		@interpreter = props.interpreter if props.interpreter
-		{@lowercaseName} = props
+		{@_sortName, @_sortIndex} = props
 		
 		if @colour
 			
@@ -122,7 +122,10 @@ class IconRule
 			if scope     then props.scope    = scope
 			if alias     then props.alias    = alias    unless props.alias
 			if priority? then props.priority = priority unless props.priority?
-			props.lowercaseName = lowercaseName
+			
+			# Temporary properties to improve rule sorting
+			props._sortName  = lowercaseName
+			props._sortIndex = +i
 			
 			
 			# A TextMate grammar's been associated with this match
@@ -186,8 +189,12 @@ class IconRule
 		if a.priority < b.priority then return  1
 		
 		# Then sort by name
-		if a.lowercaseName < b.lowercaseName then return -1
-		if a.lowercaseName > b.lowercaseName then return 1
+		if a._sortName < b._sortName then return -1
+		if a._sortName > b._sortName then return 1
+		
+		# Same name: sort by order match was defined
+		if a._sortIndex < b._sortIndex then return -1
+		if a._sortIndex > b._sortIndex then return 1
 		return 0
 
 
