@@ -139,7 +139,14 @@ class IconRule
 				
 				# Construct a pattern to match this rule's name/s
 				unless generic
-					namePattern = "^" + fuzzyRegExp(name, true) + "$"
+					
+					# Exempt C++ from fuzzy matching: we want those plusses treated literally
+					if name is "C++" then namePattern = "^" + escapeRegExp(name) + "$"
+					
+					# Otherwise, make punctuation and word boundaries easier to match
+					else namePattern = "^" + fuzzyRegExp(name, true) + "$"
+					
+					
 					props.alias = new RegExp namePattern, "i"
 					
 					# Should we worry about additional aliases?
