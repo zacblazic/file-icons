@@ -15,11 +15,14 @@ class ConfigLoader
 	# Comment prepended to cached data
 	cacheNote:   "Auto-generated from lib/config.coffee"
 
+	# Timestamp of config's last update
+	lastSaved: 0
+
 
 	# Load main configuration file
 	load: ->
 		$ "Loading precompiled config"
-		[note, directoryIcons, fileIcons] = require "./#{@configName}"
+		[note, @lastSaved, directoryIcons, fileIcons] = require "./#{@configName}"
 		
 		for value, index in directoryIcons
 			rule       = new IconRule value
@@ -41,6 +44,7 @@ class ConfigLoader
 		{directoryIcons, fileIcons} = require "../config"
 		fs.writeFileSync @configPath, JSON.stringify [
 			@cacheNote
+			@lastSaved = Date.now()
 			@compile directoryIcons
 			@compile fileIcons
 		]
