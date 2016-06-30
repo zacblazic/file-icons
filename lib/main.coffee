@@ -1,11 +1,12 @@
 {CompositeDisposable, Emitter} = require "atom"
 
-$           = require("./service/debugging") __filename
-IconService = require "./service/icon-service"
-ThemeHelper = require "./theme-helper"
-Watcher     = require "./watcher"
-Scanner     = require "./scanner"
-{ucFirst}   = require "./utils"
+$            = require("./service/debugging") __filename
+ConfigLoader = require "./service/config-loader"
+IconService  = require "./service/icon-service"
+ThemeHelper  = require "./theme-helper"
+Watcher      = require "./watcher"
+Scanner      = require "./scanner"
+{ucFirst}    = require "./utils"
 
 module.exports =
 	
@@ -61,7 +62,8 @@ module.exports =
 		iconCount     = @iconService.fileIcons.length
 		{headerCache} = @iconService
 		{lightTheme}  = ThemeHelper
-		{iconCount, lightTheme, headerCache}
+		{lastSaved}   = ConfigLoader
+		{iconCount, lightTheme, headerCache, lastSaved}
 
 
 

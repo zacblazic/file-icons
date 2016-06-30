@@ -59,18 +59,18 @@ class IconService
 			$ "Ignoring cache"
 			return
 		
-		if state and state.iconCount is @fileIcons.length
-			$ "Deserialising cache", state
-			for path, match of @headerCache = state.headerCache
-				[ruleIndex] = match
-				@fileCache[path] = ruleIndex
-		
-		else if state
-			$ "Ignoring outdated cache",
-				cachedIconCount: state.iconCount
-				actualIconCount: @fileIcons.length
+		if state
+			lastTimestamp = +state.lastSaved
+			currentTimestamp = ConfigLoader.lastSaved
 			
-	
+			# Make sure these results were serialised *after* config's last edit
+			if lastTimestamp && lastTimestamp >= currentTimestamp
+				$ "Deserialising cache", state
+				for path, match of @headerCache = state.headerCache
+					[ruleIndex] = match
+					@fileCache[path] = ruleIndex
+			
+			else $ "Ignoring outdated cache", {lastTimestamp, currentTimestamp}
 			
 	
 	# Force a complete refresh of the icon display.
