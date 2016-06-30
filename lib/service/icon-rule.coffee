@@ -1,4 +1,4 @@
-{isString, isObject, isRegExp, escapeRegExp, fuzzyRegExp} = require "../utils"
+{isString, isObject, isRegExp, escapeRegExp, fuzzyRegExp, freezeRegExp, thawRegExp} = require "../utils"
 ThemeHelper = require "../theme-helper"
 
 
@@ -17,24 +17,36 @@ class IconRule
 
 
 	constructor: (@name, @iconClass, @pattern, colour, props) ->
-		@colour      = colour            if colour
-		@priority    = props.priority    if props.priority?
-		@aliases     = props.alias       if props.alias
-		@scope       = props.scope       if props.scope
-		@interpreter = props.interpreter if props.interpreter
-		{@_sortName, @_sortIndex} = props
 		
-		if @colour
+		# Deserialising rule from precompiled config file
+		if arguments.length is 1
+			[@name, @colour, @iconClass, @priority, @isAuto, @isBower, @pattern, @aliases, @scope, @interpreter] = arguments[0]
+			@isAuto      = !!@isAuto
+			@isBower     = !!@isBower
+			@pattern     = thawRegExp @pattern
+			@aliases     = thawRegExp @aliases
+			@scope       = thawRegExp @scope
+			@interpreter = thawRegExp @interpreter
 			
-			# Flag that bloody Bower-bird which needs special treatment
-			if /^bower$/i.test @colour
-				@isAuto  = true
-				@isBower = true
+		else
+			@colour      = colour            if colour
+			@priority    = props.priority    if props.priority?
+			@aliases     = props.alias       if props.alias
+			@scope       = props.scope       if props.scope
+			@interpreter = props.interpreter if props.interpreter
+			{@_sortName, @_sortIndex}= props if props._sortName?
 			
-			# Flag colours which need adjustment depending on theme's brightness
-			else if s = @colour?.match /^auto-(.+)$/i
-				@colour = s[1]
-				@isAuto = true
+			if @colour
+				
+				# Flag that bloody Bower-bird which needs special treatment
+				if /^bower$/i.test @colour
+					@isAuto  = true
+					@isBower = true
+				
+				# Flag colours which need adjustment depending on theme's brightness
+				else if s = @colour?.match /^auto-(.+)$/i
+					@colour = s[1]
+					@isAuto = true
 	
 	
 	
@@ -77,6 +89,22 @@ class IconRule
 	# Check if this rule matches an interpreter name
 	matchesInterpreter: (name) ->
 		@interpreter && (@interpreter is name || @interpreter.test? name)
+
+
+	# Generate a JSON-encoded representation of the rule
+	toJSON: -> [
+		@name
+		@colour
+		@iconClass
+		@priority
+		+@isAuto
+		+@isBower
+		
+		freezeRegExp @pattern
+		freezeRegExp @aliases
+		freezeRegExp @scope
+		freezeRegExp @interpreter
+	]
 
 
 	# Create an array of IconRule instances from a config entry

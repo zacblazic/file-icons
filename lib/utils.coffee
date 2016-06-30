@@ -37,6 +37,28 @@ fuzzyRegExp = (input, keepString) ->
 	new RegExp output, "i"
 
 
+# Convert a regular expression into something JSON can handle
+freezeRegExp = (input) ->
+	if isRegExp input
+		S: input.source
+		F: input.toString().match(/\w*$/)[0]
+	else if isArray input
+		input.map (i) -> freezeRegExp i
+	else input
+
+
+# Recreate a RegExp from its JSON-encoded representation
+thawRegExp = (input) ->
+	return input unless input
+	
+	{S, F} = input
+	if S? and F?
+		new RegExp S, F
+	else if isArray input
+		input.map (i) -> thawRegExp i
+	else input
+
+
 # Check if two values are equal
 equal = (A, B) ->
 	try
@@ -50,6 +72,8 @@ module.exports = {
 	equal
 	escapeRegExp
 	fuzzyRegExp
+	freezeRegExp
+	thawRegExp
 	isObject
 	isRegExp
 	isString
