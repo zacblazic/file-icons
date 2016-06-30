@@ -1,18 +1,21 @@
-fs          = require "fs"
-$           = require("./debugging") __filename
-{IconRule}  = require "./icon-rule"
+fs         = require "fs"
+$          = require("./debugging") __filename
+{IconRule} = require "./icon-rule"
+
+{path}     = atom.packages.loadedPackages["file-icons"]
+configPath = "#{path}/lib/config-cache.json"
 
 
 # Object responsible for updating and reading the package's config
 class ConfigLoader
 	
 	# Comment prepended to cached data
-	cacheNote: "Auto-generated. Edit config.coffee, not this!"
+	cacheNote: "Auto-generated from lib/config.coffee"
 
 
 	# Load main configuration file.
 	load: ->
-		[note, directoryIcons, fileIcons] = require "../config-cache.json"
+		[note, directoryIcons, fileIcons] = require "./config-cache.json"
 		
 		for value, index in directoryIcons
 			rule       = new IconRule value
@@ -43,13 +46,12 @@ class ConfigLoader
 	
 	# Save compiled arrays to a JSON file for faster loading
 	updateCache: ->
-		{path} = atom.packages.loadedPackages["file-icons"]
 		config = JSON.stringify [
 			@cacheNote
 			@compile directoryIcons
 			@compile fileIcons
 		]
-		fs.writeFileSync "#{path}/lib/config-cache.json", config
+		fs.writeFileSync configPath, config
 
 
 # Export only one global instance
