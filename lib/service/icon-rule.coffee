@@ -120,6 +120,7 @@ class IconRule
 
 			# Check for stuff that was defined outside the match array
 			if scope     then props.scope    = scope
+			if alias     then props.alias    = alias    unless props.alias
 			if priority? then props.priority = priority unless props.priority?
 			props.lowercaseName = lowercaseName
 			
@@ -134,8 +135,8 @@ class IconRule
 				
 				
 				# Ignore aliases which repeat the rule's name (unless it's marked as generic).
-				if not generic and isString(alias) and lowercaseName is alias.toLowerCase()
-					alias = null
+				if not generic and isString(props.alias) and lowercaseName is props.alias.toLowerCase()
+					props.alias = null
 				
 				# Construct a pattern to match this rule's name/s
 				unless generic
@@ -147,19 +148,19 @@ class IconRule
 					else namePattern = "^" + fuzzyRegExp(name, true) + "$"
 					
 					
-					props.alias = new RegExp namePattern, "i"
+					implicitAlias = new RegExp namePattern, "i"
 					
-					# Should we worry about additional aliases?
-					if alias
-						source = [props.alias, fuzzyRegExp(alias, true)]
+					# Is there an additional alias pattern for this match?
+					if props.alias
 						
-						# Assign an array of regular expressions to match multiple aliases
-						if isRegExp alias
-							props.alias = source
+						# If so, is it a string?
+						if isString(props.alias)
+							props.alias = fuzzyRegExp props.alias
 						
-						# Combine multiple strings containing regex source into a single expression
-						else
-							props.alias = new RegExp source.join("|")
+						props.alias = [implicitAlias, props.alias]
+					
+					# No, we have only the name to go by
+					else props.alias = implicitAlias
 				
 				
 				# Generic rule, but an alias is defined anyway
