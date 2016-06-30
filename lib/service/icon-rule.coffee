@@ -20,9 +20,9 @@ class IconRule
 		
 		# Deserialising rule from precompiled config file
 		if arguments.length is 1
-			[@name, @colour, @iconClass, @priority, @isAuto, @isBower, @pattern, @aliases, @scope, @interpreter] = arguments[0]
-			@isAuto      = !!@isAuto
-			@isBower     = !!@isBower
+			[@name, @colour, @iconClass, @priority, flags, @pattern, @aliases, @scope, @interpreter] = arguments[0]
+			@isAuto      = Boolean(flags & 1)
+			@isBower     = Boolean(flags & 2)
 			@pattern     = thawRegExp @pattern
 			@aliases     = thawRegExp @aliases
 			@scope       = thawRegExp @scope
@@ -92,19 +92,19 @@ class IconRule
 
 
 	# Generate a JSON-encoded representation of the rule
-	toJSON: -> [
-		@name
-		@colour
-		@iconClass
-		@priority
-		+@isAuto
-		+@isBower
+	toJSON: ->
 		
-		freezeRegExp @pattern
-		freezeRegExp @aliases
-		freezeRegExp @scope
-		freezeRegExp @interpreter
-	]
+		# Merge booleans into a single bitmask
+		flags  = 0
+		flags |= 1 if @isAuto
+		flags |= 2 if @isBower
+		
+		result = [@name, @colour, @iconClass, @priority, flags]
+		result[5] = freezeRegExp @pattern     if @pattern
+		result[6] = freezeRegExp @aliases     if @aliases
+		result[7] = freezeRegExp @scope       if @scope
+		result[8] = freezeRegExp @interpreter if @interpreter
+		result
 
 
 	# Create an array of IconRule instances from a config entry
