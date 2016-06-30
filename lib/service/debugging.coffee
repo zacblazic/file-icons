@@ -54,6 +54,9 @@ else
 			# Let's face it: we don't want the examples directory flooding our console
 			return if args[0] is "Skipping file (0 bytes)"
 			
+			# Yes, I'm pedantic
+			args[0] = args[0].replace(/\(1 bytes\)$/, "(1 byte)")
+			
 			if args.length > 1
 				
 				log += "[#{name}]:"

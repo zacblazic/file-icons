@@ -115,8 +115,12 @@ class IconService
 		return if !@main.showInTabs and isTab
 		
 		# Use cached matches for quicker lookup
-		if (match = @fileCache[path] || @matchCustom path)?
+		if (match = @fileCache[path])?
 			$ "Using cache", path, match
+		
+		# Matched against something unrelated to filenames
+		else if (match = @matchCustom path)?
+			$ "Matched by custom", path, match
 		
 		# Match by filename/extension
 		else
