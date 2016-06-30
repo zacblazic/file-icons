@@ -1,21 +1,25 @@
 fs         = require "fs"
 $          = require("./debugging") __filename
 {IconRule} = require "./icon-rule"
-{path}     = atom.packages.loadedPackages["file-icons"]
-configPath = "#{path}/lib/service/config-cache.json"
 
 
 # Object responsible for updating and reading the package's config
 class ConfigLoader
 	
+	# Filename of precompiled config
+	configName:  "config-cache.json"
+	
+	# Absolute path of the precompiled config file
+	configPath:  "#{__dirname}/#{@::configName}"
+	
 	# Comment prepended to cached data
-	cacheNote: "Auto-generated from lib/config.coffee"
+	cacheNote:   "Auto-generated from lib/config.coffee"
 
 
 	# Load main configuration file
 	load: ->
 		$ "Loading precompiled config"
-		[note, directoryIcons, fileIcons] = require "./config-cache.json"
+		[note, directoryIcons, fileIcons] = require "./#{@configName}"
 		
 		for value, index in directoryIcons
 			rule       = new IconRule value
@@ -35,7 +39,7 @@ class ConfigLoader
 	save: ->
 		$ "Recompiling config"
 		{directoryIcons, fileIcons} = require "../config"
-		fs.writeFileSync configPath, JSON.stringify [
+		fs.writeFileSync @configPath, JSON.stringify [
 			@cacheNote
 			@compile directoryIcons
 			@compile fileIcons
