@@ -3230,6 +3230,12 @@ module.exports.fileIcons =
 		match: ".yang"
 		colour: "medium-yellow"
 
+	Yeoman:
+		icon: "yeoman"
+		priority: 2
+		match: ".yo-rc.json"
+		colour: "medium-cyan"
+
 	ZBrush:
 		icon: "zbrush"
 		match: ".zpr"
