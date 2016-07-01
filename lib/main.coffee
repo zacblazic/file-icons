@@ -1,9 +1,9 @@
 {CompositeDisposable, Emitter} = require "atom"
 
 $            = require("./service/debugging") __filename
-ConfigLoader = require "./service/config-loader"
 IconService  = require "./service/icon-service"
 ThemeHelper  = require "./theme-helper"
+Config       = require "./config"
 Watcher      = require "./watcher"
 Scanner      = require "./scanner"
 {ucFirst}    = require "./utils"
@@ -62,7 +62,7 @@ module.exports =
 		iconCount     = @iconService.fileIcons.length
 		{headerCache} = @iconService
 		{lightTheme}  = ThemeHelper
-		{lastSaved}   = ConfigLoader
+		{lastSaved}   = Config
 		{iconCount, lightTheme, headerCache, lastSaved}
 
 
@@ -115,7 +115,7 @@ module.exports =
 			return if atom.commands.registeredCommands[name]
 			@disposables.add atom.commands.add "body", name, callback
 		
-		add "recompile-cache", => ConfigLoader.save()
+		add "recompile-cache", => Config.compile()
 		
 		add "toggle-colours", (event) =>
 			name = "file-icons.coloured"

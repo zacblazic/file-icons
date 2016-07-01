@@ -1,7 +1,7 @@
 {basename}     = require "path"
 {escapeRegExp} = require "../utils"
 Modelines      = require "./modelines"
-ConfigLoader   = require "./config-loader"
+Config         = require "../config"
 $              = require("./debugging") __filename
 {CompositeDisposable, Emitter} = require "atom"
 
@@ -19,7 +19,7 @@ class IconService
 		$ "Created"
 		@emitter        = new Emitter
 		@disposables    = new CompositeDisposable
-		{@directoryIcons, @fileIcons} = ConfigLoader.load()
+		{@directoryIcons, @fileIcons} = Config.load()
 
 		@terminalIcon = @iconMatchForName "a.sh"
 
@@ -61,7 +61,7 @@ class IconService
 		
 		if state
 			lastTimestamp = +state.lastSaved
-			currentTimestamp = ConfigLoader.lastSaved
+			currentTimestamp = Config.lastSaved
 			
 			# Make sure these results were serialised *after* config's last edit
 			if lastTimestamp && lastTimestamp >= currentTimestamp

@@ -15,6 +15,9 @@
   "dependencies": {
     "minimatch": "*"
   },
+  "devDependencies": {
+    "coffee-script": "*"
+  },
   "bugs": {
     "url": "https://github.com/DanBrooker/file-icons/issues"
   },
