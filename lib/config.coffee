@@ -46,7 +46,7 @@ class Config
 		cson = fs.readFileSync(@sourcePath).toString()
 		{directoryIcons, fileIcons} = require("coffee-script").eval cson
 		
-		fs.writeFileSync @configPath, JSON.stringify [
+		fs.writeFileSync @compilePath, JSON.stringify [
 			@cacheNote
 			@lastSaved = Date.now()
 			@make directoryIcons
