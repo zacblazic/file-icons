@@ -22,6 +22,7 @@ module.exports =
 		
 		# Ready a watcher to respond to project/editor changes
 		@watcher = new Watcher
+		@watcher.onConfigChange => console.log "Changed!"
 		
 		# Service to provide icons to Atom's APIs
 		@iconService = new IconService(@)
