@@ -13,18 +13,15 @@ class Config
 	# Absolute paths of compiled config and its source
 	sourcePath:  path.resolve(__dirname, "..", @::sourceName)
 	compilePath: "#{__dirname}/service/config-cache.json"
-	
-	# Comment prepended to cached data
-	cacheNote: "Auto-generated from #{@::sourceName}"
 
-	# Timestamp of config's last update
-	lastSaved: 0
+	# MD5 hash of compiled data
+	digest: null
 
 
 	# Load main configuration file
 	load: ->
 		$ "Loading precompiled config"
-		[note, @lastSaved, directoryIcons, fileIcons] = require @compilePath
+		[@digest, directoryIcons, fileIcons] = require @compilePath
 		
 		for value, index in directoryIcons
 			rule       = new IconRule value
@@ -49,20 +46,15 @@ class Config
 		cson = fs.readFileSync(@sourcePath).toString()
 		{directoryIcons, fileIcons} = require("coffee-script").eval cson
 		
-		data = JSON.stringify [
-			@cacheNote
-			@lastSaved = Date.now()
+		data = JSON.stringify([
 			@make directoryIcons
 			@make fileIcons
-		]
+		]).replace /^\[/, ""
 		
 		# Make sure the data's really changed before modifying the file
-		strip        = /^\["(\\.|[^"])+",\d+/
-		existingData = fs.readFileSync(@compilePath).toString().replace strip, ""
-		currentData  = data.replace(strip, "")
-		
-		if existingData isnt currentData
-			fs.writeFileSync @compilePath, data
+		if data isnt fs.readFileSync(@compilePath).toString().replace /^\["[^"]+",/, ""
+			@digest = atom.clipboard.md5 data
+			fs.writeFileSync @compilePath, "[\"#{@digest}\",#{data}"
 			$ "File updated"
 		
 		else $ "No changes to save"

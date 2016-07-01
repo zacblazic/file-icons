@@ -60,17 +60,17 @@ class IconService
 			return
 		
 		if state
-			lastTimestamp = +state.lastSaved
-			currentTimestamp = Config.lastSaved
+			oldDigest = state.digest
+			newDigest = Config.digest
 			
-			# Make sure these results were serialised *after* config's last edit
-			if lastTimestamp && lastTimestamp >= currentTimestamp
+			# Make sure these results were serialised from the same data
+			if oldDigest is newDigest and newDigest?
 				$ "Deserialising cache", state
 				for path, match of @headerCache = state.headerCache
 					[ruleIndex] = match
 					@fileCache[path] = ruleIndex
 			
-			else $ "Ignoring outdated cache", {lastTimestamp, currentTimestamp}
+			else $ "Ignoring outdated cache", {oldDigest, newDigest}
 			
 	
 	# Force a complete refresh of the icon display.
