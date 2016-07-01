@@ -10,7 +10,7 @@ class Config
 	# Config's filename
 	sourceName: "config.cson"
 	
-	# Absolute paths of precompiled config and its source
+	# Absolute paths of compiled config and its source
 	sourcePath:  path.resolve(__dirname, "..", @::sourceName)
 	compilePath: "#{__dirname}/service/config-cache.json"
 	
@@ -42,7 +42,10 @@ class Config
 	
 	# Save compiled arrays as JSON for quicker loading
 	compile: ->
+		return if @compiling
+		
 		$ "Compiling…"
+		@compiling = true
 		cson = fs.readFileSync(@sourcePath).toString()
 		{directoryIcons, fileIcons} = require("coffee-script").eval cson
 		
@@ -63,8 +66,17 @@ class Config
 			$ "File updated"
 		
 		else $ "No changes to save"
+		@compiling = false
 
 
+
+	# Queue a recompilation to run after a short delay
+	# Like IconService.queueRefresh, repeated calls do nothing
+	queueCompile: (delay = 10) ->
+		clearTimeout @timeoutID
+		@timeoutID = setTimeout (=> @compile()), delay
+
+		
 
 	# Parse a dictionary of file-matching patterns
 	make: (rules) ->
