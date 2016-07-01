@@ -20,7 +20,7 @@ class IconRule
 		
 		# Deserialising rule from precompiled config file
 		if arguments.length is 1
-			[@name, @colour, @iconClass, @priority, flags, @pattern, @aliases, @scope, @interpreter] = arguments[0]
+			[@name, @colour, @iconClass, flags, @pattern, @aliases, @scope, @interpreter] = arguments[0]
 			@isAuto      = Boolean(flags & 1)
 			@isBower     = Boolean(flags & 2)
 			@pattern     = thawRegExp @pattern
@@ -99,11 +99,11 @@ class IconRule
 		flags |= 1 if @isAuto
 		flags |= 2 if @isBower
 		
-		result = [@name, @colour, @iconClass, @priority, flags]
-		result[5] = freezeRegExp @pattern     if @pattern
-		result[6] = freezeRegExp @aliases     if @aliases
-		result[7] = freezeRegExp @scope       if @scope
-		result[8] = freezeRegExp @interpreter if @interpreter
+		result = [@name, @colour, @iconClass, flags]
+		result[4] = freezeRegExp @pattern     if @pattern
+		result[5] = freezeRegExp @aliases     if @aliases
+		result[6] = freezeRegExp @scope       if @scope
+		result[7] = freezeRegExp @interpreter if @interpreter
 		result
 
 
