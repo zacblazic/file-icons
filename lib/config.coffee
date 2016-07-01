@@ -42,16 +42,27 @@ class Config
 	
 	# Save compiled arrays as JSON for quicker loading
 	compile: ->
-		$ "Recompiling config"
+		$ "Compiling…"
 		cson = fs.readFileSync(@sourcePath).toString()
 		{directoryIcons, fileIcons} = require("coffee-script").eval cson
 		
-		fs.writeFileSync @compilePath, JSON.stringify [
+		data = JSON.stringify [
 			@cacheNote
 			@lastSaved = Date.now()
 			@make directoryIcons
 			@make fileIcons
 		]
+		
+		# Make sure the data's really changed before modifying the file
+		strip        = /^\["(\\.|[^"])+",\d+/
+		existingData = fs.readFileSync(@compilePath).toString().replace strip, ""
+		currentData  = data.replace(strip, "")
+		
+		if existingData isnt currentData
+			fs.writeFileSync @compilePath, data
+			$ "File updated"
+		
+		else $ "No changes to save"
 
 
 
