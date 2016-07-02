@@ -38,7 +38,7 @@ else
 		
 		else if value is undefined then "undefined"
 		else if value is null then "null"
-		else value
+		else value.toString()
 	
 	
 	module.exports = (filename) ->
