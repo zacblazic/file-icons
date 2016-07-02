@@ -63,8 +63,8 @@ module.exports =
 		iconCount     = @iconService.fileIcons.length
 		{headerCache} = @iconService
 		{lightTheme}  = ThemeHelper
-		{lastSaved}   = Config
-		{iconCount, lightTheme, headerCache, lastSaved}
+		{digest}      = Config
+		{iconCount, lightTheme, headerCache, digest}
 
 
 
