@@ -30,8 +30,7 @@ class Scanner
 		@disposables = new CompositeDisposable
 		
 		@disposables.add atom.packages.onDidActivateInitialPackages =>
-			@treeView   = atom.packages.loadedPackages["tree-view"].mainModule
-			@treeViewEl = @treeView.treeView
+			@waitForTree() unless @findTreeView()
 			@update()
 	
 	
@@ -42,11 +41,41 @@ class Scanner
 		@directories.clear()
 	
 	
+	# Store a link to the tree-view element the next time it's opened
+	waitForTree: ->
+		return if @treeViewEl
+		$ "Waiting for tree-view"
+		
+		@disposables.add @onToggled = atom.commands.onDidDispatch (event) =>
+			
+			# Tree-view opened
+			if event.type is "tree-view:toggle"
+				$ "Tree-view toggled"
+				
+				@findTreeView()
+				@update()
+				@main.iconService.queueRefresh()
+				
+				# Unsubscribe now that we're on the same page
+				@disposables.remove @onToggled
+				@onToggled.dispose()
+		
+	
+	
+	# Locate the tree-view element in the workspace
+	findTreeView: ->
+		@treeView   ?= atom.packages.loadedPackages["tree-view"].mainModule
+		@treeViewEl ?= @treeView?.treeView
+	
+	
 	# Reparse the tree-view for newly-added directories
 	update: ->
-		$ "Updating"
-		for i in @treeViewEl.find ".directory.entry"
-			@add(i) unless @directories.has(i)
+		if @treeViewEl
+			$ "Updating"
+			for i in @treeViewEl.find ".directory.entry"
+				@add(i) unless @directories.has(i)
+		
+		else $ "Unable to update; tree-view not found"
 
 
 	# Register a directory instance in the Scanner's directories list

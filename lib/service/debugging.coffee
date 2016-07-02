@@ -54,6 +54,9 @@ else
 			# Let's face it: we don't want the examples directory flooding our console
 			return if args[0] is "Skipping file (0 bytes)"
 			
+			# Offer a way to filter crap we don't want
+			return if global.__fileIconsDebugFilter?.test args[0]
+			
 			# Yes, I'm pedantic
 			args[0] = args[0].replace(/\(1 bytes\)$/, "(1 byte)")
 			
