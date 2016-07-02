@@ -29,6 +29,7 @@ class Scanner
 		@directories = new Set
 		@disposables = new CompositeDisposable
 		
+		@disposables.add atom.project.onDidChangePaths => @update()
 		@disposables.add atom.packages.onDidActivateInitialPackages =>
 			@waitForTree() unless @findTreeView()
 			@update()
