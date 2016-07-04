@@ -2266,7 +2266,7 @@ fileIcons:
 	Pascal:
 		icon: "pascal"
 		match: [
-			[".pas", "medium-purple", scope: "pascal", interpreter: /pascal|instantfpc/]
+			[/\.pas(?:cal)?$/i, "medium-purple", scope: "pascal", interpreter: /pascal|instantfpc/]
 			[".dfm", "medium-blue"]
 			[".dpr", "dark-blue"]
 			[".lpr", "dark-purple"]
