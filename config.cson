@@ -912,6 +912,12 @@ fileIcons:
 		match: /\.em(?:blem)?$/i
 		colour: "medium-blue"
 
+	EQ:
+		icon: "eq"
+		scope: "eq"
+		match: ".eq"
+		colour: "medium-orange"
+
 	Erlang:
 		icon: "erlang"
 		match: [
@@ -1044,6 +1050,13 @@ fileIcons:
 			[".tst", "medium-orange"]
 		]
 
+	GDB:
+		icon: "gdb"
+		match: [
+			[".gdb", "auto-green", "gdb"]
+			[".gdbinit", "auto-cyan"]
+		]
+
 	GDScript:
 		icon: "godot"
 		scope: "gdscript"
@@ -1128,7 +1141,6 @@ fileIcons:
 			[".fth", "dark-blue"]
 			[".fun", "medium-orange"]
 			[".fxml", "medium-maroon"]
-			[".gdbinit", "medium-red"]
 			[".grace", "medium-purple"]
 			[".grxml", "dark-orange"]
 			[".iml", "medium-red"]
@@ -2014,6 +2026,13 @@ fileIcons:
 		scope: "ncl"
 		match: ".ncl"
 		colour: "medium-green"
+
+	Neko:
+		icon: "neko"
+		match: [
+			[".neko", "medium-orange", "neko"]
+			[/^run\.n$/, "dark-orange"]
+		]
 
 	NetLinx:
 		icon: "amx"
