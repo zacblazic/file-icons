@@ -2031,7 +2031,7 @@ fileIcons:
 		icon: "neko"
 		match: [
 			[".neko", "medium-orange", "neko"]
-			[/^run\.n$/, "dark-orange"]
+			[/^run\.n$/, "dark-orange", priority: 2]
 		]
 
 	NetLinx:
