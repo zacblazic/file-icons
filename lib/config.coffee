@@ -43,21 +43,24 @@ class Config
 		
 		$ "Compiling…"
 		@compiling = true
-		cson = fs.readFileSync(@sourcePath).toString()
-		{directoryIcons, fileIcons} = require("coffee-script").eval cson
-		
-		data = JSON.stringify([
-			@make directoryIcons
-			@make fileIcons
-		]).replace /^\[/, ""
-		
-		# Make sure the data's really changed before modifying the file
-		if data isnt fs.readFileSync(@compilePath).toString().replace /^\["[^"]+",/, ""
-			@digest = atom.clipboard.md5 data
-			fs.writeFileSync @compilePath, "[\"#{@digest}\",#{data}"
-			$ "File updated"
-		
-		else $ "No changes to save"
+		try
+			cson = fs.readFileSync(@sourcePath).toString()
+			{directoryIcons, fileIcons} = require("coffee-script").eval cson
+			
+			data = JSON.stringify([
+				@make directoryIcons
+				@make fileIcons
+			]).replace /^\[/, ""
+			
+			# Make sure the data's really changed before modifying the file
+			if data isnt fs.readFileSync(@compilePath).toString().replace /^\["[^"]+",/, ""
+				@digest = atom.clipboard.md5 data
+				fs.writeFileSync @compilePath, "[\"#{@digest}\",#{data}"
+				$ "File updated"
+			
+			else $ "No changes to save"
+		catch message
+			console.error message
 		@compiling = false
 
 
