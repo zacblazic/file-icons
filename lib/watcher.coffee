@@ -149,8 +149,17 @@ class Watcher
 		if configCSON
 			$ "Project detected as File-Icons package"
 			unless @configDisposable
-				@configDisposable = configCSON?.onDidChange => @emitter.emit "config-changed"
-				@projectDisposables.add @configDisposable
+				@projectDisposables.add @configDisposable = new CompositeDisposable
+				
+				@configDisposable.add configCSON?.onDidChange => @emitter.emit "config-changed"
+				@configDisposable.add atom.workspace.observeTextEditors (editor) =>
+					buffer = editor.getBuffer()
+					return unless buffer.getPath() is configCSON.path
+					
+					# Strip trailing whitespace from config when savedd
+					@configDisposable.add buffer.onWillSave ->
+						buffer.replace /[ \t]+$/g, ""
+		
 		
 		# Package folder was removed from workspace
 		else if @configDisposable
