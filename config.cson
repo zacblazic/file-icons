@@ -183,6 +183,13 @@ fileIcons:
 		match: ".ampl"
 		colour: "dark-maroon"
 
+	Angular:
+		icon: "angular"
+		framework: true
+		priority: 2
+		match: /^angular[^.]*\.js$/i
+		colour: "medium-red"
+
 	"ANSI Weather":
 		icon: "sun"
 		match: ".ansiweatherrc"
@@ -223,6 +230,13 @@ fileIcons:
 			[".apl", "dark-cyan", "apl"]
 			[".apl.history", "medium-maroon"]
 		]
+
+	Appcelerator:
+		icon: "appcelerator"
+		framework: true
+		priority: 2
+		match: /^appcelerator\.js$/i
+		colour: "medium-red"
 
 	AppleScript:
 		icon: "apple"
@@ -365,6 +379,13 @@ fileIcons:
 			[".babelignore", "dark-yellow"]
 		]
 
+	Backbone:
+		icon: "backbone"
+		framework: true
+		priority: 2
+		match: /^backbone(?:[-.]min)?\.js$/i
+		colour: "dark-blue"
+
 	BibTeX:
 		icon: "bibtex"
 		match: [
@@ -403,6 +424,18 @@ fileIcons:
 	Boot:
 		icon: "boot"
 		match: ".boot"
+
+	Bootstrap:
+		icon: "bootstrap"
+		framework: true
+		priority: 2
+		match: [
+			[/^(?:custom\.)?bootstrap\S*\.js$/i,   "auto-yellow"]
+			[/^(?:custom\.)?bootstrap\S*\.css$/i,  "medium-blue"]
+			[/^(?:custom\.)?bootstrap\S*\.less$/i, "dark-blue"]
+			[/^(?:custom\.)?bootstrap\S*\.scss$/i, "light-pink"]
+			[/^(?:custom\.)?bootstrap\S*\.styl$/i, "medium-green"]
+		]
 
 	Bower:
 		icon: "bower"
@@ -526,6 +559,13 @@ fileIcons:
 		match: ".chpl"
 		colour: "medium-green"
 
+	ChartJS:
+		icon: "chartjs"
+		framework: true
+		priority: 2
+		match: /^Chart\.js$/i
+		colour: "dark-pink"
+
 	Checklist:
 		icon: "checklist"
 		match: "TODO"
@@ -629,6 +669,13 @@ fileIcons:
 		interpreter: /c?lisp|sbcl|[ec]cl/
 		match: ".cl"
 		colour: "medium-orange"
+
+	Compass:
+		icon: "compass"
+		framework: true
+		priority: 2
+		match: /^_?(?:compass|lemonade)\.scss$/i
+		colour: "medium-red"
 
 	"Component Pascal":
 		icon: "cp"
@@ -829,6 +876,13 @@ fileIcons:
 		match: ".djs"
 		colour: "medium-yellow"
 
+	Dojo:
+		icon: "dojo"
+		framework: true
+		priority: 2
+		match: /^dojo\.js$/i
+		colour: "light-red"
+
 	Doxyfile:
 		icon: "doxygen"
 		scope: "doxygen"
@@ -900,6 +954,13 @@ fileIcons:
 		match: /\.(?:el|emacs|spacemacs|emacs\.desktop)$/i
 		colour: "medium-purple"
 
+	Ember:
+		icon: "ember"
+		framework: true
+		priority: 2
+		match: /^ember(?:\.|(?:-[^.]+)?-(?:\d+\.)+(?:debug\.)?)js$/i
+		colour: "medium-red"
+
 	EmberScript:
 		icon: "em"
 		scope: /\.ember(?:script)?$/i
@@ -936,6 +997,13 @@ fileIcons:
 			[".eslintignore", "medium-purple"]
 			[/\.eslintrc(?:\.(?:js|json|ya?ml))?$/i, "light-purple"]
 		]
+
+	ExtJS:
+		icon: "extjs"
+		framework: true
+		priority: 2
+		match: /\bExtjs(?:-ext)?\.js$/i
+		colour: "light-green"
 
 	Fabric:
 		icon: "fabfile"
@@ -1030,6 +1098,13 @@ fileIcons:
 		alias: "f#"
 		match: /\.fs[xi]?$/i
 		colour: "medium-blue"
+
+	"Fuel UX":
+		icon: "fuelux"
+		framework: true
+		priority: 2
+		match: /^fuelux(?:\.min)?\.(?:css|js)$/i
+		colour: "auto-orange"
 
 	"GameMaker Language":
 		icon: "gml"
@@ -1583,6 +1658,20 @@ fileIcons:
 		match: ".jinja"
 		colour: "dark-red"
 
+	jQuery:
+		icon: "jquery"
+		framework: true
+		priority: 2
+		match: /^jquery(?:-\d\.\d+(?:\.\d+)?)?\.js$/i
+		colour: "dark-blue"
+
+	"jQuery UI":
+		icon: "jqueryui"
+		framework: true
+		priority: 2
+		match: /^jquery(?:\.(?:ui|effects)\.[^.]*|-ui(?:-\d\.\d+(?:\.\d+)?)?(?:\.\w+)?)\.(?:js|css)$/i
+		colour: "dark-blue"
+
 	"JSON-LD":
 		icon: "jsonld"
 		match: ".jsonld"
@@ -1639,6 +1728,13 @@ fileIcons:
 		match: ".kml"
 		colour: "medium-green"
 
+	Knockout:
+		icon: "knockout"
+		framework: true
+		priority: 2
+		match: /^knockout[-.](?:\d+\.){3}(?:debug\.)?js$/i
+		colour: "medium-red"
+
 	Kotlin:
 		icon: "kotlin"
 		match: [
@@ -1673,6 +1769,13 @@ fileIcons:
 			[".lasso9", "medium-purple"]
 			[".ldml", "medium-red"]
 		]
+
+	Leaflet:
+		icon: "leaflet"
+		framework: true
+		priority: 2
+		match: /^leaflet\.(?:draw-src|draw|spin|coordinates-(?:\d+\.)\d+\.\d+\.src)\.(?:js|css)$|^wicket-leaflet\.js$/i
+		colour: "medium-green"
 
 	Lean:
 		icon: "lean"
@@ -1817,6 +1920,13 @@ fileIcons:
 			[".marko.js", "medium-maroon"]
 		]
 
+	Materialize:
+		icon: "materialize"
+		framework: true
+		priority: 2
+		match: /^materialize(?:\.min)?\.(?:js|css)$/i
+		colour: "light-red"
+
 	Mathematica:
 		icon: "mathematica"
 		match: [
@@ -1829,6 +1939,13 @@ fileIcons:
 			[".wl", "medium-yellow"]
 			[".wlt", "dark-yellow"]
 		]
+
+	MathJax:
+		icon: "mathjax"
+		framework: true
+		priority: 2
+		match: /^MathJax[^.]*\.js$/i
+		colour: "dark-green"
 
 	MATLAB:
 		icon: "matlab"
@@ -1968,6 +2085,13 @@ fileIcons:
 		match: ".mo"
 		colour: "light-red"
 
+	Modernizr:
+		icon: "modernizr"
+		framework: true
+		priority: 2
+		match: /^modernizr(?:[-\.]custom|-\d\.\d+)(?:\.\d+)?\.js$/i
+		colour: "medium-red"
+
 	"Modula-2":
 		icon: "modula2"
 		match: [
@@ -1988,6 +2112,13 @@ fileIcons:
 		interpreter: "moon"
 		match: ".moon"
 		colour: "medium-yellow"
+
+	MooTools:
+		icon: "mootools"
+		framework: true
+		priority: 2
+		match: /^mootools[^.]*\d+\.\d+(?:.\d+)?[^.]*\.js$/i
+		colour: "medium-purple"
 
 	MuPAD:
 		icon: "mupad"
@@ -2096,6 +2227,13 @@ fileIcons:
 			[".njs", "medium-green"]
 			[".node-version", "dark-green"]
 		]
+
+	Normalize:
+		icon: "normalize"
+		framework: true
+		priority: 2
+		match: /^normalize\.(?:css|less|scss|styl)$/i
+		colour: "medium-red"
 
 	NPM:
 		icon: "npm"
@@ -2486,6 +2624,13 @@ fileIcons:
 		match: ".raml"
 		colour: "medium-cyan"
 
+	Raphael:
+		icon: "raphael"
+		framework: true
+		priority: 2
+		match: /^raphael(?:\.min|\.no-deps)*\.js$/i
+		colour: "medium-orange"
+
 	RDoc:
 		icon: "rdoc"
 		scope: "rdoc"
@@ -2494,9 +2639,12 @@ fileIcons:
 
 	React:
 		icon: "react"
+		framework: true
 		priority: 2
-		match: ".react.js"
-		colour: "auto-blue"
+		match: [
+			[/^react(?:-[^.]*)?\.js$/, "dark-blue"]
+			[".react.js", "auto-blue"]
+		]
 
 	Readme:
 		icon: "book"
@@ -2541,6 +2689,13 @@ fileIcons:
 		icon: "android"
 		match: ".rsh"
 		colour: "dark-maroon"
+
+	RequireJS:
+		icon: "requirejs"
+		framework: true
+		priority: 2
+		match: /^require\.js$/
+		colour: "medium-blue"
 
 	reStructuredText:
 		icon: "rst"
@@ -2677,6 +2832,13 @@ fileIcons:
 		match: ".self"
 		colour: "dark-blue"
 
+	Sencha:
+		icon: "sencha"
+		framework: true
+		priority: 2
+		match: /^sencha(?:\.min)?\.js$/i
+		colour: "light-green"
+
 	"Seperated-value files":
 		icon: "graph"
 		generic: true
@@ -2751,6 +2913,13 @@ fileIcons:
 		scope: "smarty"
 		match: ".tpl"
 		colour: "auto-yellow"
+
+	"Snap SVG":
+		icon: "snapsvg"
+		framework: true
+		priority: 2
+		match: /^snap\.svg(?:[-.]min)?\.js$/i
+		colour: "medium-cyan"
 
 	SourcePawn:
 		icon: "clojure"
@@ -3041,6 +3210,13 @@ fileIcons:
 		match: /^typings\.json$/i
 		colour: "medium-maroon"
 
+	UIKit:
+		icon: "uikit"
+		framework: true
+		priority: 2
+		match: /^uikit(?:\.min)?\.js$/i
+		colour: "medium-blue"
+
 	Unity3D:
 		icon: "unity3d"
 		match: [
@@ -3254,6 +3430,13 @@ fileIcons:
 		priority: 2
 		match: ".yo-rc.json"
 		colour: "medium-cyan"
+
+	YUI:
+		icon: "yui"
+		framework: true
+		priority: 2
+		match: /^(?:yahoo-|yui)[^.]*\.js$/i
+		colour: "dark-blue"
 
 	ZBrush:
 		icon: "zbrush"
