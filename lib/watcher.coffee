@@ -1,4 +1,4 @@
-{CompositeDisposable, Emitter, File} = require "atom"
+{CompositeDisposable, Emitter, File, Directory} = require "atom"
 $      = require("./service/debugging") __filename
 Config = require "./config"
 
@@ -131,18 +131,27 @@ class Watcher
 	checkProject: ->
 		
 		for root in atom.project.rootDirectories
-			packageJSON=configCSON = null
+			packageJSON=configCSON=haveNodeModules = null
 			
-			for entry in root.getEntriesSync() when entry instanceof File
-				switch entry.getBaseName()
-					when Config.sourceName  then configCSON  = entry
-					when "package.json"     then packageJSON = entry
+			for entry in root.getEntriesSync()
+				name = entry.getBaseName()
+				
+				# Files: Look for config.cson and package.json
+				if entry instanceof File
+					switch name
+						when Config.sourceName  then configCSON  = entry
+						when "package.json"     then packageJSON = entry
+				
+				# Directories: Make sure Node modules are installed
+				else if name is "node_modules" && entry instanceof Directory
+					haveNodeModules = true
+			
 			
 			# Files of both names were found
 			if packageJSON? and configCSON?
 				packageURL = require("../package.json").repository.url
 				break if packageJSON.readSync().match packageURL
-				packageJSON=configCSON = null
+				packageJSON=configCSON=haveNodeModules = null
 			
 		
 		# User has package open in Atom; set listener to handle config changes
@@ -156,9 +165,15 @@ class Watcher
 					buffer = editor.getBuffer()
 					return unless buffer.getPath() is configCSON.path
 					
-					# Strip trailing whitespace from config when savedd
+					# Strip trailing whitespace from config when saved
 					@configDisposable.add buffer.onWillSave ->
 						buffer.replace /[ \t]+$/g, ""
+			
+			# Node modules aren't installed: alert user
+			unless haveNodeModules
+				message = "`node_modules` not found. Please run `apm install`."
+				detail = "Changes you make to config.cson will not be saved without the required dependencies."
+				atom.notifications.addWarning message, {detail, dismissable: true, icon: "package"}
 		
 		
 		# Package folder was removed from workspace
