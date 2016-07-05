@@ -2,10 +2,10 @@
 
 $            = require("./service/debugging") __filename
 IconService  = require "./service/icon-service"
+Scanner      = require "./service/scanner"
 ThemeHelper  = require "./theme-helper"
 Config       = require "./config"
 Watcher      = require "./watcher"
-Scanner      = require "./scanner"
 {ucFirst}    = require "./utils"
 
 module.exports =

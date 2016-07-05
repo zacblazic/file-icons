@@ -1,7 +1,7 @@
 fs       = require "fs"
-{equal}  = require "./utils"
+{equal}  = require "../utils"
 ScanTask = require.resolve "./scan-task"
-$        = require("./service/debugging") __filename
+$        = require("./debugging") __filename
 {Task, CompositeDisposable, Emitter} = require "atom"
 
 
