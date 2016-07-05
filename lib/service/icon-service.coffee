@@ -12,6 +12,7 @@ class IconService
 	fileCache:     {}
 	headerCache:   {}
 	hashbangCache: {}
+	iconClasses:   {}
 	modelineCache: {}
 	
 	
@@ -49,6 +50,10 @@ class IconService
 	onWillDeactivate: ->
 		# Currently a no-op
 	
+	
+	
+	# Provide data to be saved between sessions
+	freeze: -> {@headerCache, @iconClasses}
 	
 	
 	# Restore data from an earlier session
@@ -201,10 +206,12 @@ class IconService
 					icon = @terminalIcon
 				
 				# Icon differs to what the extension/filename uses
-				if icon isnt @fileCache[path]
+				if icon isnt @fileCache[path] and icon isnt false
 					$ "Updating cache with hashbang icon", icon
-					@headerCache[path] = [icon.index]
-					@fileCache[path]   = icon
+					{index} = icon
+					@iconClasses[index] = icon.rawClass
+					@headerCache[path]  = [index]
+					@fileCache[path]    = icon
 					@queueRefresh()
 					return true
 				
@@ -216,8 +223,10 @@ class IconService
 				$ "Modeline found", icon, data
 				if icon isnt @fileCache[path]
 					$ "Updating cache with modeline icon", icon
-					@headerCache[path] = [icon.index, 1]
-					@fileCache[path]   = icon
+					{index} = icon
+					@iconClasses[index] = icon.rawClass
+					@headerCache[path]  = [index, 1]
+					@fileCache[path]    = icon
 					@queueRefresh()
 					return true
 				return false

@@ -11,6 +11,7 @@ class IconRule
 	interpreter: null
 	pattern:     null
 	priority:    1
+	rawClass:    null
 	
 	isAuto:      false
 	isBower:     false
@@ -28,7 +29,15 @@ class IconRule
 			@scope       = thawRegExp @scope
 			@interpreter = thawRegExp @interpreter
 			
+			# Store raw class-names for serialisation
+			@rawClass = @iconClass
+			if @colour then @rawClass += " " +(
+				if      @isBower then "bower"
+				else if @isAuto  then "auto-" + @colour
+				else    @colour)
+		
 		else
+			@rawClass    = @iconClass
 			@colour      = colour            if colour
 			@priority    = props.priority    if props.priority?
 			@aliases     = props.alias       if props.alias
@@ -37,6 +46,7 @@ class IconRule
 			{@_sortName, @_sortIndex}= props if props._sortName?
 			
 			if @colour
+				@rawClass += " #{@colour}"
 				
 				# Flag that bloody Bower-bird which needs special treatment
 				if /^bower$/i.test @colour

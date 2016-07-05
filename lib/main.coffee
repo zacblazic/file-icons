@@ -61,10 +61,10 @@ module.exports =
 	# Compile whatever data needs to be saved between sessions
 	serialize: ->
 		iconCount     = @iconService.fileIcons.length
-		{headerCache} = @iconService
 		{lightTheme}  = ThemeHelper
 		{digest}      = Config
-		{iconCount, lightTheme, headerCache, digest}
+		{headerCache, iconClasses} = @iconService.freeze()
+		{iconCount, lightTheme, headerCache, iconClasses, digest}
 
 
 
