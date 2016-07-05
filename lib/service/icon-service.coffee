@@ -140,7 +140,7 @@ class IconService
 		
 		
 		# An IconRule matches this path
-		if match?
+		if match
 			
 			# Allow symlinks to override usual icons
 			iconClass ?= match.iconClass
