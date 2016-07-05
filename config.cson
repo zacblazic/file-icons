@@ -731,6 +731,13 @@ fileIcons:
 		match: ".coq"
 		colour: "medium-maroon"
 
+	Cordova:
+		icon: "cordova"
+		framework: true
+		priority: 2
+		match: /^cordova(?:[^.]*\.|-(?:\d\.)+)js$/i
+		colour: "light-blue"
+
 	Creole:
 		icon: "creole"
 		scope: "creole"
@@ -787,6 +794,13 @@ fileIcons:
 		scope: "d"
 		match: /\.di?$/i
 		colour: "medium-red"
+
+	D3:
+		icon: "d3"
+		framework: true
+		priority: 2
+		match: /^d3(?:\.v\d+)?[^.]*\.js$/i
+		colour: "medium-orange"
 
 	Danmakufu:
 		icon: "yang"
