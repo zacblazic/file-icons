@@ -16,12 +16,16 @@ class Config
 
 	# MD5 hash of compiled data
 	digest: null
+	
+	# MD5 hash of modified data, if editing package
+	digestEdited: null
 
 
 	# Load main configuration file
 	load: ->
 		$ "Loading precompiled config"
 		[@digest, directoryIcons, fileIcons] = require @compilePath
+		@digestEdited = @digest
 		
 		for value, index in directoryIcons
 			rule       = new IconRule value
@@ -54,8 +58,8 @@ class Config
 			
 			# Make sure the data's really changed before modifying the file
 			if data isnt fs.readFileSync(@compilePath).toString().replace /^\["[^"]+",/, ""
-				@digest = atom.clipboard.md5 data
-				fs.writeFileSync @compilePath, "[\"#{@digest}\",#{data}"
+				@digestEdited = atom.clipboard.md5 data
+				fs.writeFileSync @compilePath, "[\"#{@digestEdited}\",#{data}"
 				$ "File updated"
 			
 			else $ "No changes to save"
