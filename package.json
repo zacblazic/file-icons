@@ -22,7 +22,7 @@
     "url": "https://github.com/DanBrooker/file-icons/issues"
   },
   "scripts": {
-    "recompile": "node lib/cmd/recompile.js"
+    "recompile": "node lib/bin/recompile"
   },
   "homepage": "https://github.com/DanBrooker/file-icons",
   "providedServices": {
