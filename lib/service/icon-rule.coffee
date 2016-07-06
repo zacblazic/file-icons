@@ -236,4 +236,4 @@ class IconRule
 		return 0
 
 
-module.exports = {IconRule}
+module.exports = IconRule

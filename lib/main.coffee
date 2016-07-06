@@ -17,21 +17,22 @@ module.exports =
 		@disposables = new CompositeDisposable
 		
 		# Controller to manage theme-related logic
-		ThemeHelper.onChangeThemes => @iconService.queueRefresh()
+		ThemeHelper.activate()
+		ThemeHelper.onChangeThemes -> IconService.queueRefresh()
 		ThemeHelper.lightTheme = state.lightTheme
 		
-		# Ready a watcher to respond to project/editor changes
-		@watcher = new Watcher
-		@watcher.onConfigChange => Config.queueCompile()
+		# Ready watcher to respond to project/editor changes
+		Watcher.activate()
+		Watcher.onConfigChange -> Config.queueCompile()
 		
 		# Service to provide icons to Atom's APIs
-		@iconService = new IconService(@)
-		@iconService.unfreeze state
+		IconService.activate()
+		IconService.unfreeze state
 		
 		# Filesystem scanner
-		@scanner = new Scanner(@)
-		@scanner.onAddFolder = (dir, el) =>
-			@iconService.setDirectoryIcon(dir, el)
+		Scanner.activate()
+		Scanner.onAddFolder = (dir, el) ->
+			IconService.setDirectoryIcon(dir, el)
 		
 		# Configure package settings/commands
 		@initSetting "coloured"
@@ -47,23 +48,23 @@ module.exports =
 
 	# Called when deactivating or uninstalling package
 	deactivate: ->
-		@watcher.destroy()
-		@themeHelper.destroy()
-		@scanner.destroy()
+		Watcher.destroy()
+		ThemeHelper.destroy()
+		Scanner.destroy()
 		@disposables.dispose()
 		@emitter.dispose()
 
 
-	# Hook into Atom's file-icon service
-	displayIcons: -> @iconService
+	# Point Atom's file-icon service to a dedicated interface
+	displayIcons: -> IconService
 	
 	
 	# Compile whatever data needs to be saved between sessions
 	serialize: ->
-		iconCount     = @iconService.fileIcons.length
+		iconCount     = IconService.fileIcons.length
 		{lightTheme}  = ThemeHelper
 		{digest}      = Config
-		{headerCache, iconClasses} = @iconService.freeze()
+		{headerCache, iconClasses} = IconService.freeze()
 		{iconCount, lightTheme, headerCache, iconClasses, digest}
 
 
@@ -73,26 +74,26 @@ module.exports =
 	setColoured: (@useColour) ->
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-colourless", !@useColour
-		@iconService.queueRefresh()
+		IconService.queueRefresh()
 	
 	setOnChanges: (@changedOnly) ->
-		@watcher.watchingRepos(@changedOnly)
-		@iconService.queueRefresh()
+		Watcher.watchingRepos(@changedOnly)
+		IconService.queueRefresh()
 
 	setTabPaneIcon: (@showInTabs) ->
 		body = document.querySelector "body"
 		body.classList.toggle "file-icons-tab-pane-icon", @showInTabs
-		@iconService.queueRefresh()
+		IconService.queueRefresh()
 	
 	setDefaultIconClass: (@defaultIconClass) ->
-		@iconService.queueRefresh()
+		IconService.queueRefresh()
 	
 	setChangeOnOverride: (@overridesEnabled) ->
-		@watcher.watchingEditors @overridesEnabled
-		@iconService.resetOverrides()
+		Watcher.watchingEditors @overridesEnabled
+		IconService.resetOverrides()
 
-	setCheckHashbangs: (@checkHashbangs) -> @iconService.setHeadersEnabled(@checkHashbangs)
-	setCheckModelines: (@checkModelines) -> @iconService.setHeadersEnabled(@checkModelines, 1)
+	setCheckHashbangs: (@checkHashbangs) -> IconService.setHeadersEnabled(@checkHashbangs)
+	setCheckModelines: (@checkModelines) -> IconService.setHeadersEnabled(@checkModelines, 1)
 
 
 

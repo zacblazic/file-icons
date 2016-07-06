@@ -1,7 +1,7 @@
 fs         = require "fs"
 path       = require "path"
 $          = require("./service/debugging") __filename
-{IconRule} = require "./service/icon-rule"
+IconRule   = require "./service/icon-rule"
 
 
 # Object responsible for reading and updating the package's config
@@ -90,5 +90,4 @@ class Config
 		return results
 
 
-# Export only one global instance
 module.exports = new Config

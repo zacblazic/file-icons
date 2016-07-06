@@ -6,8 +6,8 @@ Config = require "./config"
 # Controller to manage auxiliary event subscriptions
 class Watcher
 	
-	constructor: ->
-		$ "Created"
+	activate: ->
+		$ "Activating"
 		@editors = new Set
 		@repos   = new Set
 		@emitter = new Emitter
@@ -184,4 +184,4 @@ class Watcher
 			@configDisposable = null
 
 
-module.exports = Watcher
+module.exports = new Watcher

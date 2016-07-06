@@ -1,7 +1,9 @@
-fs       = require "fs"
-{equal}  = require "../utils"
-ScanTask = require.resolve "./scan-task"
-$        = require("./debugging") __filename
+fs          = require "fs"
+{equal}     = require "../utils"
+IconService = require "./icon-service"
+ScanTask    = require.resolve "./scan-task"
+Main        = require.resolve "../main"
+$           = require("./debugging") __filename
 {Task, CompositeDisposable, Emitter} = require "atom"
 
 
@@ -24,8 +26,9 @@ class Scanner
 	fileCache:   {}
 	
 	
-	constructor: (@main) ->
-		$ "Created"
+	activate: ->
+		$ "Activating"
+		Main = require Main
 		@directories = new Set
 		@disposables = new CompositeDisposable
 		
@@ -55,7 +58,7 @@ class Scanner
 				
 				@findTreeView()
 				@update()
-				@main.iconService.queueRefresh()
+				IconService.queueRefresh()
 				
 				# Unsubscribe now that we're on the same page
 				@disposables.remove @onToggled
@@ -115,7 +118,7 @@ class Scanner
 	readFolder: (dir, item) ->
 		
 		# Check if we need to scan any files
-		if @main.checkHashbangs or @main.checkModelines
+		if Main.checkHashbangs or Main.checkModelines
 			$ "Reading directory", dir, item
 			
 			files = []
@@ -128,7 +131,7 @@ class Scanner
 			if files.length
 				$ "Scanning files", files
 				task = Task.once ScanTask, files
-				task.on "file-scan", (data) => @main.iconService.checkFileHeader(data)
+				task.on "file-scan", (data) -> IconService.checkFileHeader data
 		
 		@update()
 	
@@ -197,7 +200,7 @@ class Scanner
 	
 	
 	# Scan the first couple lines of a file. Used by scan-task.coffee
-	@scanFile: (file, length = @::maxScanLength) ->
+	scanFile: (file, length = @maxScanLength) ->
 		
 		new Promise (resolve, reject) ->
 			fd = fs.openSync file.realPath || file.path, "r"
@@ -222,4 +225,4 @@ class Scanner
 
 		
 
-module.exports = Scanner
+module.exports = new Scanner

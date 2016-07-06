@@ -1,7 +1,9 @@
 {basename}     = require "path"
 {escapeRegExp} = require "../utils"
 Modelines      = require "./modelines"
+Watcher        = require "../watcher"
 Config         = require "../config"
+Main           = require.resolve "../main"
 $              = require("./debugging") __filename
 {CompositeDisposable, Emitter} = require "atom"
 
@@ -16,8 +18,9 @@ class IconService
 	modelineCache: {}
 	
 	
-	constructor: (@main) ->
-		$ "Created"
+	activate: ->
+		$ "Activating"
+		Main            = require Main
 		@emitter        = new Emitter
 		@disposables    = new CompositeDisposable
 		{@directoryIcons, @fileIcons} = Config.load()
@@ -36,9 +39,9 @@ class IconService
 		@updateCustomTypes()
 		
 		# Subscribe to workspace events
-		@main.watcher.onRepoUpdate    => @queueRefresh(10)
-		@main.watcher.onGrammarChange => @handleOverride(arguments...)
-		@main.watcher.onFileSave (ed) =>
+		Watcher.onRepoUpdate    => @queueRefresh(10)
+		Watcher.onGrammarChange => @handleOverride(arguments...)
+		Watcher.onFileSave (ed) =>
 			{lines, file} = ed.buffer
 			args = {data: lines[0], file: file}
 			@checkFileHeader args
@@ -116,7 +119,7 @@ class IconService
 		isTab     = nodeClass?.contains("tab") and nodeClass?.contains("texteditor")
 		
 		# Don't show tab-icons unless the "Tab Pane Icon" setting is enabled
-		return if !@main.showInTabs and isTab
+		return if !Main.showInTabs and isTab
 		
 		# Use cached matches for quicker lookup
 		if (match = @fileCache[path])?
@@ -151,11 +154,11 @@ class IconService
 			iconClass ?= match.iconClass
 			
 			# Determine if colour should be used
-			if @main.useColour && (!@main.changedOnly || file?.status)
+			if Main.useColour && (!Main.changedOnly || file?.status)
 				if colourClass = match.getColourClass()
 					iconClass += " " + colourClass
 
-		iconClass || @main.defaultIconClass
+		iconClass || Main.defaultIconClass
 	
 	
 	
@@ -170,7 +173,7 @@ class IconService
 	matchCustom: (path) ->
 		
 		# Is this path overridden with a user-assigned grammar?
-		if @main.overridesEnabled and scope = atom.grammars.grammarOverridesByPath[path]
+		if Main.overridesEnabled and scope = atom.grammars.grammarOverridesByPath[path]
 			if result = @scopeCache[scope]
 				$ "Overridden-grammar matched", result
 				return @fileCache[path] = result
@@ -195,7 +198,7 @@ class IconService
 		{path, stats} = file
 		stats ?= {}
 		
-		if @main.checkHashbangs
+		if Main.checkHashbangs
 			icon = @iconMatchForHashbang data
 			if icon?
 				$ "Hashbang found", icon, data
@@ -217,7 +220,7 @@ class IconService
 				
 				return false
 		
-		if @main.checkModelines
+		if Main.checkModelines
 			icon = @iconMatchForModeline data
 			if icon?
 				$ "Modeline found", icon, data
@@ -318,7 +321,7 @@ class IconService
 		
 		for rule in @directoryIcons
 			if rule.pattern.test dirname
-				coloured = @main.useColour && (!@main.changedOnly || dir?.status)
+				coloured = Main.useColour && (!Main.changedOnly || dir?.status)
 				return rule.getClass !coloured
 		
 	
@@ -358,7 +361,7 @@ class IconService
 	
 	# Handle the assignment of user-specified grammars
 	handleOverride: (editor, grammar) ->
-		return unless @main.overridesEnabled
+		return unless Main.overridesEnabled
 		$ "Grammar overridden", grammar, editor, path
 		path = editor.getPath()
 		delete @fileCache[path]
@@ -422,4 +425,4 @@ class IconService
 		if shouldRefresh then @queueRefresh()
 	
 
-module.exports = IconService
+module.exports = new IconService

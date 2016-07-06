@@ -8,8 +8,8 @@ class ThemeHelper
 	themeColour: {}
 
 	
-	constructor: ->
-		$ "Created"
+	activate: ->
+		$ "Activating"
 		@disposables = new CompositeDisposable
 		@emitter     = new Emitter
 		
