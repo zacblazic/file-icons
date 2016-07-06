@@ -3,9 +3,9 @@
 $            = require("./service/debugging") __filename
 IconService  = require "./service/icon-service"
 Scanner      = require "./service/scanner"
-ThemeHelper  = require "./theme-helper"
 Workspace    = require "./workspace"
 Config       = require "./config"
+Motif        = require "./motif"
 {ucFirst}    = require "./utils"
 
 module.exports =
@@ -17,9 +17,9 @@ module.exports =
 		@disposables = new CompositeDisposable
 		
 		# Controller to manage theme-related logic
-		ThemeHelper.activate()
-		ThemeHelper.onChangeThemes -> IconService.queueRefresh()
-		ThemeHelper.lightTheme = state.lightTheme
+		Motif.activate()
+		Motif.onChangeThemes -> IconService.queueRefresh()
+		Motif.lightTheme = state.lightTheme
 		
 		# Ready watcher to respond to project/editor changes
 		Workspace.activate()
@@ -49,7 +49,7 @@ module.exports =
 	# Called when deactivating or uninstalling package
 	deactivate: ->
 		Workspace.destroy()
-		ThemeHelper.destroy()
+		Motif.destroy()
 		Scanner.destroy()
 		@disposables.dispose()
 		@emitter.dispose()
@@ -62,7 +62,7 @@ module.exports =
 	# Compile whatever data needs to be saved between sessions
 	serialize: ->
 		iconCount     = IconService.fileIcons.length
-		{lightTheme}  = ThemeHelper
+		{lightTheme}  = Motif
 		{digest}      = Config
 		{headerCache, iconClasses} = IconService.freeze()
 		{iconCount, lightTheme, headerCache, iconClasses, digest}

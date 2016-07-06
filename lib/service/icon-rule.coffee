@@ -1,5 +1,5 @@
 {isString, isObject, isRegExp, escapeRegExp, fuzzyRegExp, freezeRegExp, thawRegExp} = require "../utils"
-ThemeHelper = require "../theme-helper"
+Motif = require "../motif"
 
 
 # Represents a named icon-matching rule defined by icon-config
@@ -74,14 +74,14 @@ class IconRule
 		
 		# Bower needs special treatment to be visible
 		if @isBower
-			if ThemeHelper.lightTheme
+			if Motif.lightTheme
 				"medium-orange"
 			else
 				"medium-yellow"
 		
 		# This match is flagged as motif-sensitive: select colour based on theme brightness
 		else if @isAuto
-			(if ThemeHelper.lightTheme then "dark-" else "medium-") + @colour
+			(if Motif.lightTheme then "dark-" else "medium-") + @colour
 		
 		else
 			@colour

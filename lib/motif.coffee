@@ -3,7 +3,7 @@ $ = require("./service/debugging") __filename
 
 
 # Class to handle motif-sensitive colour adjustments
-class ThemeHelper
+class Motif
 	lightTheme: false
 	themeColour: {}
 
@@ -98,4 +98,4 @@ class ThemeHelper
 		[hue||0, sat||0, lum||0]
 
 
-module.exports = new ThemeHelper
+module.exports = new Motif
