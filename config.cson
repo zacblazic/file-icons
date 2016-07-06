@@ -185,7 +185,6 @@ fileIcons:
 
 	Angular:
 		icon: "angular"
-		framework: true
 		priority: 2
 		match: /^angular[^.]*\.js$/i
 		colour: "medium-red"
@@ -233,7 +232,6 @@ fileIcons:
 
 	Appcelerator:
 		icon: "appcelerator"
-		framework: true
 		priority: 2
 		match: /^appcelerator\.js$/i
 		colour: "medium-red"
@@ -381,7 +379,6 @@ fileIcons:
 
 	Backbone:
 		icon: "backbone"
-		framework: true
 		priority: 2
 		match: /^backbone(?:[-.]min)?\.js$/i
 		colour: "dark-blue"
@@ -427,7 +424,6 @@ fileIcons:
 
 	Bootstrap:
 		icon: "bootstrap"
-		framework: true
 		priority: 2
 		match: [
 			[/^(?:custom\.)?bootstrap\S*\.js$/i,   "auto-yellow"]
@@ -561,7 +557,6 @@ fileIcons:
 
 	ChartJS:
 		icon: "chartjs"
-		framework: true
 		priority: 2
 		match: /^Chart\.js$/i
 		colour: "dark-pink"
@@ -672,7 +667,6 @@ fileIcons:
 
 	Compass:
 		icon: "compass"
-		framework: true
 		priority: 2
 		match: /^_?(?:compass|lemonade)\.scss$/i
 		colour: "medium-red"
@@ -733,7 +727,6 @@ fileIcons:
 
 	Cordova:
 		icon: "cordova"
-		framework: true
 		priority: 2
 		match: /^cordova(?:[^.]*\.|-(?:\d\.)+)js$/i
 		colour: "light-blue"
@@ -797,7 +790,6 @@ fileIcons:
 
 	D3:
 		icon: "d3"
-		framework: true
 		priority: 2
 		match: /^d3(?:\.v\d+)?[^.]*\.js$/i
 		colour: "medium-orange"
@@ -892,7 +884,6 @@ fileIcons:
 
 	Dojo:
 		icon: "dojo"
-		framework: true
 		priority: 2
 		match: /^dojo\.js$/i
 		colour: "light-red"
@@ -970,7 +961,6 @@ fileIcons:
 
 	Ember:
 		icon: "ember"
-		framework: true
 		priority: 2
 		match: /^ember(?:\.|(?:-[^.]+)?-(?:\d+\.)+(?:debug\.)?)js$/i
 		colour: "medium-red"
@@ -1014,7 +1004,6 @@ fileIcons:
 
 	ExtJS:
 		icon: "extjs"
-		framework: true
 		priority: 2
 		match: /\bExtjs(?:-ext)?\.js$/i
 		colour: "light-green"
@@ -1115,7 +1104,6 @@ fileIcons:
 
 	"Fuel UX":
 		icon: "fuelux"
-		framework: true
 		priority: 2
 		match: /^fuelux(?:\.min)?\.(?:css|js)$/i
 		colour: "auto-orange"
@@ -1674,14 +1662,12 @@ fileIcons:
 
 	jQuery:
 		icon: "jquery"
-		framework: true
 		priority: 2
 		match: /^jquery(?:-\d\.\d+(?:\.\d+)?)?\.js$/i
 		colour: "dark-blue"
 
 	"jQuery UI":
 		icon: "jqueryui"
-		framework: true
 		priority: 2
 		match: /^jquery(?:\.(?:ui|effects)\.[^.]*|-ui(?:-\d\.\d+(?:\.\d+)?)?(?:\.\w+)?)\.(?:js|css)$/i
 		colour: "dark-blue"
@@ -1744,7 +1730,6 @@ fileIcons:
 
 	Knockout:
 		icon: "knockout"
-		framework: true
 		priority: 2
 		match: /^knockout[-.](?:\d+\.){3}(?:debug\.)?js$/i
 		colour: "medium-red"
@@ -1786,7 +1771,6 @@ fileIcons:
 
 	Leaflet:
 		icon: "leaflet"
-		framework: true
 		priority: 2
 		match: /^leaflet\.(?:draw-src|draw|spin|coordinates-(?:\d+\.)\d+\.\d+\.src)\.(?:js|css)$|^wicket-leaflet\.js$/i
 		colour: "medium-green"
@@ -1936,7 +1920,6 @@ fileIcons:
 
 	Materialize:
 		icon: "materialize"
-		framework: true
 		priority: 2
 		match: /^materialize(?:\.min)?\.(?:js|css)$/i
 		colour: "light-red"
@@ -1956,7 +1939,6 @@ fileIcons:
 
 	MathJax:
 		icon: "mathjax"
-		framework: true
 		priority: 2
 		match: /^MathJax[^.]*\.js$/i
 		colour: "dark-green"
@@ -2101,7 +2083,6 @@ fileIcons:
 
 	Modernizr:
 		icon: "modernizr"
-		framework: true
 		priority: 2
 		match: /^modernizr(?:[-\.]custom|-\d\.\d+)(?:\.\d+)?\.js$/i
 		colour: "medium-red"
@@ -2129,7 +2110,6 @@ fileIcons:
 
 	MooTools:
 		icon: "mootools"
-		framework: true
 		priority: 2
 		match: /^mootools[^.]*\d+\.\d+(?:.\d+)?[^.]*\.js$/i
 		colour: "medium-purple"
@@ -2244,7 +2224,6 @@ fileIcons:
 
 	Normalize:
 		icon: "normalize"
-		framework: true
 		priority: 2
 		match: /^normalize\.(?:css|less|scss|styl)$/i
 		colour: "medium-red"
@@ -2640,7 +2619,6 @@ fileIcons:
 
 	Raphael:
 		icon: "raphael"
-		framework: true
 		priority: 2
 		match: /^raphael(?:\.min|\.no-deps)*\.js$/i
 		colour: "medium-orange"
@@ -2653,7 +2631,6 @@ fileIcons:
 
 	React:
 		icon: "react"
-		framework: true
 		priority: 2
 		match: [
 			[/^react(?:-[^.]*)?\.js$/, "dark-blue"]
@@ -2706,7 +2683,6 @@ fileIcons:
 
 	RequireJS:
 		icon: "requirejs"
-		framework: true
 		priority: 2
 		match: /^require\.js$/
 		colour: "medium-blue"
@@ -2848,7 +2824,6 @@ fileIcons:
 
 	Sencha:
 		icon: "sencha"
-		framework: true
 		priority: 2
 		match: /^sencha(?:\.min)?\.js$/i
 		colour: "light-green"
@@ -2930,7 +2905,6 @@ fileIcons:
 
 	"Snap SVG":
 		icon: "snapsvg"
-		framework: true
 		priority: 2
 		match: /^snap\.svg(?:[-.]min)?\.js$/i
 		colour: "medium-cyan"
@@ -3226,7 +3200,6 @@ fileIcons:
 
 	UIKit:
 		icon: "uikit"
-		framework: true
 		priority: 2
 		match: /^uikit(?:\.min)?\.js$/i
 		colour: "medium-blue"
@@ -3447,7 +3420,6 @@ fileIcons:
 
 	YUI:
 		icon: "yui"
-		framework: true
 		priority: 2
 		match: /^(?:yahoo-|yui)[^.]*\.js$/i
 		colour: "dark-blue"
