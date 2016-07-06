@@ -4,7 +4,7 @@ Config = require "./config"
 
 
 # Controller to manage auxiliary event subscriptions
-class Watcher
+class Workspace
 	
 	activate: ->
 		$ "Activating"
@@ -59,7 +59,7 @@ class Watcher
 			@repoDisposables = new CompositeDisposable
 	
 	
-	# Register a repository with the watcher, if it hasn't been already
+	# Listen to a repository for changes
 	watchRepo: (repo) ->
 		unless @repos.has repo
 			$ "Watching repo", repo
@@ -184,4 +184,4 @@ class Watcher
 			@configDisposable = null
 
 
-module.exports = new Watcher
+module.exports = new Workspace

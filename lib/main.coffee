@@ -4,8 +4,8 @@ $            = require("./service/debugging") __filename
 IconService  = require "./service/icon-service"
 Scanner      = require "./service/scanner"
 ThemeHelper  = require "./theme-helper"
+Workspace    = require "./workspace"
 Config       = require "./config"
-Watcher      = require "./watcher"
 {ucFirst}    = require "./utils"
 
 module.exports =
@@ -22,8 +22,8 @@ module.exports =
 		ThemeHelper.lightTheme = state.lightTheme
 		
 		# Ready watcher to respond to project/editor changes
-		Watcher.activate()
-		Watcher.onConfigChange -> Config.queueCompile()
+		Workspace.activate()
+		Workspace.onConfigChange -> Config.queueCompile()
 		
 		# Service to provide icons to Atom's APIs
 		IconService.activate()
@@ -48,7 +48,7 @@ module.exports =
 
 	# Called when deactivating or uninstalling package
 	deactivate: ->
-		Watcher.destroy()
+		Workspace.destroy()
 		ThemeHelper.destroy()
 		Scanner.destroy()
 		@disposables.dispose()
@@ -77,7 +77,7 @@ module.exports =
 		IconService.queueRefresh()
 	
 	setOnChanges: (@changedOnly) ->
-		Watcher.watchingRepos(@changedOnly)
+		Workspace.watchingRepos(@changedOnly)
 		IconService.queueRefresh()
 
 	setTabPaneIcon: (@showInTabs) ->
@@ -89,7 +89,7 @@ module.exports =
 		IconService.queueRefresh()
 	
 	setChangeOnOverride: (@overridesEnabled) ->
-		Watcher.watchingEditors @overridesEnabled
+		Workspace.watchingEditors @overridesEnabled
 		IconService.resetOverrides()
 
 	setCheckHashbangs: (@checkHashbangs) -> IconService.setHeadersEnabled(@checkHashbangs)

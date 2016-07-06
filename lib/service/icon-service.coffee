@@ -1,7 +1,7 @@
 {basename}     = require "path"
 {escapeRegExp} = require "../utils"
 Modelines      = require "./modelines"
-Watcher        = require "../watcher"
+Workspace      = require "../workspace"
 Config         = require "../config"
 Main           = require.resolve "../main"
 $              = require("./debugging") __filename
@@ -39,9 +39,9 @@ class IconService
 		@updateCustomTypes()
 		
 		# Subscribe to workspace events
-		Watcher.onRepoUpdate    => @queueRefresh(10)
-		Watcher.onGrammarChange => @handleOverride(arguments...)
-		Watcher.onFileSave (ed) =>
+		Workspace.onRepoUpdate    => @queueRefresh(10)
+		Workspace.onGrammarChange => @handleOverride(arguments...)
+		Workspace.onFileSave (ed) =>
 			{lines, file} = ed.buffer
 			args = {data: lines[0], file: file}
 			@checkFileHeader args
