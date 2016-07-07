@@ -1757,7 +1757,7 @@ fileIcons:
 		icon: "laravel"
 		scope: "php.blade"
 		match: ".blade.php"
-		colour: "dark-purple"
+		colour: "medium-orange"
 
 	Lasso:
 		icon: "lasso"
