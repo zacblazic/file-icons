@@ -8,10 +8,11 @@ class Motif
 	themeColour: {}
 
 	
-	activate: ->
+	activate: (state) ->
 		$ "Activating"
-		@disposables = new CompositeDisposable
-		@emitter     = new Emitter
+		{@lightTheme} = state if state
+		@disposables  = new CompositeDisposable
+		@emitter      = new Emitter
 		
 		@disposables.add atom.themes.onDidChangeActiveThemes =>
 			setTimeout (=>

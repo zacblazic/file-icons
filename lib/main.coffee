@@ -17,17 +17,15 @@ module.exports =
 		@disposables = new CompositeDisposable
 		
 		# Controller to manage theme-related logic
-		Motif.activate()
+		Motif.activate state
 		Motif.onChangeThemes -> IconService.queueRefresh()
-		Motif.lightTheme = state.lightTheme
 		
 		# Ready watcher to respond to project/editor changes
 		Workspace.activate()
 		Workspace.onConfigChange -> Config.queueCompile()
 		
 		# Service to provide icons to Atom's APIs
-		IconService.activate()
-		IconService.unfreeze state
+		IconService.activate state
 		
 		# Filesystem scanner
 		Scanner.activate()
@@ -61,11 +59,11 @@ module.exports =
 	
 	# Compile whatever data needs to be saved between sessions
 	serialize: ->
-		iconCount     = IconService.fileIcons.length
-		{lightTheme}  = Motif
-		{digest}      = Config
-		{headerCache, iconClasses} = IconService.freeze()
-		{iconCount, lightTheme, headerCache, iconClasses, digest}
+		lightTheme:  Motif.lightTheme
+		service:
+			digest:  Config.digest
+			headers: IconService.headerCache
+			classes: IconService.iconClasses
 
 
 

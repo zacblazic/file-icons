@@ -18,12 +18,13 @@ class IconService
 	modelineCache: {}
 	
 	
-	activate: ->
+	activate: (state) ->
 		$ "Activating"
 		Main            = require Main
 		@emitter        = new Emitter
 		@disposables    = new CompositeDisposable
 		{@directoryIcons, @fileIcons} = Config.load()
+		@deserialise state
 
 		@terminalIcon = @iconMatchForName "a.sh"
 
@@ -55,31 +56,53 @@ class IconService
 	
 	
 	
-	# Provide data to be saved between sessions
-	freeze: -> {@headerCache, @iconClasses}
-	
-	
 	# Restore data from an earlier session
-	unfreeze: (state) ->
+	deserialise: (state) ->
+		$ "Deserialising", state
 		
-		# User has "Ignore cache" setting on
-		if atom.config.get "file-icons.debugging.ignoreCacheOnStartup"
-			$ "Ignoring cache"
+		# Nothing to do here
+		unless state
+			$ "State not found"
 			return
 		
-		if state
-			oldDigest = state.digest
-			newDigest = Config.digest
+		# Not what we're expecting
+		unless state.service
+			$ "Malformed state"
+			return
+		
+		# User has "Ignore cache" setting on; nothing to do here either
+		if atom.config.get "file-icons.debugging.ignoreCacheOnStartup"
+			$ "Ignoring cached icons"
+			return
+		
+		
+		{digest, headers, classes} = state.service
+		
+		# Make sure these results were serialised from the same data
+		if digest is Config.digest and digest?
+			$ "Digests match", digest
+		
+		# Data's outdated
+		else
+			$ "Mismatched digests", old: digest, new: Config.digest
 			
-			# Make sure these results were serialised from the same data
-			if oldDigest is newDigest and newDigest?
-				$ "Deserialising cache", state
-				for path, match of @headerCache = state.headerCache
-					[ruleIndex] = match
-					@fileCache[path] = ruleIndex
+			# Attempt to reindex header-assigned icons if possible
+			if headers and classes
+				headers = @reindexIcons headers, classes
+
+
+		# Assign deserialised data
+		@headerCache = headers
+		for path, match of headers
+			[index]  = match
+			icon     = @fileIcons[index]
 			
-			else $ "Ignoring outdated cache", {oldDigest, newDigest}
-			
+			@iconClasses[index] = icon.rawClass
+			@headerCache[path]  = [index]
+			@fileCache[path]    = icon
+	
+	
+	
 	
 	# Force a complete refresh of the icon display.
 	# Intended to be called when a package setting's been modified.
@@ -423,6 +446,44 @@ class IconService
 		cachebust Array.from(scopes).map makeRegExp
 		
 		if shouldRefresh then @queueRefresh()
+
+
+
+	# Perform hideous surgery on outdated caches to eliminate FOUCs at startup
+	reindexIcons: (headers, classes) ->
+		$ "Reindexing", {headers, classes}
+		
+		fixedHeaders = {}
+		fixedIndexes = {}
+		
+		for index, classList of classes
+			if (icon = @iconRuleFromClass classList, index)?
+				$ "Fixing index: #{index} -> #{icon.index}", icon
+				fixedIndexes[index] = icon.index
+		
+		for path, match of headers
+			if (index = fixedIndexes[match[0]])?
+				$ "Fixing path: #{path}" 
+				match[0] = index
+				fixedHeaders[path] = match
+		
+		fixedHeaders
+
+	
+	
+	# Attempt to locate an IconRule based off what icon-classes it adds
+	iconRuleFromClass: (classList, originalIndex) ->
+		
+		# Shortcut: Quicker lookup if the index happens to be the same
+		if (rule = @fileIcons[originalIndex])?.rawClass is classList
+			rule
+		
+		else
+			for rule in @fileIcons
+				if rule.rawClass is classList
+					return rule
+			null
+
 	
 
 module.exports = new IconService
