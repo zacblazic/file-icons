@@ -458,8 +458,8 @@ class IconService
 			@headerCache[to] = header
 		
 		if (match = @fileCache[from])?
-			delete @fileCache[from]
 			@fileCache[to] = match
+			setTimeout (=> delete @fileCache[from]), 100
 		
 		undefined
 		
