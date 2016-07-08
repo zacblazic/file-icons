@@ -115,7 +115,7 @@ module.exports =
 		add = (name, callback) =>
 			name = "file-icons:#{name}"
 			return if atom.commands.registeredCommands[name]
-			@disposables.add atom.commands.add "body", name, callback
+			@disposables.add atom.commands.add "atom-workspace", name, callback
 		
 		add "recompile-config", => Config.compile()
 		
