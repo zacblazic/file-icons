@@ -90,7 +90,7 @@ class Scanner
 		dir            = item.directory
 		onExpand       = dir.onDidExpand     => @readFolder dir, item
 		onCollapse     = dir.onDidCollapse   => setTimeout (=> @prune()), 0
-		onEntriesAdded = dir.onDidAddEntries => @update()
+		onEntriesAdded = dir.onDidAddEntries @checkEntries
 		dir[@metadata] = {onExpand, onEntriesAdded, onCollapse}
 		@disposables.add onExpand, onEntriesAdded, onCollapse
 		
@@ -133,6 +133,28 @@ class Scanner
 				task = Task.once ScanTask, files
 				task.on "file-scan", (data) -> IconService.checkFileHeader data
 		
+		@update()
+	
+	
+	
+	# Check the newly-added contents of a directory
+	checkEntries: (items) =>
+		shouldRefresh = false
+		
+		# Cycle through each entry, skipping directories
+		for file in items when not file.expansionState?
+			{dev, ino} = file.stats
+			guid = ino
+			guid = dev + "_" + guid if dev
+			
+			# Has this file been moved to a different directory?
+			if (cached = @fileCache[guid]) and cached.path isnt file.path
+				$ "File moved", {file, guid}
+				IconService.changeFilePath cached.path, file.path 
+				cached.path   = file.path
+				shouldRefresh = true
+	
+		if shouldRefresh then IconService.queueRefresh()
 		@update()
 	
 	

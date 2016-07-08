@@ -449,6 +449,23 @@ class IconService
 
 
 
+	# Change the path of a previously-scanned file
+	changeFilePath: (from, to) ->
+		$ "Changing path", {from, to}
+		
+		if (header = @headerCache[from])?
+			delete @headerCache[from]
+			@headerCache[to] = header
+		
+		if (match = @fileCache[from])?
+			delete @fileCache[from]
+			@fileCache[to] = match
+		
+		undefined
+		
+		
+
+
 	# Perform hideous surgery on outdated caches to eliminate FOUCs at startup
 	reindexIcons: (headers, classes) ->
 		$ "Reindexing", {headers, classes}
