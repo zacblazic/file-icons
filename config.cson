@@ -814,8 +814,11 @@ fileIcons:
 
 	Dashboard:
 		icon: "dashboard"
-		match: /\.s[kl]im$/i
-		colour: "medium-orange"
+		generic: true
+		match: [
+			[/\.s[kl]im$/i, "medium-orange", "slim"]
+			[".cpuprofile", "medium-green"]
+		]
 
 	Data:
 		icon: "database"
@@ -881,6 +884,7 @@ fileIcons:
 		priority: 0 # Not much wow
 		match: ".djs"
 		colour: "medium-yellow"
+		scope: "dogescript"
 
 	Dojo:
 		icon: "dojo"
@@ -1244,6 +1248,7 @@ fileIcons:
 			[".myt", "dark-blue"]
 			[".nproj", "medium-purple"]
 			[".odd", "light-green"]
+			[".ohm", "dark-yellow", "ohm"]
 			[".omgrofl", "dark-purple"]
 			[".osm", "dark-purple"]
 			[".pig", "medium-pink"]
