@@ -117,7 +117,7 @@ module.exports =
 			return if atom.commands.registeredCommands[name]
 			@disposables.add atom.commands.add "body", name, callback
 		
-		add "recompile-cache", => Config.compile()
+		add "recompile-config", => Config.compile()
 		
 		add "toggle-colours", (event) =>
 			name = "file-icons.coloured"
