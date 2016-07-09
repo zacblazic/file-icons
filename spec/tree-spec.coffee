@@ -1,7 +1,5 @@
 path = require "path"
-{activate, ls} = require "./helpers"
-
-fixturesPath = path.resolve __dirname, "fixtures"
+{activate, open, ls, fixtures, wait} = require "./helpers"
 
 
 describe "TreeView", ->
@@ -10,7 +8,7 @@ describe "TreeView", ->
 	
 	beforeEach "Activate packages", ->
 		workspace = atom.views.getView atom.workspace
-		atom.project.setPaths [fixturesPath]
+		atom.project.setPaths [fixtures]
 		
 		activate("tree-view", "file-icons").then ->
 			atom.commands.dispatch workspace, "tree-view:toggle"
@@ -18,7 +16,7 @@ describe "TreeView", ->
 	
 	
 	it "displays the correct icons", ->
-		atom.project.setPaths [path.resolve fixturesPath, "project-1"]
+		open "project-1"
 		f = ls treeView
 		
 		f[".default-config"].should.have.class "name icon"
@@ -30,3 +28,38 @@ describe "TreeView", ->
 		f["package.json"   ].should.have.class "npm-icon"
 		f["README.md"      ].should.have.class "book-icon"
 		f["text.txt"       ].should.have.class "icon-file-text"
+
+	
+	describe "Colour handling", ->
+		[expectedClasses, f] = []
+		
+		beforeEach "Open first project folder", ->
+			open "project-1"
+			f = ls treeView
+			expectedClasses =
+				".gitignore":   "medium-red"
+				"data.json":    "medium-yellow"
+				"image.gif":    "medium-yellow"
+				"markdown.md":  "medium-blue"
+				"package.json": "medium-red"
+				"README.md":    "medium-blue"
+				"text.txt":     "medium-blue"
+		
+		
+		it "displays icons in colour", ->
+			for file, colour of expectedClasses
+				f[file].should.have.class colour
+		
+		
+		it "doesn't show colours if colourless icons are enabled", (done) ->
+			atom.config.get("file-icons.coloured").should.be.true
+			atom.commands.dispatch workspace, "file-icons:toggle-colours"
+			atom.config.get("file-icons.coloured").should.be.false
+			
+			wait(100).then ->
+				try
+					for file, colour of expectedClasses
+						f[file].should.not.have.class colour
+					done()
+				catch error
+					done error

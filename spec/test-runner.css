@@ -79,6 +79,10 @@ h1, h2{
 		}
 
 
+		.suite .suite{
+			margin-top: 1em;
+		}
+		
 /** Stats anchored to bottom */
 #mocha-stats{
 	text-align: left;
