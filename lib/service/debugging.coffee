@@ -1,4 +1,4 @@
-unless global.atom is undefined or global.atom.config.get "file-icons.debugging.verboseLogging"
+unless global.atom is undefined or global.atom.inSpecMode() or global.atom.config.get "file-icons.debugging.verboseLogging"
 	module.exports = -> ->
 
 else
