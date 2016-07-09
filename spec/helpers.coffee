@@ -15,12 +15,12 @@ module.exports =
 		Promise.all promises
 
 
-	# Return a list of file entries, keyed by filename
-	ls: (treeView) ->
+	# Return a list of tree-view entries, keyed by filename
+	ls: (treeView, type = "file") ->
 		result = {}
-		for entry in treeView.find ".file.entry"
-			{name} = entry.file
-			result[name] = entry.fileName
+		for entry in treeView.find ".#{type}.entry"
+			{name} = entry[type]
+			result[name] = entry["#{type}Name"]
 		result
 
 	
