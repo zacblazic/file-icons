@@ -19,7 +19,6 @@ ul, li{
 a, a:link, a:visited{
 	color: inherit;
 	text-decoration: none;
-	cursor: text;
 }
 
 h1, h2{
@@ -33,19 +32,20 @@ h1, h2{
 /** Test results */
 .suite > ul{
 	margin-left: 4ch;
-	margin-top: .25em;
+	margin-top: .4em;
 }
-	.test{
+	.test,
+	#mocha-stats > li{
 		position: relative;
 		display: block;
 		color: #828282;
 	}
-		.test::first-letter{
-			text-transform: uppercase;
+		.test::before{
+			content: "It ";
 		}
 		
 		/** Icon */
-		.test::before{
+		.test::after{
 			position: absolute;
 			top: 0;
 			font-size: 1.5em;
@@ -55,10 +55,8 @@ h1, h2{
 			text-align: center;
 			margin-right: .25ch;
 		}
-			.test.pass::before{
-				content: "✓";
-				color: #3bbb33;
-			}
+			.test.pass::after{ content: "✓"; color: #3bbb33; }
+			.test.fail::after{ content: "✘"; color: #c13928; }
 
 		/** Duration */
 		.test .duration{
@@ -68,9 +66,17 @@ h1, h2{
 			.test .duration::before{ content: "(" }
 			.test .duration::after{  content: ")" }
 
-		.replay{
+		.test .replay{
 			display: none;
 		}
+
+		/** Raw output */
+		.test > pre{
+			margin: .5em 0 1em 0;
+			border-left: 1px double;
+			padding-left: 1em;
+		}
+
 
 /** Stats anchored to bottom */
 #mocha-stats{
@@ -81,26 +87,23 @@ h1, h2{
 	left:    0;
 	right:   0;
 }
+	/** Hide progress <canvas> */
 	#mocha-stats > .progress{
-		position: absolute;
 		display: none;
-		bottom: 100%;
-		left:   0;
-		right:  0;
-		height: 2em;
-		background: #fff;
 	}
-		.progress > canvas{
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			display: block;
-			transform-origin: 50% 50%;
-			transform: translate(-50%, -50%) scale(.75);
-			pointer-events: none;
-		}
 
+	#mocha-stats > .progress ~ li{
+		display: block;
+		height: 1.4em;
+		line-height: 1.4;
+	}
+	
+	/** Fit the "Passes" label to fit the next two rows */
 	#mocha-stats .passes > a:first-child{
 		min-width: 72px;
 		display: inline-block;
+	}
+	
+	#mocha-stats em{
+		font-style: normal;
 	}

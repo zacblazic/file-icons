@@ -29,8 +29,9 @@ module.exports = args => {
 		document,
 		configDirPath: process.env.ATOM_HOME,
 		enablePersistence: false
-	})
+	});
 	
+	document.title = "Terminal Emulator Emulator";
 	
 	/** Running in an Atom window */
 	if(!args.headless){
