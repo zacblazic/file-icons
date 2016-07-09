@@ -16,7 +16,9 @@
     "minimatch": "*"
   },
   "devDependencies": {
-    "coffee-script": "*"
+    "coffee-script": "*",
+    "mocha": "*",
+    "chai": "*"
   },
   "bugs": {
     "url": "https://github.com/DanBrooker/file-icons/issues"
@@ -24,6 +26,7 @@
   "scripts": {
     "recompile": "node lib/bin/recompile"
   },
+  "atomTestRunner": "./lib/bin/run-tests",
   "homepage": "https://github.com/DanBrooker/file-icons",
   "providedServices": {
     "atom.file-icons": {
@@ -109,5 +112,507 @@
         }
       }
     }
+  },
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": [
+      {
+        "name": "chai",
+        "version": "3.5.0",
+        "path": "node_modules/chai/index.js"
+      },
+      {
+        "name": "assertion-error",
+        "version": "1.0.2",
+        "path": "node_modules/chai/node_modules/assertion-error/index.js"
+      },
+      {
+        "name": "deep-eql",
+        "version": "0.1.3",
+        "path": "node_modules/chai/node_modules/deep-eql/index.js"
+      },
+      {
+        "name": "type-detect",
+        "version": "0.1.1",
+        "path": "node_modules/chai/node_modules/deep-eql/node_modules/type-detect/index.js"
+      },
+      {
+        "name": "type-detect",
+        "version": "1.0.0",
+        "path": "node_modules/chai/node_modules/type-detect/index.js"
+      },
+      {
+        "name": "coffee-script",
+        "version": "1.10.0",
+        "path": "node_modules/coffee-script/lib/coffee-script/coffee-script.js"
+      },
+      {
+        "name": "minimatch",
+        "version": "3.0.2",
+        "path": "node_modules/minimatch/minimatch.js"
+      },
+      {
+        "name": "brace-expansion",
+        "version": "1.1.5",
+        "path": "node_modules/minimatch/node_modules/brace-expansion/index.js"
+      },
+      {
+        "name": "balanced-match",
+        "version": "0.4.1",
+        "path": "node_modules/minimatch/node_modules/brace-expansion/node_modules/balanced-match/index.js"
+      },
+      {
+        "name": "concat-map",
+        "version": "0.0.1",
+        "path": "node_modules/minimatch/node_modules/brace-expansion/node_modules/concat-map/index.js"
+      },
+      {
+        "name": "mocha",
+        "version": "2.5.3",
+        "path": "node_modules/mocha/index.js"
+      },
+      {
+        "name": "commander",
+        "version": "2.3.0",
+        "path": "node_modules/mocha/node_modules/commander/index.js"
+      },
+      {
+        "name": "debug",
+        "version": "2.2.0",
+        "path": "node_modules/mocha/node_modules/debug/node.js"
+      },
+      {
+        "name": "ms",
+        "version": "0.7.1",
+        "path": "node_modules/mocha/node_modules/debug/node_modules/ms/index.js"
+      },
+      {
+        "name": "diff",
+        "version": "1.4.0",
+        "path": "node_modules/mocha/node_modules/diff/diff.js"
+      },
+      {
+        "name": "escape-string-regexp",
+        "version": "1.0.2",
+        "path": "node_modules/mocha/node_modules/escape-string-regexp/index.js"
+      },
+      {
+        "name": "glob",
+        "version": "3.2.11",
+        "path": "node_modules/mocha/node_modules/glob/glob.js"
+      },
+      {
+        "name": "inherits",
+        "version": "2.0.1",
+        "path": "node_modules/mocha/node_modules/glob/node_modules/inherits/inherits.js"
+      },
+      {
+        "name": "minimatch",
+        "version": "0.3.0",
+        "path": "node_modules/mocha/node_modules/glob/node_modules/minimatch/minimatch.js"
+      },
+      {
+        "name": "lru-cache",
+        "version": "2.7.3",
+        "path": "node_modules/mocha/node_modules/glob/node_modules/minimatch/node_modules/lru-cache/lib/lru-cache.js"
+      },
+      {
+        "name": "sigmund",
+        "version": "1.0.1",
+        "path": "node_modules/mocha/node_modules/glob/node_modules/minimatch/node_modules/sigmund/sigmund.js"
+      },
+      {
+        "name": "growl",
+        "version": "1.9.2",
+        "path": "node_modules/mocha/node_modules/growl/lib/growl.js"
+      },
+      {
+        "name": "jade",
+        "version": "0.26.3",
+        "path": "node_modules/mocha/node_modules/jade/index.js"
+      },
+      {
+        "name": "commander",
+        "version": "0.6.1",
+        "path": "node_modules/mocha/node_modules/jade/node_modules/commander/index.js"
+      },
+      {
+        "name": "mkdirp",
+        "version": "0.3.0",
+        "path": "node_modules/mocha/node_modules/jade/node_modules/mkdirp/index.js"
+      },
+      {
+        "name": "mkdirp",
+        "version": "0.5.1",
+        "path": "node_modules/mocha/node_modules/mkdirp/index.js"
+      },
+      {
+        "name": "minimist",
+        "version": "0.0.8",
+        "path": "node_modules/mocha/node_modules/mkdirp/node_modules/minimist/index.js"
+      },
+      {
+        "name": "supports-color",
+        "version": "1.2.0",
+        "path": "node_modules/mocha/node_modules/supports-color/index.js"
+      },
+      {
+        "name": "to-iso-string",
+        "version": "0.0.2",
+        "path": "node_modules/mocha/node_modules/to-iso-string/index.js"
+      }
+    ],
+    "extensions": {
+      ".coffee": [
+        "lib/config.coffee",
+        "lib/main.coffee",
+        "lib/motif.coffee",
+        "lib/service/debugging.coffee",
+        "lib/service/icon-rule.coffee",
+        "lib/service/icon-service.coffee",
+        "lib/service/modelines.coffee",
+        "lib/service/scan-task.coffee",
+        "lib/service/scanner.coffee",
+        "lib/utils.coffee",
+        "lib/workspace.coffee"
+      ],
+      ".json": [
+        "lib/service/config-cache.json",
+        "node_modules/chai/bower.json",
+        "node_modules/chai/node_modules/assertion-error/package.json",
+        "node_modules/chai/node_modules/deep-eql/node_modules/type-detect/package.json",
+        "node_modules/chai/node_modules/deep-eql/package.json",
+        "node_modules/chai/node_modules/type-detect/package.json",
+        "node_modules/chai/package.json",
+        "node_modules/coffee-script/bower.json",
+        "node_modules/coffee-script/package.json",
+        "node_modules/minimatch/node_modules/brace-expansion/node_modules/balanced-match/package.json",
+        "node_modules/minimatch/node_modules/brace-expansion/node_modules/concat-map/package.json",
+        "node_modules/minimatch/node_modules/brace-expansion/package.json",
+        "node_modules/minimatch/package.json",
+        "node_modules/mocha/node_modules/commander/package.json",
+        "node_modules/mocha/node_modules/debug/bower.json",
+        "node_modules/mocha/node_modules/debug/component.json",
+        "node_modules/mocha/node_modules/debug/node_modules/ms/package.json",
+        "node_modules/mocha/node_modules/debug/package.json",
+        "node_modules/mocha/node_modules/diff/package.json",
+        "node_modules/mocha/node_modules/escape-string-regexp/package.json",
+        "node_modules/mocha/node_modules/glob/node_modules/inherits/package.json",
+        "node_modules/mocha/node_modules/glob/node_modules/minimatch/node_modules/lru-cache/package.json",
+        "node_modules/mocha/node_modules/glob/node_modules/minimatch/node_modules/sigmund/package.json",
+        "node_modules/mocha/node_modules/glob/node_modules/minimatch/package.json",
+        "node_modules/mocha/node_modules/glob/package.json",
+        "node_modules/mocha/node_modules/growl/package.json",
+        "node_modules/mocha/node_modules/jade/node_modules/commander/package.json",
+        "node_modules/mocha/node_modules/jade/node_modules/mkdirp/package.json",
+        "node_modules/mocha/node_modules/jade/package.json",
+        "node_modules/mocha/node_modules/mkdirp/node_modules/minimist/package.json",
+        "node_modules/mocha/node_modules/mkdirp/package.json",
+        "node_modules/mocha/node_modules/supports-color/package.json",
+        "node_modules/mocha/node_modules/to-iso-string/component.json",
+        "node_modules/mocha/node_modules/to-iso-string/package.json",
+        "node_modules/mocha/package.json",
+        "package.json"
+      ],
+      ".js": [
+        "node_modules/chai/chai.js",
+        "node_modules/chai/index.js",
+        "node_modules/chai/karma.conf.js",
+        "node_modules/chai/karma.sauce.js",
+        "node_modules/chai/lib/chai/assertion.js",
+        "node_modules/chai/lib/chai/config.js",
+        "node_modules/chai/lib/chai/core/assertions.js",
+        "node_modules/chai/lib/chai/interface/assert.js",
+        "node_modules/chai/lib/chai/interface/expect.js",
+        "node_modules/chai/lib/chai/interface/should.js",
+        "node_modules/chai/lib/chai/utils/addChainableMethod.js",
+        "node_modules/chai/lib/chai/utils/addMethod.js",
+        "node_modules/chai/lib/chai/utils/addProperty.js",
+        "node_modules/chai/lib/chai/utils/expectTypes.js",
+        "node_modules/chai/lib/chai/utils/flag.js",
+        "node_modules/chai/lib/chai/utils/getActual.js",
+        "node_modules/chai/lib/chai/utils/getEnumerableProperties.js",
+        "node_modules/chai/lib/chai/utils/getMessage.js",
+        "node_modules/chai/lib/chai/utils/getName.js",
+        "node_modules/chai/lib/chai/utils/getPathInfo.js",
+        "node_modules/chai/lib/chai/utils/getPathValue.js",
+        "node_modules/chai/lib/chai/utils/getProperties.js",
+        "node_modules/chai/lib/chai/utils/hasProperty.js",
+        "node_modules/chai/lib/chai/utils/index.js",
+        "node_modules/chai/lib/chai/utils/inspect.js",
+        "node_modules/chai/lib/chai/utils/objDisplay.js",
+        "node_modules/chai/lib/chai/utils/overwriteChainableMethod.js",
+        "node_modules/chai/lib/chai/utils/overwriteMethod.js",
+        "node_modules/chai/lib/chai/utils/overwriteProperty.js",
+        "node_modules/chai/lib/chai/utils/test.js",
+        "node_modules/chai/lib/chai/utils/transferFlags.js",
+        "node_modules/chai/lib/chai.js",
+        "node_modules/chai/node_modules/assertion-error/index.js",
+        "node_modules/chai/node_modules/deep-eql/index.js",
+        "node_modules/chai/node_modules/deep-eql/karma.conf.js",
+        "node_modules/chai/node_modules/deep-eql/lib/eql.js",
+        "node_modules/chai/node_modules/deep-eql/node_modules/type-detect/index.js",
+        "node_modules/chai/node_modules/deep-eql/node_modules/type-detect/lib/type.js",
+        "node_modules/chai/node_modules/type-detect/index.js",
+        "node_modules/chai/node_modules/type-detect/lib/type.js",
+        "node_modules/chai/sauce.browsers.js",
+        "node_modules/coffee-script/lib/coffee-script/browser.js",
+        "node_modules/coffee-script/lib/coffee-script/cake.js",
+        "node_modules/coffee-script/lib/coffee-script/coffee-script.js",
+        "node_modules/coffee-script/lib/coffee-script/command.js",
+        "node_modules/coffee-script/lib/coffee-script/grammar.js",
+        "node_modules/coffee-script/lib/coffee-script/helpers.js",
+        "node_modules/coffee-script/lib/coffee-script/index.js",
+        "node_modules/coffee-script/lib/coffee-script/lexer.js",
+        "node_modules/coffee-script/lib/coffee-script/nodes.js",
+        "node_modules/coffee-script/lib/coffee-script/optparse.js",
+        "node_modules/coffee-script/lib/coffee-script/parser.js",
+        "node_modules/coffee-script/lib/coffee-script/register.js",
+        "node_modules/coffee-script/lib/coffee-script/repl.js",
+        "node_modules/coffee-script/lib/coffee-script/rewriter.js",
+        "node_modules/coffee-script/lib/coffee-script/scope.js",
+        "node_modules/coffee-script/lib/coffee-script/sourcemap.js",
+        "node_modules/coffee-script/register.js",
+        "node_modules/coffee-script/repl.js",
+        "node_modules/minimatch/minimatch.js",
+        "node_modules/minimatch/node_modules/brace-expansion/index.js",
+        "node_modules/minimatch/node_modules/brace-expansion/node_modules/balanced-match/index.js",
+        "node_modules/minimatch/node_modules/brace-expansion/node_modules/concat-map/example/map.js",
+        "node_modules/minimatch/node_modules/brace-expansion/node_modules/concat-map/index.js",
+        "node_modules/mocha/bin/options.js",
+        "node_modules/mocha/index.js",
+        "node_modules/mocha/lib/browser/debug.js",
+        "node_modules/mocha/lib/browser/events.js",
+        "node_modules/mocha/lib/browser/progress.js",
+        "node_modules/mocha/lib/browser/tty.js",
+        "node_modules/mocha/lib/context.js",
+        "node_modules/mocha/lib/hook.js",
+        "node_modules/mocha/lib/interfaces/bdd.js",
+        "node_modules/mocha/lib/interfaces/common.js",
+        "node_modules/mocha/lib/interfaces/exports.js",
+        "node_modules/mocha/lib/interfaces/index.js",
+        "node_modules/mocha/lib/interfaces/qunit.js",
+        "node_modules/mocha/lib/interfaces/tdd.js",
+        "node_modules/mocha/lib/mocha.js",
+        "node_modules/mocha/lib/ms.js",
+        "node_modules/mocha/lib/pending.js",
+        "node_modules/mocha/lib/reporters/base.js",
+        "node_modules/mocha/lib/reporters/doc.js",
+        "node_modules/mocha/lib/reporters/dot.js",
+        "node_modules/mocha/lib/reporters/html-cov.js",
+        "node_modules/mocha/lib/reporters/html.js",
+        "node_modules/mocha/lib/reporters/index.js",
+        "node_modules/mocha/lib/reporters/json-cov.js",
+        "node_modules/mocha/lib/reporters/json-stream.js",
+        "node_modules/mocha/lib/reporters/json.js",
+        "node_modules/mocha/lib/reporters/landing.js",
+        "node_modules/mocha/lib/reporters/list.js",
+        "node_modules/mocha/lib/reporters/markdown.js",
+        "node_modules/mocha/lib/reporters/min.js",
+        "node_modules/mocha/lib/reporters/nyan.js",
+        "node_modules/mocha/lib/reporters/progress.js",
+        "node_modules/mocha/lib/reporters/spec.js",
+        "node_modules/mocha/lib/reporters/tap.js",
+        "node_modules/mocha/lib/reporters/xunit.js",
+        "node_modules/mocha/lib/runnable.js",
+        "node_modules/mocha/lib/runner.js",
+        "node_modules/mocha/lib/suite.js",
+        "node_modules/mocha/lib/test.js",
+        "node_modules/mocha/lib/utils.js",
+        "node_modules/mocha/mocha.js",
+        "node_modules/mocha/node_modules/commander/index.js",
+        "node_modules/mocha/node_modules/debug/browser.js",
+        "node_modules/mocha/node_modules/debug/debug.js",
+        "node_modules/mocha/node_modules/debug/node.js",
+        "node_modules/mocha/node_modules/debug/node_modules/ms/index.js",
+        "node_modules/mocha/node_modules/diff/diff.js",
+        "node_modules/mocha/node_modules/escape-string-regexp/index.js",
+        "node_modules/mocha/node_modules/glob/examples/g.js",
+        "node_modules/mocha/node_modules/glob/examples/usr-local.js",
+        "node_modules/mocha/node_modules/glob/glob.js",
+        "node_modules/mocha/node_modules/glob/node_modules/inherits/inherits.js",
+        "node_modules/mocha/node_modules/glob/node_modules/inherits/inherits_browser.js",
+        "node_modules/mocha/node_modules/glob/node_modules/inherits/test.js",
+        "node_modules/mocha/node_modules/glob/node_modules/minimatch/minimatch.js",
+        "node_modules/mocha/node_modules/glob/node_modules/minimatch/node_modules/lru-cache/lib/lru-cache.js",
+        "node_modules/mocha/node_modules/glob/node_modules/minimatch/node_modules/sigmund/bench.js",
+        "node_modules/mocha/node_modules/glob/node_modules/minimatch/node_modules/sigmund/sigmund.js",
+        "node_modules/mocha/node_modules/growl/lib/growl.js",
+        "node_modules/mocha/node_modules/growl/test.js",
+        "node_modules/mocha/node_modules/jade/index.js",
+        "node_modules/mocha/node_modules/jade/jade.js",
+        "node_modules/mocha/node_modules/jade/jade.min.js",
+        "node_modules/mocha/node_modules/jade/lib/compiler.js",
+        "node_modules/mocha/node_modules/jade/lib/doctypes.js",
+        "node_modules/mocha/node_modules/jade/lib/filters.js",
+        "node_modules/mocha/node_modules/jade/lib/inline-tags.js",
+        "node_modules/mocha/node_modules/jade/lib/jade.js",
+        "node_modules/mocha/node_modules/jade/lib/lexer.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/attrs.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/block-comment.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/block.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/case.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/code.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/comment.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/doctype.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/each.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/filter.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/index.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/literal.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/mixin.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/node.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/tag.js",
+        "node_modules/mocha/node_modules/jade/lib/nodes/text.js",
+        "node_modules/mocha/node_modules/jade/lib/parser.js",
+        "node_modules/mocha/node_modules/jade/lib/runtime.js",
+        "node_modules/mocha/node_modules/jade/lib/self-closing.js",
+        "node_modules/mocha/node_modules/jade/lib/utils.js",
+        "node_modules/mocha/node_modules/jade/node_modules/commander/index.js",
+        "node_modules/mocha/node_modules/jade/node_modules/commander/lib/commander.js",
+        "node_modules/mocha/node_modules/jade/node_modules/mkdirp/examples/pow.js",
+        "node_modules/mocha/node_modules/jade/node_modules/mkdirp/index.js",
+        "node_modules/mocha/node_modules/jade/runtime.js",
+        "node_modules/mocha/node_modules/jade/runtime.min.js",
+        "node_modules/mocha/node_modules/jade/testing/index.js",
+        "node_modules/mocha/node_modules/jade/testing/user.js",
+        "node_modules/mocha/node_modules/mkdirp/bin/cmd.js",
+        "node_modules/mocha/node_modules/mkdirp/examples/pow.js",
+        "node_modules/mocha/node_modules/mkdirp/index.js",
+        "node_modules/mocha/node_modules/mkdirp/node_modules/minimist/example/parse.js",
+        "node_modules/mocha/node_modules/mkdirp/node_modules/minimist/index.js",
+        "node_modules/mocha/node_modules/supports-color/cli.js",
+        "node_modules/mocha/node_modules/supports-color/index.js",
+        "node_modules/mocha/node_modules/to-iso-string/index.js"
+      ]
+    },
+    "folders": [
+      {
+        "paths": [
+          "examples",
+          "examples/frameworks",
+          "lib",
+          "lib/service",
+          ""
+        ],
+        "dependencies": {
+          "minimatch": "*"
+        }
+      },
+      {
+        "paths": [
+          "node_modules/chai",
+          "node_modules/chai/lib/chai",
+          "node_modules/chai/lib/chai/core",
+          "node_modules/chai/lib/chai/interface",
+          "node_modules/chai/lib/chai/utils",
+          "node_modules/chai/lib"
+        ],
+        "dependencies": {
+          "assertion-error": "^1.0.1",
+          "deep-eql": "^0.1.3",
+          "type-detect": "^1.0.0"
+        }
+      },
+      {
+        "paths": [
+          "node_modules/chai/node_modules/deep-eql",
+          "node_modules/chai/node_modules/deep-eql/lib"
+        ],
+        "dependencies": {
+          "type-detect": "0.1.1"
+        }
+      },
+      {
+        "paths": [
+          "node_modules/minimatch"
+        ],
+        "dependencies": {
+          "brace-expansion": "^1.0.0"
+        }
+      },
+      {
+        "paths": [
+          "node_modules/minimatch/node_modules/brace-expansion"
+        ],
+        "dependencies": {
+          "balanced-match": "^0.4.1",
+          "concat-map": "0.0.1"
+        }
+      },
+      {
+        "paths": [
+          "node_modules/mocha/bin",
+          "node_modules/mocha",
+          "node_modules/mocha/lib/browser",
+          "node_modules/mocha/lib",
+          "node_modules/mocha/lib/interfaces",
+          "node_modules/mocha/lib/reporters"
+        ],
+        "dependencies": {
+          "commander": "2.3.0",
+          "debug": "2.2.0",
+          "diff": "1.4.0",
+          "escape-string-regexp": "1.0.2",
+          "glob": "3.2.11",
+          "growl": "1.9.2",
+          "jade": "0.26.3",
+          "mkdirp": "0.5.1",
+          "supports-color": "1.2.0",
+          "to-iso-string": "0.0.2"
+        }
+      },
+      {
+        "paths": [
+          "node_modules/mocha/node_modules/debug"
+        ],
+        "dependencies": {
+          "ms": "0.7.1"
+        }
+      },
+      {
+        "paths": [
+          "node_modules/mocha/node_modules/glob/examples",
+          "node_modules/mocha/node_modules/glob",
+          "node_modules/mocha/node_modules/glob/test"
+        ],
+        "dependencies": {
+          "inherits": "2",
+          "minimatch": "0.3"
+        }
+      },
+      {
+        "paths": [
+          "node_modules/mocha/node_modules/glob/node_modules/minimatch",
+          "node_modules/mocha/node_modules/glob/node_modules/minimatch/test"
+        ],
+        "dependencies": {
+          "lru-cache": "2",
+          "sigmund": "~1.0.0"
+        }
+      },
+      {
+        "paths": [
+          "node_modules/mocha/node_modules/jade",
+          "node_modules/mocha/node_modules/jade/lib",
+          "node_modules/mocha/node_modules/jade/lib/nodes",
+          "node_modules/mocha/node_modules/jade/testing"
+        ],
+        "dependencies": {
+          "commander": "0.6.1",
+          "mkdirp": "0.3.0"
+        }
+      },
+      {
+        "paths": [
+          "node_modules/mocha/node_modules/mkdirp/bin",
+          "node_modules/mocha/node_modules/mkdirp/examples",
+          "node_modules/mocha/node_modules/mkdirp",
+          "node_modules/mocha/node_modules/mkdirp/test"
+        ],
+        "dependencies": {
+          "minimist": "0.0.8"
+        }
+      }
+    ]
   }
 }

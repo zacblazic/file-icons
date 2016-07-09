@@ -1,0 +1,64 @@
+#!/usr/local/bin/node --es_staging
+"use strict";
+
+const fs    = require("fs");
+const path  = require("path");
+
+
+/** Bring on a real test-runner */
+const Mocha = require("mocha");
+const Chai  = require("chai");
+Chai.should();
+
+
+/** Export custom test-runner info to Atom */
+module.exports = args => {
+	
+	const tests = new Mocha({
+		ui: "bdd",
+		reporter: "html"
+	});
+	
+	const feedback = document.createElement("div");
+	feedback.id    = "mocha";
+	document.body.appendChild(feedback);
+	
+	window.atom = args.buildAtomEnvironment({
+		applicationDelegate: args.buildDefaultApplicationDelegate(),
+		window,
+		document,
+		configDirPath: process.env.ATOM_HOME,
+		enablePersistence: false
+	})
+	
+	
+	/** Running in an Atom window */
+	if(!args.headless){
+		
+		/** Shoot Bloatstrap in the head */
+		for(let style of Array.from(atom.stylesElement.children))
+			style.remove();
+		
+		/** Attach our own styling */
+		const stylePath   = path.resolve(__dirname, "..", "..", "spec", "test-runner.css");
+		const styleSource = fs.readFileSync(stylePath).toString();
+		
+		atom.styles.addStyleSheet(styleSource, {
+			sourcePath: stylePath,
+			priority:   2
+		});
+	}
+	
+	
+	for(let testPath of args.testPaths){
+		const files = fs.readdirSync(testPath);
+		
+		for(let file of files)
+			if(file !== __filename && /\.(?:coffee|js)$/i.test(file))
+				tests.addFile(path.join(testPath, file));
+	}
+	
+	return new Promise ((resolve, reject) => {
+		return tests.run(failures => resolve(failures));
+	});
+};

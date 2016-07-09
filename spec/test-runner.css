@@ -1,0 +1,106 @@
+/** Duplicates the look of Mocha's TTY output in Atom's test-runner window. */
+
+
+html{
+	background: #000;
+	color: #fff;
+	font: 10pt Menloco, Menlo, Monaco, monospace;
+	padding: 1ch;
+}
+
+
+/** Apply some resets, c'mon man… */
+ul, li{
+	list-style: none;
+	padding: 0;
+	margin:  0;
+}
+
+a, a:link, a:visited{
+	color: inherit;
+	text-decoration: none;
+	cursor: text;
+}
+
+h1, h2{
+	margin: 0;
+	all: inherit;
+	display: inline;
+}
+
+
+
+/** Test results */
+.suite > ul{
+	margin-left: 4ch;
+	margin-top: .25em;
+}
+	.test{
+		position: relative;
+		display: block;
+		color: #828282;
+	}
+		.test::first-letter{
+			text-transform: uppercase;
+		}
+		
+		/** Icon */
+		.test::before{
+			position: absolute;
+			top: 0;
+			font-size: 1.5em;
+			line-height: .8;
+			right: 100%;
+			width: 1em;
+			text-align: center;
+			margin-right: .25ch;
+		}
+			.test.pass::before{
+				content: "✓";
+				color: #3bbb33;
+			}
+
+		/** Duration */
+		.test .duration{
+			display: inline-block;
+			padding-left: 1ch;
+		}
+			.test .duration::before{ content: "(" }
+			.test .duration::after{  content: ")" }
+
+		.replay{
+			display: none;
+		}
+
+/** Stats anchored to bottom */
+#mocha-stats{
+	text-align: left;
+	position: fixed;
+	padding: .5em;
+	bottom:  0;
+	left:    0;
+	right:   0;
+}
+	#mocha-stats > .progress{
+		position: absolute;
+		display: none;
+		bottom: 100%;
+		left:   0;
+		right:  0;
+		height: 2em;
+		background: #fff;
+	}
+		.progress > canvas{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			display: block;
+			transform-origin: 50% 50%;
+			transform: translate(-50%, -50%) scale(.75);
+			pointer-events: none;
+		}
+
+	#mocha-stats .passes > a:first-child{
+		min-width: 72px;
+		display: inline-block;
+	}
