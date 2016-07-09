@@ -40,7 +40,7 @@ h1, h2{
 		display: block;
 		color: #828282;
 	}
-		.test::before{
+		.test.pass::before{
 			content: "It ";
 		}
 		
@@ -75,6 +75,7 @@ h1, h2{
 			margin: .5em 0 1em 0;
 			border-left: 1px double;
 			padding-left: 1em;
+			word-wrap: break-word;
 		}
 
 

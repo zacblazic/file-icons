@@ -10,6 +10,25 @@ const Mocha = require("mocha");
 const Chai  = require("chai");
 Chai.should();
 
+/** Check if an element contains one or more CSS classes */
+Chai.Assertion.addMethod("class", function(classNames){
+	const subject   = Chai.util.flag(this, "object");
+	const classList = subject.classList;
+	
+	if(!Array.isArray(classNames))
+		classNames = classNames.split(/\s+/g);
+	
+	for(let name of classNames){
+		this.assert(
+			classList.contains(name),
+			"expected classList '" + subject.className + "' to include #{exp}",
+			"expected classList '" + subject.className + "' not to include #{exp}",
+			name
+		);
+	}
+});
+
+
 
 /** Export custom test-runner info to Atom */
 module.exports = args => {
@@ -55,7 +74,7 @@ module.exports = args => {
 		const files = fs.readdirSync(testPath);
 		
 		for(let file of files)
-			if(file !== __filename && /\.(?:coffee|js)$/i.test(file))
+			if(file !== __filename && /-spec\.(?:coffee|js)$/i.test(file))
 				tests.addFile(path.join(testPath, file));
 	}
 	
