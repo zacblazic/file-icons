@@ -154,8 +154,8 @@ class Scanner
 				cached.path   = file.path
 				shouldRefresh = true
 	
-		if shouldRefresh then IconService.queueRefresh()
 		@update()
+		if shouldRefresh then IconService.refresh()
 	
 	
 	
