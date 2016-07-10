@@ -1,5 +1,5 @@
 path = require "path"
-{activate, open, ls, dirs, fixtures, wait} = require "./helpers"
+{activate, attach, fixtures, ls, open, setTheme, wait} = require "./helpers"
 
 
 describe "TreeView", ->
@@ -10,9 +10,12 @@ describe "TreeView", ->
 		workspace = atom.views.getView atom.workspace
 		atom.project.setPaths [fixtures]
 		
-		activate("tree-view", "file-icons").then ->
+		activate("tree-view", "file-icons").then -> setTheme("atom-dark").then ->
 			atom.packages.emitter.emit "did-activate-initial-packages"
-			atom.commands.dispatch workspace, "tree-view:toggle"
+			
+			# Obtain a handle to the TreeView element
+			unless atom.workspace.getLeftPanels().length
+				atom.commands.dispatch workspace, "tree-view:toggle"
 			treeView = atom.workspace.getLeftPanels()[0].getItem()
 	
 	
@@ -65,6 +68,23 @@ describe "TreeView", ->
 		it "displays icons in colour", ->
 			for file, colour of expectedClasses
 				f[file].should.have.class colour
+		
+		
+		it "uses darker colours for thin icons in light themes", ->
+			attach workspace
+			f["la.tex"].should.have.class "medium-blue"
+			
+			setTheme("atom-light").then ->
+				f["la.tex"].should.have.class "dark-blue"
+				f["la.tex"].should.not.have.class "medium-blue"
+		
+		
+		it "uses different colours for Bower icons in light themes", ->
+			attach workspace
+			f[".bowerrc"].should.have.class "medium-yellow"
+			
+			setTheme("atom-light").then ->
+				f[".bowerrc"].should.have.class "medium-orange"
 		
 		
 		it "doesn't show colours if colourless icons are enabled", (done) ->

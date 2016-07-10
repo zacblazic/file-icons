@@ -6,10 +6,23 @@ html{
 	color: #fff;
 	font: 10pt Menloco, Menlo, Monaco, monospace;
 	padding: 1ch;
+	padding-bottom: 70px;
 }
 
 
 /** Apply some resets, c'mon man… */
+code{
+	all: unset;
+}
+
+pre{
+	all: unset;
+	white-space: pre;
+	font-family: monospace;
+	display: block;
+	margin: 1em 0;
+}
+
 ul, li{
 	list-style: none;
 	padding: 0;
@@ -85,12 +98,12 @@ h1, h2{
 		
 /** Stats anchored to bottom */
 #mocha-stats{
-	text-align: left;
+	background: rgba(0,0,0,.7);
 	position: fixed;
 	padding: .5em;
 	bottom:  0;
 	left:    0;
-	right:   0;
+	z-index: 5;
 }
 	/** Hide progress <canvas> */
 	#mocha-stats > .progress{
@@ -112,3 +125,13 @@ h1, h2{
 	#mocha-stats em{
 		font-style: normal;
 	}
+
+
+/** NOTE: We can't access theme variables, so just use predetermined colours instead */
+.theme-atom-dark-ui      .theme-colour-check{ background: #303030 }
+.theme-atom-light-ui     .theme-colour-check{ background: #eee    }
+.theme-atom-material-ui  .theme-colour-check{ background: #fff    }
+.theme-flatland-dark-ui  .theme-colour-check{ background: #1d1f21 }
+.theme-one-dark-ui       .theme-colour-check{ background: #2b2b2b }
+.theme-one-light-ui      .theme-colour-check{ background: #ebebeb }
+.theme-seti-ui           .theme-colour-check{ background: #15191b }
