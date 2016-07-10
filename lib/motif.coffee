@@ -35,7 +35,7 @@ class Motif
 
 	# Handler fired when user changes themes
 	onChangeThemes: (fn) ->
-		@emitter.on "change-themes", fn
+		@emitter.on "theme-changed", fn
 
 
 
