@@ -1,16 +1,28 @@
 /** Duplicates the look of Mocha's TTY output in Atom's test-runner window. */
 
 
-html{
+html, body{
 	background: #000;
+}
+
+
+/** TTY emulator overlaying workspace beneath it */
+#mocha{
+	all: unset;
+	position: fixed;
+	top:    0;
+	left:   0;
+	right:  0;
+	bottom: 0;
+	z-index: 9;
+	
+	background: rgba(0,0,0,.9);
 	color: #fff;
 	font: 10pt Menloco, Menlo, Monaco, monospace;
 	padding: 1ch;
 	padding-bottom: 70px;
 }
 
-
-/** Apply some resets, c'mon man… */
 code{
 	all: unset;
 }
@@ -98,7 +110,6 @@ h1, h2{
 		
 /** Stats anchored to bottom */
 #mocha-stats{
-	background: rgba(0,0,0,.7);
 	position: fixed;
 	padding: .5em;
 	bottom:  0;

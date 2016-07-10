@@ -18,7 +18,7 @@ module.exports =
 	# Embed an HTML element within the test-runner window
 	attach: (element) ->
 		mocha = document.querySelector "#mocha"
-		mocha.appendChild element
+		mocha.parentElement.insertBefore element, mocha
 	
 	
 

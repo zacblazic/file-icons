@@ -55,17 +55,13 @@ module.exports = args => {
 	/** Running in an Atom window */
 	if(!args.headless){
 		
-		/** Shoot Bloatstrap in the head */
-		for(let style of Array.from(atom.stylesElement.children))
-			style.remove();
-		
 		/** Attach our own styling */
 		const stylePath   = path.resolve(__dirname, "..", "..", "spec", "test-runner.css");
 		const styleSource = fs.readFileSync(stylePath).toString();
 		
 		atom.styles.addStyleSheet(styleSource, {
 			sourcePath: stylePath,
-			priority:   2
+			priority:   3
 		});
 	}
 	
