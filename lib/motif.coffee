@@ -4,6 +4,7 @@ $ = require("./service/debugging") __filename
 
 # Class to handle motif-sensitive colour adjustments
 class Motif
+	
 	lightTheme: false
 	themeColour: {}
 
@@ -15,6 +16,7 @@ class Motif
 		@emitter      = new Emitter
 		
 		@disposables.add atom.themes.onDidChangeActiveThemes =>
+			$ "Theme changed", atom.themes.getActiveThemeNames()
 			setTimeout (=>
 				@checkColour()
 				@patchRuleset()
@@ -59,6 +61,7 @@ class Motif
 		
 	# Examine the colour of the tree-view's background, storing its RGB and HSL values
 	checkColour: () ->
+		$ "Checking colour…"
 		
 		# Spawn a dummy node, snag its computed style, then shoot it
 		node = document.createElement("div")
@@ -73,6 +76,7 @@ class Motif
 		
 		@lightTheme  = hsl[2] >= .5
 		@themeColour = {rgb, hsl}
+		$ "Theme colour:", rgb, @lightTheme
 
 
 	# Convert an RGB colour to HSL

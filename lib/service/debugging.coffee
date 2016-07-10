@@ -60,6 +60,13 @@ else
 			# Yes, I'm pedantic
 			args[0] = args[0].replace(/\(1 bytes\)$/, "(1 byte)")
 			
+			
+			# Motif.checkColour
+			if args[0] is "Theme colour:"
+				hexColour = args[1].map((c) -> (+c).toString 16).join("").toUpperCase()
+				isLight   = if args[2] then "Light" else "Dark"
+				args      = ["\##{hexColour} (#{isLight})"]
+			
 			if args.length > 1
 				
 				log += "[#{name}]:"
