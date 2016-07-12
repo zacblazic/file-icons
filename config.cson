@@ -1002,7 +1002,7 @@ fileIcons:
 		icon: "eslint"
 		priority: 2
 		match: [
-			[".eslintignore", "medium-purple"]
+			[/\.eslint(?:cache|ignore)$/i, "medium-purple"]
 			[/\.eslintrc(?:\.(?:js|json|ya?ml))?$/i, "light-purple"]
 		]
 
