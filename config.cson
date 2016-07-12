@@ -380,7 +380,7 @@ fileIcons:
 	Backbone:
 		icon: "backbone"
 		priority: 2
-		match: /^backbone(?:[-.]min)?\.js$/i
+		match: /^backbone(?:[-.]min|dev)?\.js$/i
 		colour: "dark-blue"
 
 	BibTeX:
@@ -1674,13 +1674,13 @@ fileIcons:
 	jQuery:
 		icon: "jquery"
 		priority: 2
-		match: /^jquery(?:-\d\.\d+(?:\.\d+)?)?\.js$/i
+		match: /^jquery(?:[-.](?:min|latest|\d\.\d+(?:\.\d+)?))*\.(?:[jt]sx?|es6?|coffee|map)$/i
 		colour: "dark-blue"
 
 	"jQuery UI":
 		icon: "jqueryui"
 		priority: 2
-		match: /^jquery(?:\.(?:ui|effects)\.[^.]*|-ui(?:-\d\.\d+(?:\.\d+)?)?(?:\.\w+)?)\.(?:js|css)$/i
+		match: /^jquery(?:[-_.](?:ui[-_.](?:custom|dialog-?\w*)|effects)(?:\.[^.]*)?|[-.]?ui(?:-\d\.\d+(?:\.\d+)?)?(?:\.\w+)?)(?:[-_.]?min|dev)?\.(?:[jt]sx?|es6?|coffee|map|s?css|less|styl)$/i
 		colour: "dark-blue"
 
 	"JSON-LD":
@@ -2704,7 +2704,7 @@ fileIcons:
 	RequireJS:
 		icon: "requirejs"
 		priority: 2
-		match: /^require\.js$/
+		match: /^require(?:[-.]min|dev)?\.js$/i
 		colour: "medium-blue"
 
 	reStructuredText:
