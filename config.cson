@@ -548,6 +548,12 @@ fileIcons:
 		match: ".ceylon"
 		colour: "medium-orange"
 
+	Chai:
+		icon: "chai"
+		priority: 2
+		match: /^chai\.(?:[jt]sx?|es6?|coffee)$/i
+		colour: "auto-red"
+
 	Chapel:
 		icon: "chapel"
 		scope: "chapel"
@@ -2068,6 +2074,15 @@ fileIcons:
 		match: [
 			[/\.dr?uby$/g, "medium-blue", "mirah"]
 			[/\.mir(?:ah)?$/g, "light-blue"]
+		]
+
+	Mocha:
+		icon: "mocha"
+		priority: 2
+		match: [
+			[/^mocha\.(?:[jt]sx?|es6?|coffee)$/i, "medium-maroon"]
+			[/^mocha\.(?:s?css|less|styl)$/i, "medium-red"]
+			["mocha.opts", "dark-green"]
 		]
 
 	Model: # Or generic 3D asset
