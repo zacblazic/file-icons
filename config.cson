@@ -3124,7 +3124,7 @@ fileIcons:
 		noSuffix: true
 		match: [
 			[/\.te?xt$/i, "medium-blue"]
-			[".log", "medium-maroon"]
+			[/\.log$|^Terminal[-_\s]Saved[-_\s]Output$/i, "medium-maroon"]
 			[".err", "medium-red"]
 			[".rtf", "dark-red"]
 			[".nfo", "dark-blue"]
