@@ -79,6 +79,10 @@ h1, h2{
 		display: block;
 		color: #828282;
 	}
+	
+	.test{
+		margin: .3em 0;
+	}
 		.test.pass::before{
 			content: "It ";
 		}
