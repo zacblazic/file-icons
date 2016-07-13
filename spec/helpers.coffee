@@ -4,7 +4,7 @@ fixturesPath = path.resolve __dirname, "fixtures"
 
 
 # Helper functions for penning specs
-module.exports =
+module.exports = $ =
 	fixtures: fixturesPath
 	
 	# Activate one or more Atom packages
@@ -20,6 +20,12 @@ module.exports =
 		mocha = document.querySelector "#mocha"
 		mocha.parentElement.insertBefore element, mocha
 	
+	
+	# Return a reference to the package's IconService class
+	getService: ->
+		packagePath = atom.packages.activePackages["file-icons"].path
+		servicePath = path.join packagePath, "lib", "service", "icon-service"
+		require servicePath
 	
 
 	# Return a list of tree-view entries, keyed by filename
@@ -40,12 +46,16 @@ module.exports =
 	
 	# Set the test-runner's UI and syntax themes
 	setTheme: (name) ->
-		module.exports.activate(name + "-ui", name + "-syntax").then ->
+		$.activate(name + "-ui", name + "-syntax").then ->
 			{body}    = document
 			className = body.className.replace /(?:^|\s+)theme-.+-(?:ui|syntax)\b/g, ""
 			body.className = className + " theme-#{name}-ui theme-#{name}-syntax"
 			atom.themes.emitter.emit "did-change-active-themes"
-			module.exports.wait 50
+			
+			new Promise (resolve) ->
+				handler = $.getService().onDidRefresh ->
+					handler.dispose()
+					resolve()
 
 
 	# Return a promise that resolves after a specified delay
