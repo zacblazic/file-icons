@@ -883,7 +883,7 @@ fileIcons:
 	Dockerfile:
 		icon: "docker"
 		scope: "dockerfile"
-		match: /^Dockerfile|\.dockerignore$/i
+		match: /^Dockerfile|\.docker(?:file|ignore)$/i
 		colour: "dark-blue"
 
 	Dogescript:
