@@ -21,7 +21,21 @@ html, body{
 	font: 10pt Menloco, Menlo, Monaco, monospace;
 	padding: 1ch;
 	padding-bottom: 70px;
+	transition:
+		.0s step-start z-index,
+		.2s ease transform,
+		.2s ease opacity;
+	transform: translate3d(0,0,0);
 }
+	/** Hide TTY overlay to expose workspace elements below */
+	#mocha.hide{
+		display: block !important;
+		pointer-events: none;
+		transform: translate3d(25%,0,0);
+		transition-delay: .25s, 0s, 0s;
+		opacity:  0;
+		z-index: -9;
+	}
 
 code{
 	all: unset;

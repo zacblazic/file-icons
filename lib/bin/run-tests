@@ -63,6 +63,12 @@ module.exports = args => {
 			sourcePath: stylePath,
 			priority:   3
 		});
+		
+		/** Add something retarded to make inspecting the workspace layer easier */
+		Object.defineProperty(window, "hide", {
+			get: function(){  feedback.classList.add("hide"); },
+			set: function(i){ feedback.classList.toggle("hide", i); }
+		});
 	}
 	
 	
