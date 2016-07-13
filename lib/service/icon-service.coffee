@@ -55,6 +55,11 @@ class IconService
 		# Currently a no-op
 	
 	
+	# Register a callback to fire when a full refresh has been performed
+	onDidRefresh: (callback) ->
+		@emitter.on "did-refresh", callback
+	
+	
 	
 	# Restore data from an earlier session
 	deserialise: (state) ->
@@ -122,6 +127,7 @@ class IconService
 		updateIcon(file, "name icon") for file in ws.querySelectorAll ".file > .name[data-path]"
 		updateIcon(tab, "title icon") for tab  in ws.querySelectorAll ".tab > .title[data-path]"
 		@updateDirectoryIcons()
+		@emitter.emit "did-refresh"
 	
 	
 	
