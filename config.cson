@@ -2240,6 +2240,7 @@ fileIcons:
 		icon: "node"
 		match: [
 			[".njs", "medium-green"]
+			[".nvmrc", "medium-green"]
 			[".node-version", "dark-green"]
 		]
 
