@@ -2083,7 +2083,7 @@ fileIcons:
 		match: [
 			[/^mocha\.(?:[jt]sx?|es6?|coffee)$/i, "medium-maroon"]
 			[/^mocha\.(?:s?css|less|styl)$/i, "medium-red"]
-			["mocha.opts", "dark-green"]
+			["mocha.opts", "light-maroon"]
 		]
 
 	Model: # Or generic 3D asset
