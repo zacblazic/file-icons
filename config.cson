@@ -2135,6 +2135,11 @@ fileIcons:
 		match: /^mootools[^.]*\d+\.\d+(?:.\d+)?[^.]*\.js$/i
 		colour: "medium-purple"
 
+	mSQL:
+		icon: "msql"
+		match: ".dsql"
+		colour: "medium-purple"
+
 	MuPAD:
 		icon: "mupad"
 		match: ".mu"
@@ -2569,11 +2574,12 @@ fileIcons:
 		match: /^protractor\.conf\./i
 		colour: "medium-red"
 
-	Pug: # previously "Jade"
+	Pug:
 		icon: "pug"
-		scope: "pug"
-		match: ".pug"
-		colour: "medium-red"
+		match: [
+			[".pug", "medium-red", scope: "pug"]
+			[/^\.pug-lintrc/i, "medium-orange", priority: 2]
+		]
 
 	Puppet:
 		icon: "puppet"
