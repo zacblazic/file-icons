@@ -1667,10 +1667,10 @@ fileIcons:
 
 	Jinja:
 		icon: "jinja"
-		scope: "jinja"
-		alias: /django|htmldjango|html\+django\/jinja|html\+jinja/i
-		match: ".jinja"
-		colour: "dark-red"
+		match: [
+			[".jinja", "dark-red", scope: "jinja", alias: /django|htmldjango|html\+django\/jinja|html\+jinja/i]
+			[".jinja2", "medium-red", alias: "jinja2"]
+		]
 
 	jQuery:
 		icon: "jquery"
@@ -1901,7 +1901,7 @@ fileIcons:
 	"Manual Page":
 		icon: "manpage"
 		match: [
-			[/\.(?:1(?:[bcmsx]|has|in)?|[24568]|3(?:avl|bsm|3c|in|m|qt|x)?|7(?:d|fs|i|ipp|m|p)?|9[efps]?|chem|eqn|groff|man|mandoc|mdoc|me|mom|n|nroff|tmac|tmac-u|tr|troff)$/i, "dark-green"
+			[/\.(?:1(?:[bcmsx]|has|in)?|[24568]|3(?:avl|bsm|3c|in|m|qt|x)?|7(?:d|fs|i|ipp|m|p)?|9[efps]?|chem|eqn|groff|man|mandoc|mdoc|me|mom|n|nroff|pic|tmac|tmac-u|tr|troff)$/i, "dark-green"
 				scope: /\.[gt]?roff$/i
 				alias: /[gtn]?roff|manpage/i
 				interpreter: /man|mandoc|(?:[gnt]|dit)roff/i]
