@@ -3104,6 +3104,11 @@ fileIcons:
 			[".tt3", "medium-purple"]
 		]
 
+	Tern:
+		icon: "tern"
+		match: ".tern-project"
+		colour: "medium-blue"
+
 	Terraform:
 		icon: "terraform"
 		scope: /\.terra(?:form)?$/i
