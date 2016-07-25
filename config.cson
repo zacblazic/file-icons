@@ -579,6 +579,12 @@ fileIcons:
 		match: ".ck"
 		colour: "medium-green"
 
+	CircleCI:
+		icon: "circleci"
+		priority: 2
+		match: /^circle\.yml$/i
+		colour: "medium-green"
+
 	Cirru:
 		icon: "cirru"
 		scope: "cirru"
@@ -1842,7 +1848,6 @@ fileIcons:
 		icon: "mobile"
 		match: [
 			[".xm", "dark-blue", "logos"]
-			[".x", "dark-green"]
 			[".xi", "dark-red"]
 		]
 
@@ -2297,10 +2302,10 @@ fileIcons:
 
 	"Objective-C":
 		icon: "objc"
-		scope: /\.objc(?:pp)?$/i
-		alias: /(?:obj-?c|objectivec)(?:\+\+)?/i
-		match: /\.mm?$/i
-		colour: "medium-blue"
+		match: [
+			[/\.mm?$/i, "medium-blue", scope: /\.objc(?:pp)?$/i, alias: /(?:obj-?c|objectivec)(?:\+\+)?/i]
+			[".x", "dark-green"]
+		]
 
 	"Objective-J":
 		icon: "objj"
