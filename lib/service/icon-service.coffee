@@ -1,3 +1,4 @@
+{lstatSync}    = require "fs"
 {basename}     = require "path"
 {escapeRegExp} = require "../utils"
 Modelines      = require "./modelines"
@@ -113,19 +114,23 @@ class IconService
 	# Intended to be called when a package setting's been modified.
 	refresh: () ->
 		$ "Refreshing file icons"
-		
-		# Update the icon classes of a specific file-entry
-		updateIcon = (label, baseClass) =>
-			label.className = baseClass
-			iconClass = @iconClassForPath(label.dataset.path, label.parentElement)
-			if iconClass
-				unless Array.isArray iconClass
-					iconClass = iconClass.toString().split(/\s+/g)
-				label.classList.add iconClass...
-		
 		ws = atom.views.getView(atom.workspace)
-		updateIcon(file, "name icon") for file in ws.querySelectorAll ".file > .name[data-path]"
-		updateIcon(tab, "title icon") for tab  in ws.querySelectorAll ".tab > .title[data-path]"
+		
+		consumers =
+			"tree-view": [".file > .name[data-path]", "name icon"]
+			"tabs":      [".tab > .title[data-path]", "title icon"]
+		
+		for context, values of consumers
+			[selector, baseClasses] = values
+			
+			for label in ws.querySelectorAll(selector)
+				className = baseClasses
+				if iconClass = @iconClassForPath(label.dataset.path, context)
+					unless Array.isArray iconClass
+						iconClass = iconClass.toString().split(/\s+/g)
+					className += " " + iconClass.join " "
+				label.className = className
+		
 		@updateDirectoryIcons()
 		@emitter.emit "did-refresh"
 	
@@ -142,13 +147,11 @@ class IconService
 	
 	# Return the CSS classes for a file's icon. Consumed by atom.file-icons service.
 	# - path: Fully-qualified path of the file
-	# - node: DOM element receiving the icon-class
-	iconClassForPath: (path, node) ->
-		nodeClass = node?.classList
-		isTab     = nodeClass?.contains("tab") and nodeClass?.contains("texteditor")
+	# - context: Name of package consuming service
+	iconClassForPath: (path, context) ->
 		
 		# Don't show tab-icons unless the "Tab Pane Icon" setting is enabled
-		return if !Main.showInTabs and isTab
+		return if !Main.showInTabs and context is "tabs"
 		
 		# Use cached matches for quicker lookup
 		if (match = @fileCache[path])?
@@ -168,12 +171,12 @@ class IconService
 					break
 		
 		
-		file = node?.file
-		
-		# Display a shortcut icon for symbolic links
-		if file?.symlink
-			$ "Using symlink icon"
-			iconClass = "icon-file-symlink-file"
+		# Ascertain if this path points to a symlink
+		try
+			# If so, display a shortcut icon
+			if lstatSync(path).isSymbolicLink()
+				$ "Using symlink icon"
+				iconClass = "icon-file-symlink-file"
 		
 		
 		# An IconRule matches this path
