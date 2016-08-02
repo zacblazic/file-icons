@@ -1061,8 +1061,10 @@ fileIcons:
 
 	Finder:
 		icon: "finder"
-		match: /^Icon\r$/
-		colour: "medium-blue"
+		match: [
+			[/^Icon\r$/, "medium-blue"]
+			[".rsrc", "dark-blue"]
+		]
 
 	Flow:
 		icon: "flow"
