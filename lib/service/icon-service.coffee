@@ -1,4 +1,4 @@
-{lstatSync}    = require "fs"
+fs             = require "fs"
 {basename}     = require "path"
 {escapeRegExp} = require "../utils"
 Modelines      = require "./modelines"
@@ -153,6 +153,16 @@ class IconService
 		# Don't show tab-icons unless the "Tab Pane Icon" setting is enabled
 		return if !Main.showInTabs and context is "tabs"
 		
+		# Determine if path is a symbolic link
+		try
+			# If so, display a shortcut icon
+			if fs.lstatSync(path).isSymbolicLink()
+				$ "Using symlink icon"
+				isSymlink = true
+				iconClass = "icon-file-symlink-file"
+				path = fs.readlinkSync path
+		
+		
 		# Use cached matches for quicker lookup
 		if (match = @fileCache[path])?
 			$ "Using cache", path, match
@@ -169,14 +179,6 @@ class IconService
 					$ "Matched by name", filename, rule
 					@fileCache[path] = match = rule
 					break
-		
-		
-		# Ascertain if this path points to a symlink
-		try
-			# If so, display a shortcut icon
-			if lstatSync(path).isSymbolicLink()
-				$ "Using symlink icon"
-				iconClass = "icon-file-symlink-file"
 		
 		
 		# An IconRule matches this path
