@@ -36,16 +36,12 @@ describe "TreeView", ->
 			f["text.txt"       ].should.have.class "icon-file-text"
 		
 		
-		it "displays the correct icons for directories", (done) ->
+		it "displays the correct icons for directories", ->
 			wait(100).then ->
-				try
-					d = ls treeView, "directory"
-					d["Dropbox"].should.have.class      "name icon dropbox-icon"
-					d["node_modules"].should.have.class "node-icon"
-					d["subfolder"].should.have.class    "icon-file-directory"
-					done()
-				catch error
-					done error
+				d = ls treeView, "directory"
+				d["Dropbox"].should.have.class      "name icon dropbox-icon"
+				d["node_modules"].should.have.class "node-icon"
+				d["subfolder"].should.have.class    "icon-file-directory"
 			
 
 	
@@ -87,15 +83,11 @@ describe "TreeView", ->
 				f[".bowerrc"].should.have.class "medium-orange"
 		
 		
-		it "doesn't show colours if colourless icons are enabled", (done) ->
+		it "doesn't show colours if colourless icons are enabled", ->
 			atom.config.get("file-icons.coloured").should.be.true
 			atom.commands.dispatch workspace, "file-icons:toggle-colours"
 			atom.config.get("file-icons.coloured").should.be.false
 			
 			wait(100).then ->
-				try
-					for file, colour of expectedClasses
-						f[file].should.not.have.class colour
-					done()
-				catch error
-					done error
+				for file, colour of expectedClasses
+					f[file].should.not.have.class colour
