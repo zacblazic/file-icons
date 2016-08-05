@@ -25,7 +25,7 @@
   "scripts": {
     "recompile": "node lib/bin/recompile"
   },
-  "atomTestRunner": "./lib/bin/run-tests",
+  "atomTestRunner": "./node_modules/.bin/atom-mocha",
   "homepage": "https://github.com/DanBrooker/file-icons",
   "providedServices": {
     "atom.file-icons": {
