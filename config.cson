@@ -726,9 +726,9 @@ fileIcons:
 			[".toml", "medium-green"]
 			[".ld", "dark-red"]
 			[".lds", "medium-red"]
+			[".terminal", "dark-blue"]
 			[/^ld\.script$/i, "medium-orange"]
 			[".reek", "medium-red"]
-			["apl.ascii", "medium-red"]
 			[/config|settings|prefs/i, priority: 0]
 		]
 
