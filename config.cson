@@ -2886,7 +2886,7 @@ fileIcons:
 				scope: "shell"
 				alias: /sh|shell|Shell-?Script|Bash/i
 				interpreter: /bash|sh|zsh|rc/]
-			[/^(?:\.?bash(?:rc|_(?:profile|login|logout|history))|_osc|config|install-sh|PKGBUILD)$/i, "medium-purple"]
+			[/^(?:\.?bash(?:rc|[-_]?(?:profile|login|logout|history|prompt))|_osc|config|install-sh|PKGBUILD)$/i, "dark-purple"]
 			[".ksh", "dark-yellow"]
 			[".sh-session", "auto-yellow"
 				scope: "shell-session"
