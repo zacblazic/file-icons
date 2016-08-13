@@ -1,0 +1,5 @@
+--autoIt
+--bail
+--css specs.css
+--require chai/should
+--slow 3000
