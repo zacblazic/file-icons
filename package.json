@@ -26,6 +26,12 @@
     "recompile": "node lib/bin/recompile"
   },
   "atomTestRunner": "./node_modules/.bin/atom-mocha",
+  "atom-mocha": {
+    "autoIt": true,
+    "mocha": {
+      "require": "chai/should"
+    }
+  },
   "homepage": "https://github.com/DanBrooker/file-icons",
   "providedServices": {
     "atom.file-icons": {
