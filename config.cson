@@ -972,10 +972,11 @@ fileIcons:
 
 	"Emacs Lisp":
 		icon: "emacs"
-		scope: "emacs.lisp"
-		alias: /elisp|emacs/i
-		match: /\.(?:el|emacs|spacemacs|emacs\.desktop)$/i
-		colour: "medium-purple"
+		match: [
+			[/\.(?:el|emacs|spacemacs|emacs\.desktop)$/i, "medium-purple", alias: /elisp|emacs/i, scope: "emacs.lisp"]
+			[".elc", "dark-purple"]
+		]
+
 
 	Ember:
 		icon: "ember"
