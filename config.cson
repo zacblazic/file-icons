@@ -1091,6 +1091,13 @@ fileIcons:
 			[".otf", "dark-yellow"]
 		]
 
+	FontForge:
+		icon: "ff"
+		match: [
+			[".pe", "medium-orange", scope: "source.fontforge", alias: "pfaedit"]
+			[".sfd", "dark-blue", scope: "text.sfd"]
+		]
+
 	Fortran:
 		icon: "fortran"
 		match: [
@@ -2541,6 +2548,8 @@ fileIcons:
 		match: [
 			[".ps", "medium-red", scope: "postscript", alias: "postscr"]
 			[".eps", "medium-orange"]
+			[".pfb", "dark-maroon"]
+			[".afm", "medium-green"]
 		]
 
 	"POV-Ray SDL":
