@@ -972,8 +972,9 @@ fileIcons:
 
 	"Emacs Lisp":
 		icon: "emacs"
+		priority: 1.5
 		match: [
-			[/\.(?:el|emacs|spacemacs|emacs\.desktop)$/i, "medium-purple", alias: /elisp|emacs/i, scope: "emacs.lisp"]
+			[/\.(?:el|emacs|spacemacs|emacs\.desktop)$/i, "medium-purple", alias: "elisp", scope: "emacs.lisp", interpreter: "emacs"]
 			[".elc", "dark-purple"]
 		]
 
