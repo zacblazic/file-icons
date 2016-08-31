@@ -2469,7 +2469,7 @@ fileIcons:
 			[/\.p(?:er)?l$/i, "medium-blue", "perl"]
 			[".ph", "dark-purple"]
 			[".plx", "medium-purple"]
-			[".pm", ".dark-blue"]
+			[".pm", "dark-blue"]
 			[".t", "medium-blue"]
 			[/\.(?:psgi|xs)$/i, "medium-red"]
 		]
@@ -2522,7 +2522,7 @@ fileIcons:
 	POD:
 		icon: "pod"
 		match: ".pod"
-		colour: "medium-blue"
+		colour: "dark-blue"
 
 	PogoScript:
 		icon: "pogo"
