@@ -1095,7 +1095,7 @@ fileIcons:
 	FontForge:
 		icon: "ff"
 		match: [
-			[".pe", "medium-orange", scope: "source.fontforge", alias: "pfaedit"]
+			[".pe", "medium-orange", scope: "source.fontforge", alias: "pfaedit", interpreter: "fontforge"]
 			[".sfd", "dark-blue", scope: "text.sfd"]
 		]
 
