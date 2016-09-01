@@ -495,7 +495,7 @@ fileIcons:
 	"C++":
 		icon: "cpp"
 		match: [
-			[/\.c[+px]{2}$|\.cc/i, "auto-blue", scope: "cpp", alias: /c[-_]?pp|cplusplus/i]
+			[/\.c[+px]{2}$|\.cc$/i, "auto-blue", scope: "cpp", alias: /c[-_]?pp|cplusplus/i]
 			[/\.h[+px]{2}$/i, "auto-purple"]
 			[/\.[it]pp$/i, "auto-orange"]
 			[/\.(?:tcc|inl)$/i, "auto-red"]
