@@ -43,15 +43,15 @@ class Motif
 	# Instead of elevate the selector or resort to "!important;", we'll use a sneaky but less disruptive method:
 	# remove the offending property at runtime.
 	patchRuleset: () ->
-		sheet = document.styleSheets[1]
-		
-		for index, rule of sheet.cssRules
-			if rule.selectorText is ".list-group .icon::before, .list-tree .icon::before"
-				$ "Patching ruleset", rule
-				offset = rule.style.top
-				@patchedRuleset = {rule, offset}
-				rule.style.top = ""
-				break
+		selector = ".list-group .icon::before, .list-tree .icon::before"
+		for sheet in document.styleSheets
+			for index, rule of sheet.cssRules
+				if rule.selectorText is selector and rule.style.top
+					$ "Patching ruleset", rule
+					offset = rule.style.top
+					@patchedRuleset = {rule, offset}
+					rule.style.top = ""
+					return
 
 	# Restore the previously-removed CSS property
 	restoreRuleset: () ->
