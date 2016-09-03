@@ -17,8 +17,7 @@ module.exports = $ =
 
 	# Embed an HTML element within the test-runner window
 	attach: (element) ->
-		mocha = document.querySelector "#mocha"
-		mocha.parentElement.insertBefore element, mocha
+		attachToDOM(element);
 	
 	
 	# Return a reference to the package's IconService class
