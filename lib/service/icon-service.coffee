@@ -41,6 +41,7 @@ class IconService
 		@updateCustomTypes()
 		
 		# Subscribe to workspace events
+		Workspace.onFileMove      => @queueRefresh(10)
 		Workspace.onRepoUpdate    => @queueRefresh(10)
 		Workspace.onGrammarChange => @handleOverride(arguments...)
 		Workspace.onFileSave (ed) =>

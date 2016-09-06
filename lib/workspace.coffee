@@ -20,6 +20,9 @@ class Workspace
 		@checkProject()
 	
 	
+	# Invoked whenever a file is moved or renamed
+	onFileMove: (fn) -> @emitter.on("file-moved", fn)
+	
 	# Invoked whenever a file's saved
 	onFileSave: (fn) -> @emitter.on("file-saved", fn)
 	
@@ -108,6 +111,9 @@ class Workspace
 			$ "Watching editor", editor
 			@editors.add editor
 			
+			onMove = editor.onDidChangePath =>
+				@emitter.emit "file-moved", editor
+			
 			onSave = editor.onDidSave =>
 				@emitter.emit "file-saved", editor
 			
@@ -117,10 +123,12 @@ class Workspace
 			onDestroy = editor.onDidDestroy =>
 				@editors.delete editor
 				@editorDisposables.remove(i) for i in [onChange, onDestroy]
+				onMove.dispose()
 				onSave.dispose()
 				onChange.dispose()
 				onDestroy.dispose()
 			
+			@editorDisposables.add onMove
 			@editorDisposables.add onSave
 			@editorDisposables.add onChange
 			@editorDisposables.add onDestroy
