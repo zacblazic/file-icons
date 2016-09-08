@@ -1283,6 +1283,7 @@ fileIcons:
 			[".props", "medium-cyan"]
 			[".psc1", "light-blue"]
 			[".pt", "medium-red"]
+			[/\.regexp?$/i, "medium-green", scope: /(?:\.|^)regexp?(?:\.|$)/i]
 			[".resx", "medium-cyan"]
 			[".rl", "medium-red"]
 			[".scxml", "light-cyan"]
