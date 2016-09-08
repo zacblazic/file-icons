@@ -1,12 +1,9 @@
 
 # Helper class to identify languages in Emacs/Vim modelines
-#
-# Modeline patterns supplied by GitHub Linguist: https://git.io/vrhNW
 class Modelines
 	
-	EMACS: /-\*-\s*(?:(?!mode)[\w-]+\s*:\s*(?:[\w+-]+)\s*;?\s*)*(?:mode\s*:)?\s*([\w+-]+)\s*(?:;\s*(?!mode)[\w-]+\s*:\s*[\w+-]+\s*)*;?\s*-\*-/i
-	VIM1:  /(?:vim|vi|ex):\s*(?:ft|filetype|syntax)=(\w+)\s?/i
-	VIM2:  /(?:vim|vi|Vim|ex):\s*se(?:t)?.*\s(?:ft|filetype|syntax)=(\w+)\s?.*:/i
+	EMACS: /-\*-(?:(?:(?!mode\s*:)[^:;]+:[^:;]+;)*\s*mode\s*:)?\s*([\w+-]+)\s*(?:;[^:;]+:[^:;]+?)*;?\s*-\*-/i
+	VIM:   /(?:(?:\s|^)vi(?:m[<=>]?\d+|m)?|(?!^)\sex)(?=:(?=\s*set?\s[^\n:]+:)|:(?!\s*set?\s))(?:(?:\s|\s*:\s*)\w*(?:\s*=(?:[^\n\\\s]|\\.)*)?)*[\s:](?:filetype|ft|syntax)\s*=(\w+)(?=\s|:|$)/i
 	
 	
 	# Return the language of a string's modeline, if any
@@ -17,7 +14,7 @@ class Modelines
 			match[1]
 		
 		# Vim modeline
-		else if match = (string.match(@VIM1) || string.match(@VIM2)) then match[1]
+		else if match = string.match @VIM then match[1]
 		
 		# Nothing
 		else null

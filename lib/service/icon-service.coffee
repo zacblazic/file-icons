@@ -284,7 +284,7 @@ class IconService
 	iconMatchForHashbang: (line) ->
 		return cached if cached = @hashbangCache[line]
 		
-		if match = line.match /^#!(?:(?:\s*\S*\/|\s*(?=perl))(\S+))(?:(?:\s+\S+=\S*)*\s+(\S+))?/
+		if match = line.match /^#!(?:(?:\s*\S*\/|\s*(?=perl6?))(\S+))(?:(?:\s+\S+=\S*)*\s+(\S+))?/
 			name = match[1]
 			name = match[2].split("/").pop() if name is "env"
 			
