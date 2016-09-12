@@ -3,7 +3,7 @@
 class Modelines
 	
 	EMACS: /-\*-(?:(?:(?!mode\s*:)[^:;]+:[^:;]+;)*\s*mode\s*:)?\s*([\w+-]+)\s*(?:;[^:;]+:[^:;]+?)*;?\s*-\*-/i
-	VIM:   /(?:(?:\s|^)vi(?:m[<=>]?\d+|m)?|(?!^)\sex)(?=:(?=\s*set?\s[^\n:]+:)|:(?!\s*set?\s))(?:(?:\s|\s*:\s*)\w*(?:\s*=(?:[^\n\\\s]|\\.)*)?)*[\s:](?:filetype|ft|syntax)\s*=(\w+)(?=\s|:|$)/i
+	VIM:   /(?:(?:\s|^)vi(?:m[<=>]?\d+|m)?|[\t\x20]ex)(?=:(?=\s*set?\s[^\n:]+:)|:(?!\s*set?\s))(?:(?:\s|\s*:\s*)\w*(?:\s*=(?:[^\n\\\s]|\\.)*)?)*[\s:](?:filetype|ft|syntax)\s*=(\w+)(?=\s|:|$)/i
 	
 	
 	# Return the language of a string's modeline, if any
