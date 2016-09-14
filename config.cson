@@ -974,10 +974,12 @@ fileIcons:
 		icon: "emacs"
 		priority: 1.5
 		match: [
-			[/\.(?:el|emacs|spacemacs|emacs\.desktop)$/i, "medium-purple", alias: "elisp", scope: "emacs.lisp", interpreter: "emacs"]
-			[".elc", "dark-purple"]
+			[/(?:^|\.)(?:el|emacs|spacemacs|emacs\.desktop|abbrev[-_]defs)$/i, "medium-purple", alias: "elisp", scope: "emacs.lisp", interpreter: "emacs"]
+			[/(?:^|\.)(?:elc|eld)$/i, "dark-purple"]
+			[".gnus", "medium-red"]
+			[".viper", "dark-green"]
+			[/^Project\.ede$/i, "medium-blue"]
 		]
-
 
 	Ember:
 		icon: "ember"
