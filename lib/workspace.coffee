@@ -158,6 +158,7 @@ class Workspace
 			# Files of both names were found
 			if packageJSON? and configCSON?
 				packageURL = require("../package.json").repository.url
+				packageURL = new RegExp '\\s"url"\\s*:\\s*"' + packageURL + '"'
 				break if packageJSON.readSync().match packageURL
 				packageJSON=configCSON=haveNodeModules = null
 			
