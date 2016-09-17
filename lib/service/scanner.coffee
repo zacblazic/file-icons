@@ -143,20 +143,25 @@ class Scanner
 		
 		# Cycle through each entry, skipping directories
 		for file in items when not file.expansionState?
-			{dev, ino} = file.stats
-			guid = ino
-			guid = dev + "_" + guid if dev
-			
-			# Has this file been moved to a different directory?
-			if (cached = @fileCache[guid]) and cached.path isnt file.path
-				$ "File moved", {file, guid}
-				IconService.changeFilePath cached.path, file.path 
-				cached.path   = file.path
-				shouldRefresh = true
+			shouldRefresh = true if @hasMoved(file)
 	
 		@update()
-		if shouldRefresh then IconService.refresh()
+		IconService.refresh() if shouldRefresh
 	
+	
+	# Update cached headers if a file's path has changed
+	hasMoved: (file) ->
+		{dev, ino} = file.stats
+		guid = ino
+		guid = dev + "_" + guid if dev
+		
+		# Has this file been moved to a different directory?
+		if (cached = @fileCache[guid]) and cached.path isnt file.path
+			$ "File moved", {file, guid}
+			IconService.changeFilePath cached.path, file.path 
+			cached.path = file.path
+			true
+		else false
 	
 	
 	# Check whether a file's data should be scanned
