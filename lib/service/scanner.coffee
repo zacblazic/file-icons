@@ -71,6 +71,20 @@ class Scanner
 		@treeView   ?= atom.packages.loadedPackages["tree-view"].mainModule
 		@treeViewEl ?= @treeView?.treeView
 	
+		# Called when renaming/moving files between directories
+		@disposables.add @treeViewEl.onEntryMoved? (info) =>
+			$ "File moved in tree-view"
+			console.log info.newPath
+			IconService.queueRefresh() if @hasMoved(info.newPath)
+		
+		# Called when user deletes a file from the tree-view
+		@disposables.add @treeViewEl.onEntryDeleted? (info) =>
+			$ "Purging cache of deleted file", info
+			{path} = info
+			for file of @fileCache when file?.path is path
+				delete @fileCache[file]
+			delete IconService.headerCache[path]
+	
 	
 	# Reparse the tree-view for newly-added directories
 	update: ->
@@ -151,7 +165,7 @@ class Scanner
 	
 	# Update cached headers if a file's path has changed
 	hasMoved: (file) ->
-		{dev, ino} = file.stats
+		{dev, ino} = file.stats || fs.statSync(file)
 		guid = ino
 		guid = dev + "_" + guid if dev
 		
