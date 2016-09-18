@@ -70,9 +70,10 @@ class Scanner
 	findTreeView: ->
 		@treeView   ?= atom.packages.loadedPackages["tree-view"].mainModule
 		@treeViewEl ?= @treeView?.treeView
-	
+		return unless @treeViewEl? and @treeViewEl.onEntryMoved?
+		
 		# Called when renaming/moving files between directories
-		@disposables.add @treeViewEl.onEntryMoved? (info) =>
+		@disposables.add @treeViewEl.onEntryMoved (info) =>
 			$ "File moved in tree-view", info
 			{oldPath, newPath} = info
 			IconService.queueRefresh() if @hasMoved(newPath)
@@ -88,7 +89,7 @@ class Scanner
 				
 		
 		# Called when user deletes a file from the tree-view
-		@disposables.add @treeViewEl.onEntryDeleted? (info) =>
+		@disposables.add @treeViewEl.onEntryDeleted (info) =>
 			$ "Purging cache of deleted file", info
 			{path} = info
 			for file of @fileCache when file?.path is path
