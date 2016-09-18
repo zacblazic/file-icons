@@ -73,9 +73,19 @@ class Scanner
 	
 		# Called when renaming/moving files between directories
 		@disposables.add @treeViewEl.onEntryMoved? (info) =>
-			$ "File moved in tree-view"
-			console.log info.newPath
-			IconService.queueRefresh() if @hasMoved(info.newPath)
+			$ "File moved in tree-view", info
+			{oldPath, newPath} = info
+			IconService.queueRefresh() if @hasMoved(newPath)
+			
+			# Transfer overridden-grammars when moving files
+			if scope = atom.grammars.grammarOverridesByPath[oldPath]
+				$ "Transferring user-assigned grammar", {info, scope}
+				atom.grammars.setGrammarOverrideForPath newPath, scope
+				atom.grammars.clearGrammarOverrideForPath oldPath
+				delete IconService.fileCache[oldPath]
+				delete IconService.fileCache[newPath]
+				IconService.queueRefresh()
+				
 		
 		# Called when user deletes a file from the tree-view
 		@disposables.add @treeViewEl.onEntryDeleted? (info) =>
