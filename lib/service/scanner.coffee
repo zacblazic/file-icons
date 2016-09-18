@@ -1,6 +1,8 @@
 fs          = require "fs"
+Path        = require "path"
 utils       = require "../utils"
 IconService = require "./icon-service"
+{Minimatch} = require "minimatch"
 ScanTask    = require.resolve "./scan-task"
 Main        = require.resolve "../main"
 $           = require("./debugging") __filename
@@ -32,6 +34,8 @@ class Scanner
 		Main = require Main
 		@directories = new Set
 		@disposables = new CompositeDisposable
+		@attribFiles = new Map
+		@attribRules = []
 		
 		@disposables.add IconService.onRequestScan (path) => @readFile path
 		@disposables.add atom.project.onDidChangePaths => @update()
@@ -159,6 +163,11 @@ class Scanner
 				task = Task.once ScanTask, files
 				task.on "file-scan", (data) -> IconService.checkFileHeader data
 		
+		# Check for .gitattributes files if needed
+		if Main.useGitAttrib
+			for name, entry of dir.entries when name is ".gitattributes"
+				@readGitAttributes entry.realPath
+	
 		@update()
 	
 
@@ -173,6 +182,38 @@ class Scanner
 				IconService.checkFileHeader data
 				IconService.queueRefresh()
 	
+	
+	
+	# Scan the contents of a .gitattributes file for "linguist-language" rules
+	readGitAttributes: (path) ->
+		if @attribFiles.has(path)
+			$ "Already tracking .gitattributes", path
+			return
+		
+		setTimeout (=>
+			$ "Found .gitattributes"
+			@attribFiles.set path, file = new File(path)
+			
+			file.onDidRename =>
+				$ ".gitattributes moved", file
+				@attribFiles.delete path
+				@attribFiles.set path = file.realPath || file.path, file
+			
+			# Search for "linguist-language" attributes in the file
+			file.data = fs.readFileSync(path).toString()
+			pattern   = /^(.*?)\s+linguist-language=(.*)$/gmi
+			while match = pattern.exec(file.data)
+				[line, glob, language] = match
+				
+				filePath = Path.resolve Path.dirname(path), glob
+				matcher  = new Minimatch filePath
+				rule     = {path: filePath, language, matcher}
+				
+				$ "Added override: #{language}", rule
+				@attribRules.push rule
+		), 1
+			
+		
 	
 	
 	# Check the newly-added contents of a directory

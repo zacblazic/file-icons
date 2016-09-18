@@ -40,6 +40,7 @@ module.exports =
 		@initSetting "iconMatching.changeOnOverride"
 		@initSetting "iconMatching.checkHashbangs"
 		@initSetting "iconMatching.checkModelines"
+		@initSetting "iconMatching.useGitAttributes"
 		@addCommands()
 		$ "Done"
 
@@ -92,6 +93,7 @@ module.exports =
 
 	setCheckHashbangs: (@checkHashbangs) -> IconService.setHeadersEnabled(@checkHashbangs)
 	setCheckModelines: (@checkModelines) -> IconService.setHeadersEnabled(@checkModelines, 1)
+	setUseGitAttributes: (@useGitAttrib) ->
 
 
 
