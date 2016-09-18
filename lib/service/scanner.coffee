@@ -1,10 +1,11 @@
 fs          = require "fs"
-{equal}     = require "../utils"
+utils       = require "../utils"
 IconService = require "./icon-service"
 ScanTask    = require.resolve "./scan-task"
 Main        = require.resolve "../main"
 $           = require("./debugging") __filename
-{Task, CompositeDisposable, Emitter} = require "atom"
+{Task, CompositeDisposable, File} = require "atom"
+{equal, isString} = utils
 
 
 class Scanner
@@ -32,11 +33,11 @@ class Scanner
 		@directories = new Set
 		@disposables = new CompositeDisposable
 		
+		@disposables.add IconService.onRequestScan (path) => @readFile path
 		@disposables.add atom.project.onDidChangePaths => @update()
 		@disposables.add atom.packages.onDidActivateInitialPackages =>
 			@waitForTree() unless @findTreeView()
 			@update()
-	
 	
 	# Clear up memory when deactivating package
 	destroy: ->
@@ -160,6 +161,18 @@ class Scanner
 		
 		@update()
 	
+
+	# Scan a single file for headers. Used when directory lists aren't available.
+	readFile: (path) ->
+		return unless Main.checkHashbangs or Main.checkModelines
+		file = @dupeFileObject path
+		if @shouldScan file
+			$ "Reading file", file
+			task = Task.once ScanTask, [file]
+			task.on "file-scan", (data) ->
+				IconService.checkFileHeader data
+				IconService.queueRefresh()
+	
 	
 	
 	# Check the newly-added contents of a directory
@@ -275,6 +288,22 @@ class Scanner
 				emit "file-scan", {data, file}
 			resolve data
 
+
+	# Read and store file-stats in an object resembling a File instance.
+	# Used when passing filepaths to methods that expect a File object.
+	dupeFileObject: (path) ->
+		
+		# NOTE: This class is NOT the same "File" class used by tree-view. Partly
+		# similar, but the latter has properties which this package relies on more.
+		file = new File(path)
+		
+		# Fill in the blanks
+		file.expansionState = false if file.isDirectory()
+		file.name     = file.getBaseName()
+		file.realPath = file.getRealPathSync()
+		file.stats    = fs.statSync path
+		
+		file
 		
 
 module.exports = new Scanner

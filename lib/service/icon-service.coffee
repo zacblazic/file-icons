@@ -62,6 +62,11 @@ class IconService
 		@emitter.on "did-refresh", callback
 	
 	
+	# Signal to Scanner that a file needs to be checked for headers
+	onRequestScan: (callback) ->
+		@emitter.on "request-scan", callback
+	
+	
 	
 	# Restore data from an earlier session
 	deserialise: (state) ->
@@ -132,6 +137,33 @@ class IconService
 					className += " " + iconClass.join " "
 				label.className = className
 		
+		
+		# Update fuzzy-finder
+		if fuzzyFinder = atom.packages.loadedPackages["fuzzy-finder"]?.mainModule?.projectView
+			$ "Refreshing fuzzy-finder"
+			baseClasses = "primary-line file icon "
+			
+			for item in fuzzyFinder.items
+				{filePath, projectRelativePath} = item
+				node = fuzzyFinder.find('[data-path="' + projectRelativePath + '"]')?[0]
+				if node
+					unless Array.isArray (iconClass = @iconClassForPath(filePath))
+						iconClass = iconClass.toString().split(/\s+/g)
+					node.className = baseClasses + iconClass.join " "
+		
+		# Update project search results
+		URI = "atom://find-and-replace/project-results"
+		resultsPane = atom.workspace.paneForURI(URI)?.itemForURI(URI)
+		if resultsPane?
+			$ "Refreshing search results"
+			
+			results = resultsPane[0].querySelectorAll(".results-view > [data-path]")
+			for result in results
+				resultPath = result.dataset.path
+				unless Array.isArray(iconClass = @iconClassForPath(resultPath))
+					iconClass = iconClass.toString().split(/\s+/g)
+				result.querySelector("[data-name]")?.className = "icon " + iconClass.join(" ")
+		
 		@updateDirectoryIcons()
 		@emitter.emit "did-refresh"
 	
@@ -174,6 +206,8 @@ class IconService
 		
 		# Match by filename/extension
 		else
+			if context is "fuzzy-finder" or context is "find-and-replace"
+				@emitter.emit("request-scan", path)
 			filename = basename path
 			for rule, index in @fileIcons
 				if rule.pattern.test filename
