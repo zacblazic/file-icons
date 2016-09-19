@@ -80,7 +80,7 @@ class Scanner
 		@disposables.add @treeViewEl.onEntryMoved (info) =>
 			$ "File moved in tree-view", info
 			{oldPath, newPath} = info
-			IconService.queueRefresh() if @hasMoved(newPath)
+			IconService.changeFilePath oldPath, newPath
 			
 			# Transfer overridden-grammars when moving files
 			if scope = atom.grammars.grammarOverridesByPath[oldPath]
@@ -89,7 +89,7 @@ class Scanner
 				atom.grammars.clearGrammarOverrideForPath oldPath
 				delete IconService.fileCache[oldPath]
 				delete IconService.fileCache[newPath]
-				IconService.queueRefresh()
+			IconService.queueRefresh()
 				
 		
 		# Called when user deletes a file from the tree-view
@@ -163,7 +163,7 @@ class Scanner
 				task.on "file-scan", (data) -> IconService.checkFileHeader data
 		
 		# Check for .gitattributes files if needed
-		if Main.useGitAttributes
+		if Main.useGitAttrib
 			for name, entry of dir.entries when name is ".gitattributes"
 				@readGitAttributes entry.realPath
 	

@@ -11,14 +11,15 @@ $              = require("./debugging") __filename
 
 class IconService
 	
-	scopeCache:    {}
-	fileCache:     {}
-	headerCache:   {}
-	hashbangCache: {}
-	iconClasses:   {}
-	modelineCache: {}
-	languageCache: {}
-	attributeRules:[]
+	scopeCache:     {}
+	fileCache:      {}
+	headerCache:    {}
+	hashbangCache:  {}
+	iconClasses:    {}
+	modelineCache:  {}
+	languageCache:  {}
+	attributeCache: {}
+	attributeRules: []
 	
 	
 	activate: (state) ->
@@ -259,10 +260,11 @@ class IconService
 				return result if result
 		
 		# Adhere to local .gitattributes files
-		if Main.useGitAttributes
+		if Main.useGitAttrib
 			for rule in @attributeRules
 				if rule.matcher.match path
 					$ "GitAttribute rule matched", path, rule
+					@attributeCache[path]   = rule.icon
 					return @fileCache[path] = rule.icon
 		null
 	
@@ -367,11 +369,10 @@ class IconService
 	# - enabled: Boolean designating the new value
 	# - forType: 0 or 1 to affect hashbangs or modelines, respectively
 	setHeadersEnabled: (enabled, forType) ->
-		shouldRefresh = false
 		affectedPaths = (path for path, match of @headerCache when !!match[1] is !!forType)
 		
 		if affectedPaths.length
-			shouldRefresh = true
+			$ `(enabled ? "Enabling" : "Disabling") + (forType ? "modelines" : "hashbangs")`
 			
 			if enabled
 				for path in affectedPaths
@@ -379,9 +380,23 @@ class IconService
 					@fileCache[path] = @fileIcons[ruleIndex]
 			
 			else delete @fileCache[path] for path in affectedPaths
+			
+			@queueRefresh()
 
-		
-		if shouldRefresh then @queueRefresh()
+
+	# Set whether .gitattributes files are scanned for "linguist-language" lines
+	setGitAttribsUsed: (enabled) ->
+		if (affectedPaths = path for path of @attributeCache).length
+			if enabled
+				$ "Enabling .gitattributes"
+				for path in affectedPaths
+					[ruleIndex] = @attributeCache[path]
+					@fileCache[path] = @fileIcons[ruleIndex]
+			else
+				$ "Disabling .gitattributes"
+				delete @fileCache[path] for path in affectedPaths
+			
+			@queueRefresh()
 	
 	
 	

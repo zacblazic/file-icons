@@ -93,7 +93,7 @@ module.exports =
 
 	setCheckHashbangs: (@checkHashbangs) -> IconService.setHeadersEnabled(@checkHashbangs)
 	setCheckModelines: (@checkModelines) -> IconService.setHeadersEnabled(@checkModelines, 1)
-	setUseGitAttributes: (@useGitAttributes) ->
+	setUseGitAttributes: (@useGitAttrib) -> IconService.setGitAttribsUsed(@useGitAttrib)
 
 
 
