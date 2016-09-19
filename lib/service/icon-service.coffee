@@ -13,7 +13,7 @@ class IconService
 	
 	scopeCache:     {}
 	fileCache:      {}
-	headerCache:    {}
+	matchCache:     {}
 	hashbangCache:  {}
 	iconClasses:    {}
 	modelineCache:  {}
@@ -81,7 +81,7 @@ class IconService
 			return
 		
 		# Not what we're expecting
-		unless state.service
+		unless state.service and state.service.matches
 			$ "Malformed state"
 			return
 		
@@ -91,7 +91,7 @@ class IconService
 			return
 		
 		
-		{digest, headers, classes} = state.service
+		{digest, matches, classes} = state.service
 		
 		# Make sure these results were serialised from the same data
 		if digest is Config.digest and digest?
@@ -101,19 +101,19 @@ class IconService
 		else
 			$ "Mismatched digests", old: digest, new: Config.digest
 			
-			# Attempt to reindex header-assigned icons if possible
-			if headers and classes
-				headers = @reindexIcons headers, classes
+			# Attempt to reindex dynamically-assigned icons if possible
+			if matches and classes
+				matches = @reindexIcons matches, classes
 
 
 		# Assign deserialised data
-		@headerCache = headers
-		for path, match of headers
+		@matchCache = matches
+		for path, match of matches
 			[index]  = match
 			icon     = @fileIcons[index]
 			
 			@iconClasses[index] = icon.rawClass
-			@headerCache[path]  = [index]
+			@matchCache[path]   = [index]
 			@fileCache[path]    = icon
 	
 	
@@ -264,7 +264,7 @@ class IconService
 			for rule in @attributeRules
 				if rule.matcher.match path
 					$ "GitAttribute rule matched", path, rule
-					@attributeCache[path]   = rule.icon
+					@matchCache[path] = [rule.icon.index, 2]
 					return @fileCache[path] = rule.icon
 		null
 	
@@ -292,7 +292,7 @@ class IconService
 					$ "Updating cache with hashbang icon", icon
 					{index} = icon
 					@iconClasses[index] = icon.rawClass
-					@headerCache[path]  = [index]
+					@matchCache[path]   = [index]
 					@fileCache[path]    = icon
 					@queueRefresh()
 					return true
@@ -307,16 +307,16 @@ class IconService
 					$ "Updating cache with modeline icon", icon
 					{index} = icon
 					@iconClasses[index] = icon.rawClass
-					@headerCache[path]  = [index, 1]
+					@matchCache[path]   = [index, 1]
 					@fileCache[path]    = icon
 					@queueRefresh()
 					return true
 				return false
 		
 		# File's header was erased. Clean cache and refresh.
-		if @headerCache[path]
+		if @matchCache[path]
 			$ "File header erased. Clearing cache."
-			delete @headerCache[path]
+			delete @matchCache[path]
 			delete @fileCache[path]
 			@queueRefresh()
 		
@@ -365,18 +365,22 @@ class IconService
 				return @languageCache[name] = rule
 	
 	
-	# Set whether header-assigned icons should be displayed
+	# Set whether a method of dynamic icon-matching is enabled
+	# - type: Either "hashbang", "modeline" or "linguist"
 	# - enabled: Boolean designating the new value
-	# - forType: 0 or 1 to affect hashbangs or modelines, respectively
-	setHeadersEnabled: (enabled, forType) ->
-		affectedPaths = (path for path, match of @headerCache when !!match[1] is !!forType)
+	enableMatchType: (type, enabled) ->
+		types =
+			hashbang: 0
+			modeline: 1
+			linguist: 2
+		
+		affectedPaths = (path for path, match of @matchCache when +match[1] is types[type])
 		
 		if affectedPaths.length
-			$ `(enabled ? "Enabling" : "Disabling") + (forType ? "modelines" : "hashbangs")`
-			
+			$ "#{if enabled then "Enabling" else "Disabling"} #{type}"
 			if enabled
 				for path in affectedPaths
-					[ruleIndex] = @headerCache[path]
+					[ruleIndex] = @matchCache[path]
 					@fileCache[path] = @fileIcons[ruleIndex]
 			
 			else delete @fileCache[path] for path in affectedPaths
@@ -533,9 +537,9 @@ class IconService
 	changeFilePath: (from, to) ->
 		$ "Changing path", {from, to}
 		
-		if (header = @headerCache[from])?
-			delete @headerCache[from]
-			@headerCache[to] = header
+		if (match = @matchCache[from])?
+			delete @matchCache[from]
+			@matchCache[to] = match
 		
 		if (match = @fileCache[from])?
 			@fileCache[to] = match
@@ -547,10 +551,10 @@ class IconService
 
 
 	# Perform hideous surgery on outdated caches to eliminate FOUCs at startup
-	reindexIcons: (headers, classes) ->
-		$ "Reindexing", {headers, classes}
+	reindexIcons: (matches, classes) ->
+		$ "Reindexing", {matches, classes}
 		
-		fixedHeaders = {}
+		fixedMatches = {}
 		fixedIndexes = {}
 		
 		for index, classList of classes
@@ -558,13 +562,13 @@ class IconService
 				$ "Fixing index: #{index} -> #{icon.index}", icon
 				fixedIndexes[index] = icon.index
 		
-		for path, match of headers
+		for path, match of matches
 			if (index = fixedIndexes[match[0]])?
 				$ "Fixing path: #{path}" 
 				match[0] = index
-				fixedHeaders[path] = match
+				fixedMatches[path] = match
 		
-		fixedHeaders
+		fixedMatches
 
 	
 	

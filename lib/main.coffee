@@ -63,7 +63,7 @@ module.exports =
 		lightTheme:  Motif.lightTheme
 		service:
 			digest:  Config.digest
-			headers: IconService.headerCache
+			matches: IconService.matchCache
 			classes: IconService.iconClasses
 
 
@@ -91,9 +91,9 @@ module.exports =
 		Workspace.watchingEditors @overridesEnabled
 		IconService.resetOverrides()
 
-	setCheckHashbangs: (@checkHashbangs) -> IconService.setHeadersEnabled(@checkHashbangs)
-	setCheckModelines: (@checkModelines) -> IconService.setHeadersEnabled(@checkModelines, 1)
-	setUseGitAttributes: (@useGitAttrib) -> IconService.setGitAttribsUsed(@useGitAttrib)
+	setCheckHashbangs: (@checkHashbangs) -> IconService.enableMatchType("hashbang", @checkHashbangs)
+	setCheckModelines: (@checkModelines) -> IconService.enableMatchType("modeline", @checkModelines)
+	setUseGitAttributes: (@useGitAttrib) -> IconService.enableMatchType("linguist", @useGitAttrib)
 
 
 

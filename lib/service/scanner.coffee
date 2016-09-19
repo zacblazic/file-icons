@@ -98,7 +98,7 @@ class Scanner
 			{path} = info
 			for file of @fileCache when file?.path is path
 				delete @fileCache[file]
-			delete IconService.headerCache[path]
+			delete IconService.matchCache[path]
 	
 	
 	# Reparse the tree-view for newly-added directories
