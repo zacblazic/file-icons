@@ -217,11 +217,11 @@ class Scanner
 					$ "Unrecognised language: #{language}"
 					continue
 				
-				filePath = Path.resolve Path.dirname(path), glob
-				matcher  = new Minimatch.Minimatch filePath
-				rule     = {path: filePath, icon, language, matcher}
+				filePath = if /^\*/.test(glob) then glob else (Path.resolve Path.dirname(path), glob)
+				matcher  = new Minimatch.Minimatch filePath, {matchBase: true, dot: true}
+				rule     = {glob, path: filePath, icon, language, matcher}
 				IconService.attributeRules.push rule
-				$ "Added override: #{language} (#{glob})", rule
+				$ "Added override: #{language} (#{glob})", filePath, rule
 			
 			@applyGitAttributes()
 		), 1
@@ -229,13 +229,22 @@ class Scanner
 	
 	# Modify cached paths that fall under an affected attribute glob
 	applyGitAttributes: ->
-		$ "Applying .gitattributes"
 		shouldRefresh = false
 		paths = Object.keys(IconService.fileCache)
+		
 		for rule in IconService.attributeRules
-			for affectedPath in (paths.filter (path) => rule.matcher.match(path))
-				delete IconService.fileCache[affectedPath]
+			$ "Applying .gitattributes…", rule
+			
+			affectedPaths = paths.filter (path) ->
+				matches = rule.matcher.match(path)
+				$ (if matches then "Matched" else "No match")+": #{rule.glob}", path, rule
+				matches
+			
+			continue unless affectedPaths.length
+			for path in affectedPaths
+				delete IconService.fileCache[path]
 				shouldRefresh = true
+		
 		IconService.queueRefresh() if shouldRefresh
 	
 	

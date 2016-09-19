@@ -266,6 +266,7 @@ class IconService
 					$ "GitAttribute rule matched", path, rule
 					@matchCache[path] = [rule.icon.index, 2]
 					return @fileCache[path] = rule.icon
+				else $ "No GitAttribute match", path, rule
 		null
 	
 	
