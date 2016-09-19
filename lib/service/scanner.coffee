@@ -2,7 +2,7 @@ fs          = require "fs"
 Path        = require "path"
 utils       = require "../utils"
 IconService = require "./icon-service"
-{Minimatch} = require "minimatch"
+Minimatch   = require "minimatch"
 ScanTask    = require.resolve "./scan-task"
 Main        = require.resolve "../main"
 $           = require("./debugging") __filename
@@ -35,7 +35,6 @@ class Scanner
 		@directories = new Set
 		@disposables = new CompositeDisposable
 		@attribFiles = new Map
-		@attribRules = []
 		
 		@disposables.add IconService.onRequestScan (path) => @readFile path
 		@disposables.add atom.project.onDidChangePaths => @update()
@@ -164,7 +163,7 @@ class Scanner
 				task.on "file-scan", (data) -> IconService.checkFileHeader data
 		
 		# Check for .gitattributes files if needed
-		if Main.useGitAttrib
+		if Main.useGitAttributes
 			for name, entry of dir.entries when name is ".gitattributes"
 				@readGitAttributes entry.realPath
 	
@@ -199,21 +198,45 @@ class Scanner
 				@attribFiles.delete path
 				@attribFiles.set path = file.realPath || file.path, file
 			
+			file.onDidDelete =>
+				$ ".gitattributes deleted", file
+				rules     = IconService.attributeRules
+				ruleCount = rules.length
+				rules     = rules.filter (rule) -> rule.path isnt path
+				@attribFiles.delete path
+				$ "Rules deleted: #{rules.length - ruleCount}"
+				IconService.attributeRules = rules
+			
 			# Search for "linguist-language" attributes in the file
 			file.data = fs.readFileSync(path).toString()
 			pattern   = /^(.*?)\s+linguist-language=(.*)$/gmi
 			while match = pattern.exec(file.data)
 				[line, glob, language] = match
 				
-				filePath = Path.resolve Path.dirname(path), glob
-				matcher  = new Minimatch filePath
-				rule     = {path: filePath, language, matcher}
+				unless icon = IconService.iconMatchForLanguage(language)
+					$ "Unrecognised language: #{language}"
+					continue
 				
-				$ "Added override: #{language}", rule
-				@attribRules.push rule
-		), 1
+				filePath = Path.resolve Path.dirname(path), glob
+				matcher  = new Minimatch.Minimatch filePath
+				rule     = {path: filePath, icon, language, matcher}
+				IconService.attributeRules.push rule
+				$ "Added override: #{language} (#{glob})", rule
 			
-		
+			@applyGitAttributes()
+		), 1
+	
+	
+	# Modify cached paths that fall under an affected attribute glob
+	applyGitAttributes: ->
+		$ "Applying .gitattributes"
+		shouldRefresh = false
+		paths = Object.keys(IconService.fileCache)
+		for rule in IconService.attributeRules
+			for affectedPath in (paths.filter (path) => rule.matcher.match(path))
+				delete IconService.fileCache[affectedPath]
+				shouldRefresh = true
+		IconService.queueRefresh() if shouldRefresh
 	
 	
 	# Check the newly-added contents of a directory

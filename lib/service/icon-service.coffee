@@ -17,6 +17,8 @@ class IconService
 	hashbangCache: {}
 	iconClasses:   {}
 	modelineCache: {}
+	languageCache: {}
+	attributeRules:[]
 	
 	
 	activate: (state) ->
@@ -236,7 +238,7 @@ class IconService
 	# These include:
 	#   1. Checking if the user's assigned the path a specific grammar (an "override")
 	#   2. Checking the user's customFileTypes setting
-	#   3. Anything else that doesn't involve looping through over 380 regular expressions
+	#   3. Anything else that doesn't involve looping through over 1180 regular expressions
 	#
 	# If a match is found, it's cached for quicker lookup
 	matchCustom: (path) ->
@@ -256,6 +258,12 @@ class IconService
 					@fileCache[path] = result
 				return result if result
 		
+		# Adhere to local .gitattributes files
+		if Main.useGitAttributes
+			for rule in @attributeRules
+				if rule.matcher.match path
+					$ "GitAttribute rule matched", path, rule
+					return @fileCache[path] = rule.icon
 		null
 	
 	
@@ -342,6 +350,17 @@ class IconService
 					$ "Caching modeline", line, {rule, lang}
 					return @modelineCache[line] = rule
 	
+	
+	# Locate an IconRule match for a language's name
+	iconMatchForLanguage: (name) ->
+		return null unless name
+		return cached if cached = @languageCache[name]
+		
+		name = name.toLowerCase()
+		for rule, index in @fileIcons
+			if rule.name is name || rule.matchesAlias(name)
+				$ "Caching language name", name, rule
+				return @languageCache[name] = rule
 	
 	
 	# Set whether header-assigned icons should be displayed
