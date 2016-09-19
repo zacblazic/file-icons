@@ -387,22 +387,6 @@ class IconService
 			else delete @fileCache[path] for path in affectedPaths
 			
 			@queueRefresh()
-
-
-	# Set whether .gitattributes files are scanned for "linguist-language" lines
-	setGitAttribsUsed: (enabled) ->
-		if (affectedPaths = path for path of @attributeCache).length
-			if enabled
-				$ "Enabling .gitattributes"
-				for path in affectedPaths
-					[ruleIndex] = @attributeCache[path]
-					@fileCache[path] = @fileIcons[ruleIndex]
-			else
-				$ "Disabling .gitattributes"
-				delete @fileCache[path] for path in affectedPaths
-			
-			@queueRefresh()
-	
 	
 	
 	# Locate an IconRule match for an arbitrary filename
