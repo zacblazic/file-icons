@@ -44,7 +44,7 @@ describe "TreeView", ->
 		
 		
 		it "displays the correct icons for files in subdirectories", ->
-			expand "subfolder"
+			expand "./subfolder"
 			f = ls "file"
 			f["almighty.c"].should.have.class  "c-icon     medium-blue name icon"
 			f["script.js"].should.have.class   "js-icon    medium-yellow"
@@ -154,7 +154,7 @@ describe "TreeView", ->
 				unknown2:     defaultClass
 			
 			it "detects hashbangs in files and shows the correct icon", ->
-				expand "hashbangs"
+				expand "./hashbangs/"
 				files = ls "file"
 				
 				files[name].should.have.class defaultClass for name of files

@@ -60,7 +60,7 @@ module.exports = $ =
 
 	# Set the expansion state of a project subdirectory in the tree-view
 	setExpanded: (path, expand) ->
-		path = path.split /\/|\\/
+		path = path.replace(/^\.?[\/\\]|[\/\\]$/g, "").split(/\/|\\/).filter(Boolean)
 		path = path.reverse() unless expand
 		for folderName in path
 			dirs = $.ls "directory"
