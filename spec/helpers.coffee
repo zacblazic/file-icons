@@ -100,6 +100,9 @@ module.exports = $ =
 	# Return a promise that resolves after the next refresh
 	waitToRefresh: ->
 		new Promise (resolve) ->
-			handler = $.getService().onDidRefresh ->
+			callback = ->
 				handler.dispose()
+				clearTimeout timer
 				resolve()
+			handler = $.getService().onDidRefresh callback
+			timer = setTimeout callback, 1000
