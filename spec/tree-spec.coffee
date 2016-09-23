@@ -1,5 +1,5 @@
 path = require "path"
-{activate, attach, expand, fixtures, ls, open, setTheme, wait, waitToRefresh} = require "./helpers"
+{activate, attach, expand, fixtures, getTreeView, ls, open, setTheme, wait, waitToRefresh} = require "./helpers"
 
 
 describe "TreeView", ->
@@ -16,15 +16,14 @@ describe "TreeView", ->
 			# Obtain a handle to the TreeView element
 			unless atom.workspace.getLeftPanels().length
 				atom.commands.dispatch workspace, "tree-view:toggle"
-			treeView = atom.workspace.getLeftPanels()[0].getItem()
+			treeView = getTreeView()
 	
 	
 	describe "Icon assignment", ->
 		beforeEach -> open "project-1"
 	
 		it "displays the correct icons for files", ->
-			f = ls treeView
-			
+			f = ls "file"
 			f[".default-config"].should.have.class "name icon"
 			f[".default-gear"  ].should.have.class "gear-icon"
 			f[".gitignore"     ].should.have.class "git-icon"
@@ -38,15 +37,15 @@ describe "TreeView", ->
 		
 		it "displays the correct icons for directories", ->
 			wait(100).then ->
-				d = ls treeView, "directory"
+				d = ls "directory"
 				d["Dropbox"].should.have.class      "name icon dropbox-icon"
 				d["node_modules"].should.have.class "node-icon"
 				d["subfolder"].should.have.class    "icon-file-directory"
 		
 		
 		it "displays the correct icons for files in subdirectories", ->
-			expand treeView, "subfolder"
-			f = ls treeView
+			expand "subfolder"
+			f = ls "file"
 			f["almighty.c"].should.have.class  "c-icon     medium-blue name icon"
 			f["script.js"].should.have.class   "js-icon    medium-yellow"
 			f["fad.jsx"].should.have.class     "jsx-icon   medium-blue"
@@ -59,7 +58,7 @@ describe "TreeView", ->
 		
 		beforeEach "Open first project folder", ->
 			open "project-1"
-			f = ls treeView
+			f = ls "file"
 			expectedClasses =
 				".gitignore":   "medium-red"
 				"data.json":    "medium-yellow"
@@ -109,7 +108,7 @@ describe "TreeView", ->
 		
 		
 		it "respects the user's customFileTypes setting", ->
-			f = ls treeView
+			f = ls "file"
 			f["test.m" ].should.have.class "objc-icon medium-blue"
 			f["test.mm"].should.have.class "objc-icon medium-blue"
 			f["test.t" ].should.have.class "perl-icon medium-blue"
@@ -155,8 +154,8 @@ describe "TreeView", ->
 				unknown2:     defaultClass
 			
 			it "detects hashbangs in files and shows the correct icon", ->
-				expand treeView, "hashbangs"
-				files = ls treeView, "file"
+				expand "hashbangs"
+				files = ls "file"
 				
 				files[name].should.have.class defaultClass for name of files
 				

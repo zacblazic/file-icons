@@ -1,6 +1,7 @@
 path = require "path"
 
 fixturesPath = path.resolve __dirname, "fixtures"
+treeView = null
 
 
 # Helper functions for penning specs
@@ -21,11 +22,11 @@ module.exports = $ =
 	
 	
 	# Collapse a project subdirectory in the tree-view
-	collapse: (treeView, path) -> $.setExpanded(treeView, path, false)
+	collapse: (path) -> $.setExpanded(path, false)
 	
 	
 	# Expand a project subdirectory in the tree-view
-	expand: (treeView, path) -> $.setExpanded(treeView, path, true)
+	expand: (path) -> $.setExpanded(path, true)
 	
 	
 	# Return a reference to the package's IconService class
@@ -34,9 +35,14 @@ module.exports = $ =
 		servicePath = path.join packagePath, "lib", "service", "icon-service"
 		require servicePath
 	
+	
+	# Return a reference to the tree-view's workspace element
+	getTreeView: ->
+		treeView = atom.workspace.getLeftPanels()[0].getItem()
+
 
 	# Return a list of tree-view entries, keyed by filename
-	ls: (treeView, type = "file") ->
+	ls: (type = "file") ->
 		result = {}
 		for entry in treeView.find ".#{type}.entry"
 			{name} = entry[type]
@@ -52,11 +58,11 @@ module.exports = $ =
 
 
 	# Set the expansion state of a project subdirectory in the tree-view
-	setExpanded: (treeView, path, expand) ->
+	setExpanded: (path, expand) ->
 		path = path.split /\/|\\/
 		path = path.reverse() unless expand
 		for folderName in path
-			dirs = $.ls treeView, "directory"
+			dirs = $.ls "directory"
 			if dirs[folderName]?
 				dir = dirs[folderName].parentElement.parentElement
 				dir.click() if expand is dir.classList.contains "collapsed"
