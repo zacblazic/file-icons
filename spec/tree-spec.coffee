@@ -20,7 +20,7 @@ describe "TreeView", ->
 	
 	
 	describe "Icon assignment", ->
-		beforeEach -> open "project-1"
+		beforeEach -> open "./basic"
 	
 		it "displays the correct icons for files", ->
 			f = ls "file"
@@ -57,7 +57,7 @@ describe "TreeView", ->
 		[expectedClasses, f] = []
 		
 		beforeEach "Open first project folder", ->
-			open "project-1"
+			open "./basic"
 			f = ls "file"
 			expectedClasses =
 				".gitignore":   "medium-red"
