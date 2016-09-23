@@ -375,7 +375,7 @@ class IconService
 			modeline: 1
 			linguist: 2
 		
-		affectedPaths = (path for path, match of @matchCache when +match[1] is types[type])
+		affectedPaths = (path for path, match of @matchCache when (+match[1] || 0) is types[type])
 		
 		if affectedPaths.length
 			$ "#{if enabled then "Enabling" else "Disabling"} #{type}"
