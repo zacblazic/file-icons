@@ -20,6 +20,14 @@ module.exports = $ =
 		attachToDOM(element);
 	
 	
+	# Collapse a project subdirectory in the tree-view
+	collapse: (treeView, path) -> $.setExpanded(treeView, path, false)
+	
+	
+	# Expand a project subdirectory in the tree-view
+	expand: (treeView, path) -> $.setExpanded(treeView, path, true)
+	
+	
 	# Return a reference to the package's IconService class
 	getService: ->
 		packagePath = atom.packages.activePackages["file-icons"].path
@@ -42,6 +50,18 @@ module.exports = $ =
 			path.resolve(fixturesPath, folder)
 		atom.project.setPaths projects
 
+
+	# Set the expansion state of a project subdirectory in the tree-view
+	setExpanded: (treeView, path, expand) ->
+		path = path.split /\/|\\/
+		path = path.reverse() unless expand
+		for folderName in path
+			dirs = $.ls treeView, "directory"
+			if dirs[folderName]?
+				dir = dirs[folderName].parentElement.parentElement
+				dir.click() if expand is dir.classList.contains "collapsed"
+		undefined
+	
 	
 	# Set the test-runner's UI and syntax themes
 	setTheme: (name) ->

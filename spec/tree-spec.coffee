@@ -1,5 +1,5 @@
 path = require "path"
-{activate, attach, fixtures, ls, open, setTheme, wait, waitToRefresh} = require "./helpers"
+{activate, attach, expand, fixtures, ls, open, setTheme, wait, waitToRefresh} = require "./helpers"
 
 
 describe "TreeView", ->
@@ -146,7 +146,7 @@ describe "TreeView", ->
 				unknown2:     defaultClass
 			
 			it "detects hashbangs in files and shows the correct icon", ->
-				ls(treeView, "directory")["hashbangs"].click()
+				expand treeView, "hashbangs"
 				files = ls treeView, "file"
 				
 				files[name].should.have.class defaultClass for name of files
