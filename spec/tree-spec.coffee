@@ -42,6 +42,15 @@ describe "TreeView", ->
 				d["Dropbox"].should.have.class      "name icon dropbox-icon"
 				d["node_modules"].should.have.class "node-icon"
 				d["subfolder"].should.have.class    "icon-file-directory"
+		
+		
+		it "displays the correct icons for files in subdirectories", ->
+			expand treeView, "subfolder"
+			f = ls treeView
+			f["almighty.c"].should.have.class  "c-icon     medium-blue name icon"
+			f["script.js"].should.have.class   "js-icon    medium-yellow"
+			f["fad.jsx"].should.have.class     "jsx-icon   medium-blue"
+			f["markup.html"].should.have.class "html5-icon medium-orange"
 			
 
 	
