@@ -387,7 +387,6 @@ class IconService
 			else
 				for path in affectedPaths
 					$ "Dropping cached match", path
-					delete @matchCache[path]
 					delete @fileCache[path]
 			
 			@queueRefresh()
