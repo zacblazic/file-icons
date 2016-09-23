@@ -142,7 +142,7 @@ describe "TreeView", ->
 				"not-python.py": "perl-icon medium-blue"
 				perl:         "perl-icon medium-blue"
 				python:       "python-icon dark-blue"
-				"python.py":  "python-icon dark-blue"
+				python2:      "python-icon dark-blue"
 				rscript:      "r-icon medium-blue"
 				ruby:         "ruby-icon medium-red"
 				ruby2:        "ruby-icon medium-red"
@@ -158,11 +158,9 @@ describe "TreeView", ->
 				expand "./hashbangs/"
 				files = ls "file"
 				files[name].should.have.class defaultClass for name of files
-				
 				waitToRefresh().then ->
 					for name of expected
 						files[name].should.have.class expected[name]
-					collapse "./hashbangs"
 
 			it "caches matches for quicker lookup", ->
 				ls("file").should.not.have.property "lambda.scm"
@@ -170,14 +168,36 @@ describe "TreeView", ->
 				files = ls "file"
 				for name of expected
 					files[name].should.have.class expected[name]
-				collapse "./hashbangs"
+
+			describe '"Check hashbangs" option', ->
+				optionName = "file-icons.iconMatching.checkHashbangs"
+				
+				it "hides hashbang-assigned icons when disabled", ->
+					expand "./hashbangs"
+					files = ls "file"
+					for name of expected
+						files[name].should.have.class expected[name]
+					atom.config.set optionName, false
+					waitToRefresh().then ->
+						for name, icon of expected when icon isnt defaultClass
+							files[name].should.not.have.class icon
+
+				it "restores them when re-enabled", ->
+					expand "./hashbangs"
+					files = ls "file"
+					for name, icon of expected when icon isnt defaultClass
+						files[name].should.not.have.class icon
+					atom.config.set optionName, true
+					waitToRefresh().then ->
+						for name, icon of expected
+							files[name].should.have.class icon
 
 
 		describe "Modelines", ->
 			expected =
 				"mode-c++":       "cpp-icon medium-blue"
 				"mode-php.inc":   "php-icon dark-blue"
-				"mode-prolog.pl": "prolog-icon medium-blue"
+				"mode-coffee.pl": "coffee-icon medium-maroon"
 				"mode-ruby":      "ruby-icon medium-red"
 			
 			for num in [1..9]
@@ -188,11 +208,9 @@ describe "TreeView", ->
 				expand "./modelines"
 				files = ls "file"
 				files[name].should.have.class defaultClass for name of files
-				
 				waitToRefresh().then ->
 					for name of expected
 						files[name].should.have.class expected[name]
-					collapse "./modelines"
 			
 			it "caches matches for quicker lookup", ->
 				ls("file").should.not.have.property "mode-prolog.pl"
@@ -200,33 +218,75 @@ describe "TreeView", ->
 				files = ls "file"
 				for name of expected
 					files[name].should.have.class expected[name]
-				collapse "./modelines"
+
+			describe '"Check modelines" option', ->
+				optionName = "file-icons.iconMatching.checkModelines"
+				
+				it "hides modeline-assigned icons when disabled", ->
+					expand "./modelines"
+					files = ls "file"
+					files[name].should.have.class icon for name, icon of expected
+					atom.config.set optionName, false
+					waitToRefresh().then ->
+						files[name].should.not.have.class icon for name, icon of expected
+
+				it "restores them when re-enabled", ->
+					expand "./modelines"
+					files = ls "file"
+					files[name].should.not.have.class icon for name, icon of expected
+					atom.config.set optionName, true
+					waitToRefresh().then ->
+						files[name].should.have.class icon for name, icon of expected
 
 
 		describe "Linguist attributes", ->
+			files = null
 			usualIcons =
 				"not-js.es":      "js-icon medium-yellow"
 				"not-js.es.swp":  "binary-icon dark-green"
 				"butterfly.pl":   "perl-icon medium-blue"
 				"camel.pl6":      "perl6-icon medium-purple"
-				
-			it "displays icons for filetypes set by linguist-language attributes", ->
+			
+			overridden =
+				"not-js.es":      "erlang-icon medium-red"
+				"not-js.es.swp":  "apl-icon dark-cyan"
+				"butterfly.pl":   "perl6-icon medium-purple"
+				"camel.pl6":      "perl-icon medium-blue"
+			
+			beforeEach ->
 				expand "./linguist/perl"
-				f = ls "file"
-				f[".gitattributes"].should.have.class "git-icon medium-red"
-				f[name].should.have.class usualIcons[name] for name of usualIcons
+				files = ls "file"
+			
+			it "displays icons for filetypes set by linguist-language attributes", ->
+				files[".gitattributes"].should.have.class "git-icon medium-red"
+				files[name].should.have.class icon for name, icon of usualIcons
 				
 				waitToRefresh().then ->
-					f["not-js.es"].should.have.class     "erlang-icon medium-red"
-					f["not-js.es.swp"].should.have.class "apl-icon dark-cyan"
-					f["butterfly.pl"].should.have.class  "perl6-icon medium-purple"
-					f["camel.pl6"].should.have.class     "perl-icon medium-blue"
-					f[name].should.not.have.class usualIcons[name] for name of usualIcons
+					files[name].should.have.class icon     for name, icon of overridden
+					files[name].should.not.have.class icon for name, icon of usualIcons
 					collapse "./linguist"
 			
 			it "caches matches for quicker lookup", ->
-				ls("file").should.not.have.property "not-js.es"
-				expand "./linguist"
-				f = ls "file"
-				f["not-js.es"].should.have.class "erlang-icon medium-red"
-				f["not-js.es.swp"].should.have.class "apl-icon dark-cyan"
+				files[name].should.have.class icon for name, icon of overridden
+
+
+			describe '"Use .gitattributes" option', ->
+				optionName = "file-icons.iconMatching.useGitAttributes"
+				
+				beforeEach ->
+					expand "./linguist/perl"
+					files = ls "file"
+					files[name].should.have.class icon for name, icon of overridden
+					atom.config.set optionName, false
+					waitToRefresh()
+				
+				it "reverts Linguist-assigned icons when disabled", ->
+					files[name].should.not.have.class icon for name, icon of overridden
+					files[name].should.have.class icon     for name, icon of usualIcons
+					atom.config.set optionName, true
+				
+				it "restores them when re-enabled", ->
+					atom.config.set optionName, true
+					waitToRefresh().then ->
+						files[name].should.have.class icon     for name, icon of overridden
+						files[name].should.not.have.class icon for name, icon of usualIcons
