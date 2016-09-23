@@ -91,3 +91,28 @@ describe "TreeView", ->
 			wait(100).then ->
 				for file, colour of expectedClasses
 					f[file].should.not.have.class colour
+
+
+	describe "Dynamic icon assignment", ->
+		beforeEach ->
+			atom.config.set("file-icons.coloured", true)
+			setTheme("atom-dark").then -> open "dynamic"
+		
+		
+		it "respects the user's customFileTypes setting", ->
+			f = ls treeView
+			f["test.m" ].should.have.class "objc-icon medium-blue"
+			f["test.mm"].should.have.class "objc-icon medium-blue"
+			f["test.t" ].should.have.class "perl-icon medium-blue"
+			atom.config.set "core.customFileTypes",
+				"source.matlab": ["m"]
+				"source.turing": ["t"]
+				"text.roff": ["mm"]
+
+			wait(100).then ->
+				f["test.m" ].should.have.class "matlab-icon medium-yellow"
+				f["test.mm"].should.have.class "manpage-icon dark-green"
+				f["test.t" ].should.have.class "turing-icon medium-red"
+				f["test.m" ].should.not.have.class "objc-icon"
+				f["test.mm"].should.not.have.class "objc-icon"
+				f["test.t" ].should.not.have.class "perl-icon"
