@@ -1,6 +1,7 @@
 path = require "path"
 
 fixturesPath = path.resolve __dirname, "fixtures"
+workspace = require path.resolve(__dirname, "../lib/workspace")
 currentTheme = null
 treeView = null
 
@@ -57,6 +58,15 @@ module.exports = $ =
 			path.resolve(fixturesPath, folder)
 		atom.project.setPaths projects
 
+
+	# Use the grammar-selector package to set the currently-opened editor's grammar
+	overrideGrammar: (scope) ->
+		editor  = atom.workspace.getActiveTextEditor()
+		grammar = atom.grammars.grammarsByScopeName[scope]
+		atom.commands.dispatch atom.views.getView(editor), "grammar-selector:show"
+		atom.workspace.getModalPanels()[0].getItem().confirmed grammar
+		workspace.emitter.emit "grammar-change", editor, grammar
+		
 
 	# Set the expansion state of a project subdirectory in the tree-view
 	setExpanded: (path, expand) ->

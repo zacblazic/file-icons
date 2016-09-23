@@ -1,5 +1,5 @@
 path = require "path"
-{activate, attach, collapse, expand, fixtures, getTreeView, ls, open, setTheme, wait, waitToRefresh} = require "./helpers"
+{activate, attach, collapse, expand, fixtures, getTreeView, ls, open, overrideGrammar, setTheme, wait, waitToRefresh} = require "./helpers"
 
 
 describe "TreeView", ->
@@ -144,6 +144,44 @@ describe "TreeView", ->
 				f["test.m" ].should.not.have.class "objc-icon"
 				f["test.mm"].should.not.have.class "objc-icon"
 				f["test.t" ].should.not.have.class "perl-icon"
+
+
+		describe "User-assigned grammars", ->
+			f = null
+			beforeEach ->
+				expand "grammars/"
+				f = ls "file"
+				activate "grammar-selector", "language-gfm", "language-html", "language-json", "language-text"
+			
+			it "updates a file's icon when overriding its grammar", ->
+				atom.workspace.open("grammars/markup.md").then ->
+					f["markup.md"].should.have.class "markdown-icon medium-blue"
+					
+					editor = atom.workspace.getActiveTextEditor()
+					editor.getGrammar().scopeName.should.equal "source.gfm"
+					overrideGrammar "text.html.basic"
+					editor.getGrammar().scopeName.should.equal "text.html.basic"
+					
+					waitToRefresh().then ->
+						f["markup.md"].should.not.have.class "markdown-icon medium-blue"
+						f["markup.md"].should.have.class "html5-icon medium-orange"
+			
+			it "doesn't replace icons for more specific filetypes", ->
+				atom.workspace.open("grammars/markup.html").then ->
+					html5 = "html5-icon medium-orange"
+					f["markup.html"].should.have.class html5
+					
+					editor = atom.workspace.getActiveTextEditor()
+					editor.getGrammar().scopeName.should.equal "text.html.basic"
+					overrideGrammar "text.plain"
+					editor.getGrammar().scopeName.should.equal "text.plain"
+					
+					waitToRefresh().then ->
+						f["markup.html"].should.not.have.class "text-icon icon-file-text medium-blue"
+						f["markup.html"].should.have.class html5
+
+			it "retains overridden icons between sessions", ->
+				f["markup.md"].should.have.class "html5-icon medium-orange"
 
 
 		describe "Hashbangs", ->
