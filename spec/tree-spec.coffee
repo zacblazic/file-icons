@@ -1,5 +1,5 @@
 path = require "path"
-{activate, attach, fixtures, ls, open, setTheme, wait} = require "./helpers"
+{activate, attach, fixtures, ls, open, setTheme, wait, waitToRefresh} = require "./helpers"
 
 
 describe "TreeView", ->
@@ -116,3 +116,42 @@ describe "TreeView", ->
 				f["test.m" ].should.not.have.class "objc-icon"
 				f["test.mm"].should.not.have.class "objc-icon"
 				f["test.t" ].should.not.have.class "perl-icon"
+
+
+		describe "Hashbangs", ->
+			defaultClass = "name icon"
+			expectedClasses =
+				astral1:      "emacs-icon medium-purple"
+				astral2:      "terminal-icon medium-purple"
+				crystal:      "crystal-icon medium-cyan"
+				"lambda.scm": "cl-icon medium-orange"
+				nada:         defaultClass
+				nada2:        defaultClass
+				nada3:        defaultClass
+				nada4:        defaultClass
+				node:         "js-icon medium-yellow"
+				"not-python.py": "perl-icon medium-blue"
+				perl:         "perl-icon medium-blue"
+				python:       "python-icon dark-blue"
+				"python.py":  "python-icon dark-blue"
+				rscript:      "r-icon medium-blue"
+				ruby:         "ruby-icon medium-red"
+				ruby2:        "ruby-icon medium-red"
+				ruby3:        "ruby-icon medium-red"
+				sbcl:         "cl-icon medium-orange"
+				shell:        "terminal-icon medium-purple"
+				"shell.d":    "terminal-icon medium-purple"
+				shell2:       "terminal-icon medium-purple"
+				unknown1:     "terminal-icon medium-purple"
+				unknown2:     defaultClass
+			
+			it "detects hashbangs in files and shows the correct icon", ->
+				ls(treeView, "directory")["hashbangs"].click()
+				files = ls treeView, "file"
+				
+				files[name].should.have.class defaultClass for name of files
+				
+				waitToRefresh().then ->
+					for name of expectedClasses
+						expectedClass = expectedClasses[name]
+						files[name].should.have.class expectedClass

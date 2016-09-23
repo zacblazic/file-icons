@@ -61,3 +61,11 @@ module.exports = $ =
 	wait: (delay = 100) ->
 		new Promise (resolve) ->
 			setTimeout (-> resolve()), delay
+
+	
+	# Return a promise that resolves after the next refresh
+	waitToRefresh: ->
+		new Promise (resolve) ->
+			handler = $.getService().onDidRefresh ->
+				handler.dispose()
+				resolve()
