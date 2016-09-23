@@ -50,7 +50,25 @@ describe "TreeView", ->
 			f["script.js"].should.have.class   "js-icon    medium-yellow"
 			f["fad.jsx"].should.have.class     "jsx-icon   medium-blue"
 			f["markup.html"].should.have.class "html5-icon medium-orange"
+		
+
+		# Only check symbolic links for POSIX platforms
+		if process.platform isnt "win32" then describe "Symbolic links", ->
+			[f, d] = []
+			beforeEach ->
+				expand "./symlinks"
+				f = ls "file"
+				d = ls "directory"
 			
+			it "always shows a symlink icon", ->
+				[f["dat.a"], f["late.x"]].should.have.class "icon-file-symlink-file"
+				[d["Dropbox"], d["node_modules"]].should.have.class "icon-file-symlink-directory"
+			
+			it "uses the icon-colour of the targeted file", ->
+				d["Dropbox"].should.not.have.class "medium-blue"
+				d["node_modules"].should.not.have.class "medium-green"
+				f["dat.a"].should.have.class "medium-yellow"
+				f["late.x"].should.have.class "medium-blue"
 
 	
 	describe "Colour handling", ->
