@@ -1,3 +1,2 @@
 *.pl linguist-language=Perl6
 *.pl6 linguist-language=Perl
-more-perl/*.pl linguist-language=Perl

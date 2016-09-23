@@ -170,6 +170,7 @@ describe "TreeView", ->
 				files = ls "file"
 				for name of expected
 					files[name].should.have.class expected[name]
+				collapse "./hashbangs"
 
 
 		describe "Modelines", ->
@@ -199,3 +200,33 @@ describe "TreeView", ->
 				files = ls "file"
 				for name of expected
 					files[name].should.have.class expected[name]
+				collapse "./modelines"
+
+
+		describe "Linguist attributes", ->
+			usualIcons =
+				"not-js.es":      "js-icon medium-yellow"
+				"not-js.es.swp":  "binary-icon dark-green"
+				"butterfly.pl":   "perl-icon medium-blue"
+				"camel.pl6":      "perl6-icon medium-purple"
+				
+			it "displays icons for filetypes set by linguist-language attributes", ->
+				expand "./linguist/perl"
+				f = ls "file"
+				f[".gitattributes"].should.have.class "git-icon medium-red"
+				f[name].should.have.class usualIcons[name] for name of usualIcons
+				
+				waitToRefresh().then ->
+					f["not-js.es"].should.have.class     "erlang-icon medium-red"
+					f["not-js.es.swp"].should.have.class "apl-icon dark-cyan"
+					f["butterfly.pl"].should.have.class  "perl6-icon medium-purple"
+					f["camel.pl6"].should.have.class     "perl-icon medium-blue"
+					f[name].should.not.have.class usualIcons[name] for name of usualIcons
+					collapse "./linguist"
+			
+			it "caches matches for quicker lookup", ->
+				ls("file").should.not.have.property "not-js.es"
+				expand "./linguist"
+				f = ls "file"
+				f["not-js.es"].should.have.class "erlang-icon medium-red"
+				f["not-js.es.swp"].should.have.class "apl-icon dark-cyan"
