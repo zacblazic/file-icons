@@ -1,5 +1,5 @@
 path = require "path"
-{activate, attach, expand, fixtures, getTreeView, ls, open, setTheme, wait, waitToRefresh} = require "./helpers"
+{activate, attach, collapse, expand, fixtures, getTreeView, ls, open, setTheme, wait, waitToRefresh} = require "./helpers"
 
 
 describe "TreeView", ->
@@ -102,6 +102,8 @@ describe "TreeView", ->
 
 
 	describe "Dynamic icon assignment", ->
+		defaultClass = "name icon"
+		
 		beforeEach ->
 			atom.config.set("file-icons.coloured", true)
 			setTheme("atom-dark").then -> open "dynamic"
@@ -127,8 +129,7 @@ describe "TreeView", ->
 
 
 		describe "Hashbangs", ->
-			defaultClass = "name icon"
-			expectedClasses =
+			expected =
 				astral1:      "emacs-icon medium-purple"
 				astral2:      "terminal-icon medium-purple"
 				crystal:      "crystal-icon medium-cyan"
@@ -156,10 +157,45 @@ describe "TreeView", ->
 			it "detects hashbangs in files and shows the correct icon", ->
 				expand "./hashbangs/"
 				files = ls "file"
-				
 				files[name].should.have.class defaultClass for name of files
 				
 				waitToRefresh().then ->
-					for name of expectedClasses
-						expectedClass = expectedClasses[name]
-						files[name].should.have.class expectedClass
+					for name of expected
+						files[name].should.have.class expected[name]
+					collapse "./hashbangs"
+
+			it "caches matches for quicker lookup", ->
+				ls("file").should.not.have.property "lambda.scm"
+				expand "./hashbangs"
+				files = ls "file"
+				for name of expected
+					files[name].should.have.class expected[name]
+
+
+		describe "Modelines", ->
+			expected =
+				"mode-c++":       "cpp-icon medium-blue"
+				"mode-php.inc":   "php-icon dark-blue"
+				"mode-prolog.pl": "prolog-icon medium-blue"
+				"mode-ruby":      "ruby-icon medium-red"
+			
+			for num in [1..9]
+				expected["mode-c++#{num}"]  = expected["mode-c++"]
+				expected["mode-ruby#{num}"] = expected["mode-ruby"]
+
+			it "detects modelines in files and shows the correct icon", ->
+				expand "./modelines"
+				files = ls "file"
+				files[name].should.have.class defaultClass for name of files
+				
+				waitToRefresh().then ->
+					for name of expected
+						files[name].should.have.class expected[name]
+					collapse "./modelines"
+			
+			it "caches matches for quicker lookup", ->
+				ls("file").should.not.have.property "mode-prolog.pl"
+				expand "./modelines"
+				files = ls "file"
+				for name of expected
+					files[name].should.have.class expected[name]
