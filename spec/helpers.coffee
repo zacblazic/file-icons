@@ -1,6 +1,7 @@
 path = require "path"
 
 fixturesPath = path.resolve __dirname, "fixtures"
+currentTheme = null
 treeView = null
 
 
@@ -72,15 +73,22 @@ module.exports = $ =
 	# Set the test-runner's UI and syntax themes
 	setTheme: (name) ->
 		$.activate(name + "-ui", name + "-syntax").then ->
+			
+			if currentTheme
+				styles = document.head.querySelectorAll "atom-styles > style"
+				for el in styles
+					isThemeStyle = new RegExp "([\/\\\\])#{currentTheme}-(?:ui|syntax)\\1", "i"
+					el.remove() if isThemeStyle.test el.getAttribute("source-path")
+				atom.packages.disablePackage currentTheme + "-ui"
+				atom.packages.disablePackage currentTheme + "-syntax"
+				currentTheme = name
+			
 			{body}    = document
 			className = body.className.replace /(?:^|\s+)theme-.+-(?:ui|syntax)\b/g, ""
 			body.className = className + " theme-#{name}-ui theme-#{name}-syntax"
 			atom.themes.emitter.emit "did-change-active-themes"
-			
-			new Promise (resolve) ->
-				handler = $.getService().onDidRefresh ->
-					handler.dispose()
-					resolve()
+			currentTheme = name
+			$.waitToRefresh()
 
 
 	# Return a promise that resolves after a specified delay
