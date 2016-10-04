@@ -104,6 +104,13 @@ directoryIcons:
 
 fileIcons:
 
+	"1C":
+		icon: "_1c"
+		match: [
+			[".bsl", "dark-blue", scope: "bsl", alias: "1C Enterprise"]
+			[".os", "medium-red"]
+		]
+
 	ABAP:
 		icon: "abap"
 		scope: "abp"
@@ -1285,7 +1292,6 @@ fileIcons:
 			[".props", "medium-cyan"]
 			[".psc1", "light-blue"]
 			[".pt", "medium-red"]
-			[/\.regexp?$/i, "medium-green", scope: /(?:\.|^)regexp?(?:\.|$)/i]
 			[".resx", "medium-cyan"]
 			[".rl", "medium-red"]
 			[".scxml", "light-cyan"]
@@ -2561,6 +2567,18 @@ fileIcons:
 		match: ".pov"
 		colour: "dark-blue"
 
+	PowerBuilder:
+		icon: "powerbuilder"
+		match: [
+			[".pbl", "medium-blue"]
+			[".pbt", "dark-blue"]
+			[".srw", "medium-red"]
+			[".sru", "medium-orange"]
+			[".srp", "medium-maroon"]
+			[".sra", "medium-blue"]
+			[".srj", "medium-purple"]
+		]
+
 	PowerShell:
 		icon: "powershell"
 		match: [
@@ -2726,6 +2744,12 @@ fileIcons:
 			[".spec", "dark-red"]
 		]
 
+	RegExp:
+		icon: "regex"
+		match: /\.regexp?$/i
+		colour: "medium-green"
+		scope: /(?:\.|^)regexp?(?:\.|$)/i
+
 	RenderScript:
 		icon: "android"
 		match: ".rsh"
@@ -2743,6 +2767,13 @@ fileIcons:
 		alias: /re?st/i
 		match: /\.re?st(?:\.txt)?$/i
 		colour: "dark-blue"
+
+	REXX:
+		icon: "rexx"
+		match: [
+			[/\.rexx?$/i, "medium-red", scope: "rexx", interpreter: /rexx|regina/i]
+			[".pprx", "medium-blue"]
+		]
 
 	Riemann:
 		icon: "clojure"
@@ -3203,6 +3234,13 @@ fileIcons:
 		match: [
 			[".thor", "medium-orange"]
 			[/^Thorfile$/i, "dark-orange"]
+		]
+
+	"TI-BASIC":
+		icon: "calc"
+		match: [
+			[/\.8xp(?:\.txt)?$/i, "medium-maroon", priority: 2]
+			[/\.8xk(?:\.txt)?$/i, "dark-red", priority: 2]
 		]
 
 	Travis:
