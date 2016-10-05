@@ -148,7 +148,8 @@ class IconService
 			
 			for item in fuzzyFinder.items
 				{filePath, projectRelativePath} = item
-				node = fuzzyFinder.find('[data-path="' + projectRelativePath + '"]')?[0]
+				escaped = projectRelativePath.replace(/"/g, '\\"')
+				node = fuzzyFinder.find('[data-path="' + escaped + '"]')?[0]
 				if node
 					unless Array.isArray (iconClass = @iconClassForPath(filePath))
 						iconClass = iconClass.toString().split(/\s+/g)
