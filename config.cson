@@ -105,6 +105,10 @@ directoryIcons:
 		icon: "vagrant"
 		match: ".vagrant"
 
+	Xcode:
+		icon: "appstore"
+		match: ".xcodeproj"
+
 
 fileIcons:
 
@@ -2330,6 +2334,7 @@ fileIcons:
 		icon: "objc"
 		match: [
 			[/\.mm?$/i, "medium-blue", scope: /\.objc(?:pp)?$/i, alias: /(?:obj-?c|objectivec)(?:\+\+)?/i]
+			[".pch", "dark-red"]
 			[".x", "dark-green"]
 		]
 
@@ -3472,6 +3477,11 @@ fileIcons:
 		icon: "xmos"
 		match: ".xc"
 		colour: "medium-orange"
+
+	Xcode:
+		icon: "appstore"
+		match: /\.(?:pbxproj|pbxuser|mode\dv\3|xcplugindata|xcrequiredplugins)$/i
+		colour: "medium-blue"
 
 	Xojo:
 		icon: "xojo"
