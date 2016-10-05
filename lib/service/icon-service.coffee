@@ -138,6 +138,12 @@ class IconService
 					unless Array.isArray iconClass
 						iconClass = iconClass.toString().split(/\s+/g)
 					className += " " + iconClass.join " "
+				
+				# Retain VCS status colour if applicable
+				if context is "tabs"
+					{status} = label.parentElement
+					className += " status-#{status}" if status
+				
 				label.className = className
 		
 		
@@ -227,7 +233,7 @@ class IconService
 			iconClass ?= match.iconClass
 			
 			# Determine if colour should be used
-			if Main.useColour && (!Main.changedOnly || file?.status)
+			if Main.useColour && (!Main.changedOnly || file?.status || context is "tabs")
 				if colourClass = match.getColourClass()
 					iconClass += " " + colourClass
 
