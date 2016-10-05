@@ -141,6 +141,10 @@ class Workspace
 		for root in atom.project.rootDirectories
 			packageJSON=configCSON=haveNodeModules = null
 			
+			if root.path is atom.packages.loadedPackages["file-icons"]?.path
+				$ "Project path matched against loaded package", root.path
+				break
+			
 			for entry in root.getEntriesSync()
 				name = entry.getBaseName()
 				
