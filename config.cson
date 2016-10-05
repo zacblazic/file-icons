@@ -76,6 +76,10 @@ directoryIcons:
 		match: /^(?:Dropbox|\.dropbox\.cache)$/
 		colour: "medium-blue"
 
+	Framework:
+		icon: "dylib"
+		match: ".framework"
+
 	Git:
 		icon: "git"
 		match: /^\.git$/
@@ -96,6 +100,10 @@ directoryIcons:
 	Package:
 		icon: "package"
 		match: /^\.bundle$/i
+
+	SVN:
+		icon: "svn"
+		match: /^\.svn$/i
 
 	TextMate:
 		icon: "textmate"
@@ -933,6 +941,11 @@ fileIcons:
 		match: ".dyalog"
 		colour: "medium-orange"
 		interpreter: "dyalog"
+
+	DyLib:
+		icon: "dylib"
+		match: ".dylib"
+		colour: "medium-cyan"
 
 	E:
 		icon: "e"
