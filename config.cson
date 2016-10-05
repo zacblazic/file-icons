@@ -101,6 +101,10 @@ directoryIcons:
 		icon: "textmate"
 		match: ".tmBundle"
 
+	Vagrant:
+		icon: "vagrant"
+		match: ".vagrant"
+
 
 fileIcons:
 
@@ -1356,10 +1360,9 @@ fileIcons:
 
 	Git:
 		icon: "git"
-		match: [
-			[/^\.git|\.mailmap$/i, "medium-red", scope: /\.git-(?:commit|config|rebase)$/i]
-			[/^\.keep$/i]
-		]
+		colour: "medium-red"
+		match: /^\.git|^\.keep$|\.mailmap$/i
+		scope: /\.git-(?:commit|config|rebase)$/i
 
 	"Git - Commit":
 		icon: "git-commit"
