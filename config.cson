@@ -577,7 +577,8 @@ fileIcons:
 
 	Checklist:
 		icon: "checklist"
-		match: "TODO"
+		priority: 0
+		match: /TODO/
 		colour: "medium-yellow"
 
 	ChucK:
@@ -737,7 +738,7 @@ fileIcons:
 			[".terminal", "dark-blue"]
 			[/^ld\.script$/i, "medium-orange"]
 			[".reek", "medium-red"]
-			[/config|settings|prefs/i, priority: 0]
+			[/config|settings|option|prefs/i, priority: 0]
 		]
 
 	Coq:
@@ -1235,6 +1236,7 @@ fileIcons:
 			[".clixml", "dark-blue"]
 			[".cob", "medium-maroon"]
 			[".cobol", "medium-maroon"]
+			[".cocci", "medium-blue"]
 			[".cpy", "dark-maroon"]
 			[".ct", "dark-pink"]
 			[".cw", "medium-red"]
@@ -1245,6 +1247,7 @@ fileIcons:
 			[".dotsettings", "dark-red"]
 			[".dyl", "medium-blue"]
 			[".dylan", "medium-blue"]
+			[/\.e?bnf$/i, "dark-green"]
 			[".ecl", "medium-blue"]
 			[".eclxml", "dark-green"]
 			[".filters", "medium-pink"]
@@ -1903,8 +1906,7 @@ fileIcons:
 		icon: "checklist"
 		match: [
 			[/^Makefile/, "medium-yellow", scope: "makefile", alias: /bsdmake|make|mf/i, interpreter: "make"]
-			[".mk", "medium-yellow"]
-			[".mak", "medium-yellow"]
+			[/\.(?:mk|mak|make)$/i, "medium-yellow"]
 			[/^BSDmakefile$/i, "medium-red"]
 			[/^GNUmakefile$/i, "medium-green"]
 			[/^Kbuild$/, "medium-blue"]
@@ -2707,9 +2709,12 @@ fileIcons:
 
 	Readme:
 		icon: "book"
-		match: /^(?:README(?:\.md)?|(?:read|readme|click|delete|keep|test)\.me|notice|authors|changelog|contributing|contributors|copying|history|install|license|news|projects|thanks)$|\.(?:readme|1st)$/i
-		colour: "medium-blue"
-		priority: 2
+		match: [
+			[/^README\b|^(?:licen[sc]es?|(?:read|readme|click|delete|keep|test)\.me)$|\.(?:readme|1st)$/i, "medium-blue", priority: 2]
+			[/^(?:notice|authors|bugs|change[-_]?log(?:[-._]?\d+)?|contribute|contributing|contributors|copying|hacking|history|install|maintainers|manifest|more\.stuff|projects|revision|terms|thanks)$/i, "dark-blue", priority: 2]
+			[/\b(?:changelog|copying(?:v?\d)?|install|read[-_]?me)\b/i, "medium-blue", priority: 0]
+			[/^news(?:[-_.]?[-\d]+)?$/i, "dark-blue", priority: 0]
+		]
 
 	REALbasic:
 		icon: "xojo"
@@ -2742,6 +2747,7 @@ fileIcons:
 		match: [
 			[".rpm", "medium-red"]
 			[".spec", "dark-red"]
+			[".spec.in", "dark-blue"]
 		]
 
 	RegExp:
@@ -3194,7 +3200,7 @@ fileIcons:
 			[/\.log$|^Terminal[-_\s]Saved[-_\s]Output$/i, "medium-maroon"]
 			[".err", "medium-red"]
 			[".rtf", "dark-red"]
-			[".nfo", "dark-blue"]
+			[/\.i?nfo$/i, "dark-blue"]
 			[".ans", "dark-orange"]
 			[".etx", "medium-yellow"]
 			[".irclog", "medium-blue"]
@@ -3202,6 +3208,7 @@ fileIcons:
 			[".no", "medium-red"]
 			[".srt", "medium-purple"]
 			[".sub", "dark-purple"]
+			[/^(?:bug-report|fdl|for-release|tests)$/i, "medium-red"]
 			[/\.(?:utxt|utf8)$/i, "medium-cyan"]
 			[".weechatlog", "medium-green"]
 			[".uof", "dark-red"]
@@ -3405,7 +3412,7 @@ fileIcons:
 			[".vbs", "medium-green"]
 			[".csproj", "dark-blue"]
 			[".vbproj", "dark-red"]
-			[".vcxproj", "dark-purple"]
+			[/\.vcx?proj$/i, "dark-purple"]
 			[".vssettings", "dark-green"]
 			[".builds", "medium-maroon"]
 			[".sln", "medium-orange"]
