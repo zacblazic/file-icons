@@ -1,4 +1,5 @@
 {CompositeDisposable, Emitter, File, Directory} = require "atom"
+{join} = require "path"
 $      = require("./service/debugging") __filename
 Config = require "./config"
 
@@ -141,10 +142,6 @@ class Workspace
 		for root in atom.project.rootDirectories
 			packageJSON=configCSON=haveNodeModules = null
 			
-			if root.path is atom.packages.loadedPackages["file-icons"]?.path
-				$ "Project path matched against loaded package", root.path
-				break
-			
 			for entry in root.getEntriesSync()
 				name = entry.getBaseName()
 				
@@ -154,9 +151,10 @@ class Workspace
 						when Config.sourceName  then configCSON  = entry
 						when "package.json"     then packageJSON = entry
 				
-				# Directories: Make sure Node modules are installed
+				# Directories: Make sure devDependencies are installed
 				else if name is "node_modules" && entry instanceof Directory
-					haveNodeModules = true
+					coffeeScript = join(root.path, name, "coffee-script")
+					haveNodeModules = new Directory(coffeeScript).existsSync()
 			
 			
 			# Files of both names were found
@@ -184,8 +182,8 @@ class Workspace
 			
 			# Node modules aren't installed: alert user
 			unless haveNodeModules
-				message = "`node_modules` not found. Please run `apm install`."
-				detail = "Changes you make to config.cson will not be saved without the required dependencies."
+				message = "`node_modules` not found. Please run `apm install` and restart Atom."
+				detail = "Changes you make to config.cson will not be saved."
 				atom.notifications.addWarning message, {detail, dismissable: true, icon: "package"}
 		
 		
