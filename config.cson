@@ -2184,6 +2184,12 @@ fileIcons:
 		match: /^mootools[^.]*\d+\.\d+(?:.\d+)?[^.]*\.js$/i
 		colour: "medium-purple"
 
+	mruby:
+		icon: "mruby"
+		match: ".mrb"
+		colour: "medium-red"
+		interpreter: "mruby"
+
 	mSQL:
 		icon: "msql"
 		match: ".dsql"
