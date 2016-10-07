@@ -1622,6 +1622,7 @@ fileIcons:
 			[".raw", "dark-orange"]
 			[".sct", "light-blue"]
 			[".sgi", "medium-yellow"]
+			[".svgz", "medium-orange"]
 			[".tga", "dark-orange"]
 			[".wbm", "dark-maroon"]
 			[".wdp", "dark-red"]
