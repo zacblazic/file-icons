@@ -2589,6 +2589,7 @@ fileIcons:
 		match: [
 			[".ps", "medium-red", scope: "postscript", alias: "postscr"]
 			[".eps", "medium-orange"]
+			[".pfa", "dark-blue"]
 			[".pfb", "dark-maroon"]
 			[".afm", "medium-green"]
 		]
@@ -2618,6 +2619,11 @@ fileIcons:
 			[".psm1", "medium-purple"]
 			[".ps1xml", "dark-purple"]
 		]
+
+	Print:
+		icon: "print"
+		match: ".ppd"
+		colour: "dark-cyan"
 
 	Processing:
 		icon: "processing"
