@@ -1411,7 +1411,7 @@ fileIcons:
 		icon: "graph"
 		scope: "gnuplot"
 		interpreter: "gnuplot"
-		match: /\.gp|plo?t|gnuplot$/i
+		match: /\.(?:gp|plo?t|gnuplot)$/i
 		colour: "medium-red"
 
 	Go:
