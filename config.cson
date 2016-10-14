@@ -1402,6 +1402,11 @@ fileIcons:
 		match: ".glf"
 		colour: "medium-blue"
 
+	Glyphs:
+		icon: "glyphs"
+		match: ".glyphs"
+		colour: "medium-green"
+
 	GNU:
 		icon: "gnu"
 		match: /\.(?:gnu|gplv[23])$/i
@@ -3552,6 +3557,12 @@ fileIcons:
 		scope: "yang"
 		match: ".yang"
 		colour: "medium-yellow"
+
+	Yarn:
+		icon: "yarn"
+		match: /^yarn\.lock$/i
+		colour: "medium-blue"
+		priority: 2
 
 	Yeoman:
 		icon: "yeoman"
